@@ -13,4 +13,9 @@ Shirey, R.: Internet Security Glossary, Version 2. RFC 4949, RFC Editor, Srpen
   2007.
 \newline\urlprefix\url{https://tools.ietf.org/html/rfc4949}
 
+\bibitem{ipfix}
+Velan~Petr, K.~R.: Flow Information Storage Assessment Using IPFIXcol. In
+  \emph{Lecture Notes in Computer Science 7279}, Springer, 2012, ISBN
+  978-3-642-30632-7.
+
 \end{thebibliography}

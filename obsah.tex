@@ -16,13 +16,51 @@ Celou aplikaci navíc bude možno libovolně přizpůsobit tak, aby vyhovovala p
 
 Aplikace bude integrována do současného Nemea frameworku pod názvem Nemea Dashboard a bude s ním společně distribuována jako front~end celého systému.
 
-\break
-\chapter{Monitoring síťových dat}
+\chapter{Monitoring síťě}
+
+V majoritních sítích jako např. páteřní či firemní sítě je téměř nutností monitorovat provoz na síti, abychom byli informování o jejím aktuálním stavu.
+
+Monitoring lze rozdělit do dvou částí. Aktivní a pasivní způsob.
+
 \section{Nemea}
+
+Network Measurements Analysis, zkráceně Nemea, je framework, který dovoluje seskládat systém pro automatizovanou analýzu toků získaných ze síťového monitoringu v reálném čase. Systém se skládá z oddělených stavebních bloků nazývané moduly. Tyto jednotlivé moduly jsou následně propojeny pomocí rozhraní.
+
+Moduly jsou nezávislé pracovní jednotky, které obecně přijímají proud dat na svých vstupech, zpracují či zanalyzují daná data a následně je odešlou ze svých výstupních rozhraní jako proud dat pro další moduly. Modul může například tvořit statistiky o přijatých datech a na základě těchto statistik detekovat určité typy síťového útoku. Detekovaný útok je popsán datovým záznamem, který je odeslán přes výstupní rozhraní dalším modulům, které s daným záznamem dále pracují, např. jej uloží v IDEA formátu (viz sekce \ref{sec:idea}) do databáze nebo ze získaných statistik dokáží detekovat anomálie v síťovém provozu a dokáží tak jednotlivé pokusy od jednoho útočníka agregovat a zpracovat jej jako jediný útok skládající se z několika desítek až stovek pokusů o útok, které odděleně nemají význam a administrátor sítě by je snadno přehlédl nebo ignoroval.
+
+Jednotlivé moduly nemají osamoceně velký význam, ale pokud tyto moduly spojíme ve složitější systém, získáme komplexní nástroj na aktivní analýzu síťových dat schopný detekovat a identifikovat útoky na monitorovanou síť, který následně detekované útoky uloží do databáze a webová aplikace, kterou v této práci navrhujeme, uložené útoky zobrazí.
+
+Nemea je také schopná přístupu ``store-and-ex-post'', který lze vidět na obrázku \ref{fig:nemea-schema}. Jsou zde dva moduly spojené jedním rozhraním. První modul čte záznamy toků ze souboru a druhý modul počítá statistiky těchto přečtených toků. 
+\begin{figure}[ht]
+  \centering
+    \includegraphics[width=0.5\textwidth]{fig/nemea-basic.pdf}
+  \caption{Minimální příklad Nemea systému} \label{fig:nemea-schema}
+  
+\end{figure}
+
+Z takto základních bloků lze postavit i velmi komplexní systém jak je vidět na obrázku \ref{fig:nemea-example-2}, kde jsou data přijímána v reálném čase z IPFIX\cite{ipfix} kolektoru
+
+\begin{figure}
+  \centering
+    \includegraphics[width=1\textwidth]{fig/nemea-example-2-cz.eps}
+  \caption{Minimální příklad Nemea systému} \label{fig:nemea-example-2}
+  
+\end{figure}
+
+
+
+
 \subsection{Hlavní komponenty}
+
+\subsubsection{Modul}
+
 \subsubsection{libtrap}
+
 \subsubsection{UniRec}
+
 \section{IDEA}
+\label{sec:idea}
+
 \section{Další monitorovací systémy}
 
 \chapter{Technologie}
