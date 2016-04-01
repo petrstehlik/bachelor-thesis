@@ -1,0 +1,30 @@
+\select@language {czech}
+\contentsline {chapter}{\numberline {1}\IeC {\'U}vod}{2}{chapter.1}
+\contentsline {chapter}{\numberline {2}Monitoring s\IeC {\'\i }\IeC {\v t}ov\IeC {\'y}ch dat}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}Nemea}{3}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Hlavn\IeC {\'\i } komponenty}{3}{subsection.2.1.1}
+\contentsline {subsubsection}{libtrap}{3}{section*.2}
+\contentsline {subsubsection}{UniRec}{3}{section*.3}
+\contentsline {section}{\numberline {2.2}IDEA}{3}{section.2.2}
+\contentsline {section}{\numberline {2.3}Dal\IeC {\v s}\IeC {\'\i } monitorovac\IeC {\'\i } syst\IeC {\'e}my}{3}{section.2.3}
+\contentsline {chapter}{\numberline {3}Technologie}{4}{chapter.3}
+\contentsline {section}{\numberline {3.1}Dostupn\IeC {\'e} technologie}{4}{section.3.1}
+\contentsline {section}{\numberline {3.2}V\IeC {\'y}b\IeC {\v e}r technologi\IeC {\'\i }}{4}{section.3.2}
+\contentsline {section}{\numberline {3.3}Zvolen\IeC {\'e} technologie}{4}{section.3.3}
+\contentsline {chapter}{\numberline {4}Architektura aplikace}{5}{chapter.4}
+\contentsline {section}{\numberline {4.1}REST API}{5}{section.4.1}
+\contentsline {section}{\numberline {4.2}Datab\IeC {\'a}ze ud\IeC {\'a}lost\IeC {\'\i }}{5}{section.4.2}
+\contentsline {section}{\numberline {4.3}GUI}{5}{section.4.3}
+\contentsline {chapter}{\numberline {5}Implementace}{6}{chapter.5}
+\contentsline {section}{\numberline {5.1}Backend}{6}{section.5.1}
+\contentsline {section}{\numberline {5.2}Frontend}{6}{section.5.2}
+\contentsline {section}{\numberline {5.3}Zabezpe\IeC {\v c}en\IeC {\'\i }}{6}{section.5.3}
+\contentsline {section}{\numberline {5.4}Distribuce}{6}{section.5.4}
+\contentsline {chapter}{\numberline {6}Dosa\IeC {\v z}en\IeC {\'e} v\IeC {\'y}sledky}{7}{chapter.6}
+\contentsline {section}{\numberline {6.1}N\IeC {\'a}zory u\IeC {\v z}ivatel\IeC {\r u}}{7}{section.6.1}
+\contentsline {section}{\numberline {6.2}Nasazen\IeC {\'\i } v praxi}{7}{section.6.2}
+\contentsline {chapter}{\numberline {7}Z\IeC {\'a}v\IeC {\v e}r}{8}{chapter.7}
+\contentsline {chapter}{Literatura}{9}{chapter*.4}
+\contentsline {chapter}{P\IeC {\v r}\IeC {\'\i }lohy}{10}{section*.5}
+\contentsline {section}{Seznam p\IeC {\v r}\IeC {\'\i }loh}{11}{section*.6}
+\contentsfinish 
