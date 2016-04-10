@@ -76,20 +76,18 @@ Pro tvorbu rozhraní je vytvořena sdílená knihovna libtrap, která využívá
 
 Pro potřebu sdílení informací o síťových událostech mezi různými skupinami a zařízeními (např. honeypoty, analyzéry systémových zpráv, analyzéry provozu na síti, netflow sondy a další) existuje několik formátů záznamu takovéto události. Nicméně žádný z nich není natolik univerzální, aby byl vždy a všude použitelný a pokud se k takovému formátu blíží, tak není natolik detailní, aby pokryl většinu důležitých informací.
 
-IDEA, neboli Intrusion Detection Extensible Alert, je formát záznamu síťové události specifikovaný sdružením CESNET. IDEA si klade za cíl specifikovat takový formát záznamu, který je univerzální, přenositelný, ale zároveň dost konkrétní a pochopitelný be
+IDEA, neboli Intrusion Detection Extensible Alert, je formát záznamu síťové události specifikovaný sdružením CESNET. IDEA si klade za cíl specifikovat takový formát záznamu, který je univerzální, přenositelný, ale zároveň dost konkrétní a snadno pochopitelný bez rozsáhlé dokumentace k jednotlivým polím.
+
+Vzorový záznam generovaný systémem Nemea je vyobrazený níže. Jak je vidět, formát je spefikovaný jako JSON dokument. 
 
 \begin{verbatim}
 {
     "ID" : "73e0b136-aeb8-4aae-bb80-9bfb4f258847",
-    "Target":[
-        {
-            "InByteCount":453129,
-            "InFlowCount":131,
-            "Proto":["udp","dns"],
-            "IP4":["10.0.0.135"],
-            "InPacketCount":393
-        }
-    ],
+    "Target":[{
+        "Proto":["udp","dns"],
+        "IP4":["10.0.0.135"],
+        "InPacketCount":393
+    }],
     "PacketCount":393,
     "Type":["Flow","Statistical"],
     "CeaseTime":"2016-04-07T22:34:38Z",
@@ -97,32 +95,28 @@ IDEA, neboli Intrusion Detection Extensible Alert, je formát záznamu síťové
     "FlowCount":131,
     "Category":["Availibility.DDoS"],
     "CreateTime":"2016-04-07T22:34:52Z",
-    "Node":[
-        {
+    "Node":[{
             "SW":["Nemea","amplification_detection"],
             "Name":"cz.cesnet.nemea.amplification_detection"
-        }
-    ],
+    }],
     "EventTime":"2016-04-07T22:19:25Z",
-    "Source":[
-        {
-            "OutByteCount":453129,
-            "InByteCount":55224,
+    "Source":[{
             "IP4":["192.1.0.201"],
             "Proto":["udp","dns"],
             "OutPacketCount":393,
-            "InFlowCount":767,
-            "OutFlowCount":131,
             "InPacketCount":767
-        }
-    ],
+        }],
     "Format":"IDEA0",
     "Description":"DNS amplification",
     "DetectTime":"2016-04-07T22:34:38Z"
 }
 \end{verbatim}
 
+\label{Vzorový IDEA záznam z Nemea systému. Některé části byly vynechány nebo zkráceny.}
+
 \section{Další monitorovací systémy}
+
+Na trhu jsou v současné době různá dostupná řešení pro detekci a vizualizaci síťových bezpečnostních událostí, nicméně valná hromada z nich je komerční a hlavně vázaná na konkrétní hardware od daného výrobce. Klient tudíž většinou nekupuje software, ale hardware s přiloženým software. 
 
 \chapter{Technologie}
 \section{Dostupné technologie}
