@@ -35,8 +35,10 @@ Moduly jsou nezávislé pracovní jednotky, které obecně přijímají proud da
 
 Jednotlivé moduly nemají osamoceně velký význam, ale pokud tyto moduly spojíme ve složitější systém, získáme komplexní nástroj na aktivní analýzu síťových dat schopný detekovat a identifikovat útoky na monitorovanou síť, který následně detekované útoky uloží do databáze a webová aplikace, kterou v této práci navrhujeme, uložené útoky zobrazí.
 
-NEMEA je také schopná přístupu ``store-and-ex-post'', který lze vidět na obrázku \ref{fig:nemea-schema}. Jsou zde dva moduly spojené jedním rozhraním. První modul čte záznamy toků ze souboru a druhý modul počítá statistiky těchto přečtených toků. Tento přístup je charakteristický tím jak nakládá se síťovými daty. Ty prvně uloží a až poté začíná systém s analýzou síťových dat. Oproti streamovému zpracování síťových dat je tento systém náročnější na datový prostor, ale analýza \note{(najít proč je lepší)}
-\begin{figure}[ht]
+NEMEA je také schopná přístupu \uv{store-and-ex-post}, který lze vidět na obrázku \ref{fig:nemea-schema}. Jsou zde dva moduly spojené jedním rozhraním. První modul čte záznamy toků ze souboru a druhý modul počítá statistiky těchto přečtených toků. Tento přístup je charakteristický tím jak nakládá se síťovými daty. Ty prvně uloží a až poté začíná systém s analýzou dodaných síťových dat. 
+
+Oproti proudovému zpracování síťových dat je tento systém náročnější na datový prostor, ale analýza je přesnější a méně náročná na výkon stroje. \note{(najít proč je lepší)}
+\begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{fig/nemea-basic.pdf}
     \caption{Minimální příklad NEMEA systému obsahující pouze dva moduly.} \label{fig:nemea-schema}
@@ -85,35 +87,35 @@ Vzorový záznam generovaný systémem NEMEA je vyobrazený ve výpisu \ref{code
 \lstset{basicstyle=\small,style=JSON}
 \begin{lstlisting}
 {
-    "Format":"IDEA0",
-    "ID" : "73e0b136-aeb8-4aae-bb80-9bfb4f258847",
-    "Category":["Availibility.DDoS"],
-    "Description":"DNS amplification",
-    "EventTime":"2016-04-07T22:19:25Z",
-    "CreateTime":"2016-04-07T22:34:52Z",
-    "CeaseTime":"2016-04-07T22:34:38Z",
-    "DetectTime":"2016-04-07T22:34:38Z"
-    "PacketCount":393,
-    "Source":[{
-        "IP4":["192.1.0.201"],
-        "Proto":["udp","dns"],
-        "OutPacketCount":393,
-        "InPacketCount":767
+    "Format" :      "IDEA0",
+    "ID" :          "73e0b136-aeb8-4aae-bb80-9bfb4f258847",
+    "Category" :    ["Availibility.DDoS"],
+    "Description" : "DNS amplification",
+    "EventTime" :   "2016-04-07T22:19:25Z",
+    "CreateTime" :  "2016-04-07T22:34:52Z",
+    "CeaseTime" :   "2016-04-07T22:34:38Z",
+    "DetectTime" :  "2016-04-07T22:34:38Z"
+    "PacketCount" : 393,
+    "Source" : [{
+        "IP4" : ["192.1.0.201"],
+        "Proto" : ["udp","dns"],
+        "OutPacketCount" : 393,
+        "InPacketCount" : 767
     }],
-    "Target":[{
-        "Proto":["udp","dns"],
-        "IP4":["10.0.0.135"],
-        "InPacketCount":393
+    "Target" : [{
+        "Proto" : ["udp","dns"],
+        "IP4" : ["10.0.0.135"],
+        "InPacketCount" : 393
     }],
-    "Node":[{
-        "SW":["NEMEA","amplification_detection"],
-        "Name":"cz.cesnet.nemea.amplification_detection"
+    "Node" : [{
+        "SW" : ["NEMEA","amplification_detection"],
+        "Name" : "cz.cesnet.nemea.amplification_detection"
     }],
-    "Type":["Flow","Statistical"],
+    "Type" : ["Flow","Statistical"],
 }
 \end{lstlisting}
+\captionof{lstlisting}{Vzorový IDEA záznam ze systému NEMEA. Některé části byly vynechány nebo zkráceny a IP adresy změněny na lokální.}
 \label{code:idea}
-\captionof{lstlisting}{Vzorový IDEA záznam z NEMEA systému. Některé části byly vynechány nebo zkráceny a IP adresy změněny na lokální.}
 \end{figure}
 
 \section{Další monitorovací systémy}
@@ -129,10 +131,18 @@ Tento open-source projekt, od roku 2013 vlastněn firmou Cisco\cite{snort:cisco}
 
 \subsection{VERMONT}
 
-VERMONT (Versatile Monitoring Toolkit) je modulární monitorovací systém obsahující IPFIX kolektor, exportér, analyzátor a další moduly a grafické prostředí pro vizuální analýzu dat. VERMONT byl vyvinut v rámci projektu HISTORY\cite{vermont:history} a evropským projektem DIADEM firewall\cite{vermont:diadem}.
+VERMONT (Versatile Monitoring Toolkit) je modulární monitorovací systém obsahující IPFIX kolektor, exportér, analyzátor a další moduly a grafické prostředí pro vizuální analýzu dat. VERMONT byl vyvinut v rámci projektu HISTORY\cite{vermont:history} a evropským projektem DIADEM firewall\cite{vermont:diadem}. Svou architekturou je nejbližší systému NEMEA, protože je částečně modulární. Systém NEMEA je oproti tomu modulární od samotného jádra systému, což dovoluje vyšší flexibilitu při vývoji a menší závislost na použitých technologií.
 
 \subsection{Bro}
-Dalším open-source řešením je framework Bro. Tento framework primárně určený pro síťovou analýzu není velmi podobný systému NEMEA, protože je to spíše nástroj pro vytváření (N)IDS než-li ucelený systém. Bro se velmi blíží skriptovacím jazykům (např. Perl) nebo unixovým nástrojům jako tcpdump nebo nfdump. Bro lze rozdělit na dvě vrstvy. První vrstvou je \uv{Bro Event engine}, který analyzuje síťový provoz a generuje neutrální síťové události v podobě neurčité události. Tyto neurčité události jsou nasáledně analyzovány druhou vrstvou -- \uv{Bro Policy} skripty.
+Dalším v komunitě rozšířeným řešením je framework Bro. Tento framework primárně určený pro síťovou analýzu není podobný systému NEMEA, ani předchozím systémům, protože je to spíše nástroj pro vytváření (N)IDS než-li ucelený systém. Bro se velmi blíží skriptovacímu jazyku (např. Perl) nebo unixovým nástrojům jako tcpdump nebo nfdump. Bro lze rozdělit na dvě vrstvy. První vrstvou je \uv{Bro Event engine}, který analyzuje síťový provoz a generuje neutrální síťové události v podobě \uv{byla vytvořena nějaká událost}. 
+
+Tyto neurčité události jsou následně analyzovány druhou vrstvou -- \uv{Bro Policy skripty}. V této vrstvě je naimplementovaný zmiňovaný skriptovací jazyk. V současné době existuje mnoho naprogramovaných skriptů, které jsou připraveny k okamžitému použití, včetně pokročilé analýzy síťového provozu.
+
+V ranných fázích vývoje se systém NEMEA velmi blížil frameworku Bro, s vývojem času se ale NEMEA stala uceleným systémem připraveným k okamžitému nasazení na měřící body.
+
+\section{Shrnutí}
+
+V této kapitole jsme prezentovali systém NEMEA a jeho architekturu. Popsali jsme jeho nejdůležitější části, zejména jak vypadá modul a jeho komunikační protokol. Dále jsme popsali formát záznamu síťové bezpečnostní události IDEA, který je opěrným bodem pro ukládání dat v systému NEMEA v rámci analýzy událostí koncovým uživatelem. V poslední sekci jsme porovnali systém NEMEA s dalšími veřejně dostupnými monitorovacími systémy.
 
 \chapter{Technologie}
 \section{Dostupné technologie}
