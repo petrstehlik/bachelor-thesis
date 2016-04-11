@@ -81,3 +81,4 @@ target/
 .bbl
 .blg
 .ptc
+*.swp
