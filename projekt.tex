@@ -26,11 +26,24 @@
 
 %zde muzeme vlozit vlastni balicky
 \usepackage{listings}
+\usepackage{caption}
 \usepackage[toc,page,header]{appendix}
 \RequirePackage{titletoc}
 \ifczech
   \usepackage{ae}
 \fi
+
+\DeclareCaptionFormat{myformat}{#1#2#3}
+\captionsetup[lstlisting]{format=myformat}
+\captionsetup[lstlisting]{position=bottom,format=myformat}
+
+\lstdefinestyle{JSON}{
+    language=Python, 
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    belowcaptionskip=15pt
+}
 
 %---rm---------------
 \renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm
