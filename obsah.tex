@@ -47,7 +47,7 @@ NEMEA je také schopná přístupu \uv{store-and-ex-post}, který lze vidět na 
 
 Oproti proudovému zpracování síťových dat je tento systém náročnější na datový prostor, ale analýza je přesnější a daleko méně náročná na výkon stroje, zejména v případě pokročilejší analýzy. Pokud bychom vykonávali proudové zpracování dat, je zde i velká náročnost na operační paměť, pokud chceme analyzovat velké časové rámce.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{fig/nemea-basic.pdf}
     \caption{Minimální příklad NEMEA systému obsahující pouze dva moduly.} \label{fig:nemea-schema}
@@ -56,7 +56,7 @@ Oproti proudovému zpracování síťových dat je tento systém náročnější
 
 Z takto základních bloků lze postavit i velmi komplexní systém jak je vidět na obrázku \ref{fig:nemea-example-2}, kde jsou data přijímána v reálném čase z IPFIX\cite{ipfix} kolektoru. Data jsou předzpracována, analyzována několika algoritmy a následně jsou vytvořeny události, které jsou nahlášeny. Každá z těchto úloh je jeden modul, který může být znovu použitý na několika různých místech. Tím se šetří zdroje a nároky na tvorbu modulů.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{fig/nemea-example-2-cz.eps}
     \caption{Komplexní příklad NEMEA systému, který kolektuje data, předzpracovává je, provádí detekci anomálií a útoků a následně detekované události ukládá a reportuje.} \label{fig:nemea-example-2}
@@ -76,11 +76,9 @@ Při zapojení a startu nového modulu se modul periodicky snaží připojit na 
 
 Všechny rozhraní jsou výhradně jednocestná a přenos dat je realizován formou jednotlivých záznamů. Všechny záznamy poslané přes jedno konkrétní rozhraní mají vždy stejný formát, nicméně mezi rozhraními se formát může lišit. 
 
-Protokol pro dynamickou tvorbu formátu je nazván UniRec. Ten specifikuje nejen formát záznamu, ale také jak záznam vytvořit a jak zpracovat.
+Protokol pro dynamickou tvorbu formátu je nazván UniRec. Ten specifikuje nejen formát záznamu, ale také jak záznam vytvořit a jak zpracovat -- implementuje formát pro binární reprezentaci síťového záznamu.
 
-Pro tvorbu rozhraní je vytvořena sdílená knihovna libtrap, která využívá Traffic Analysis Platform (zkráceně TRAP) pro komunikaci mezi různými rozhraními.
-
-\subsubsection{UniRec}
+Pro tvorbu rozhraní je vytvořena sdílená knihovna libtrap, která využívá Traffic Analysis Platform (zkráceně TRAP) pro komunikaci mezi různými rozhranímia tyto rozhraní využívají protokolu UniRec.
 
 \section{IDEA}
 \label{sec:idea}
@@ -92,7 +90,7 @@ IDEA, neboli Intrusion Detection Extensible Alert, je formát záznamu síťové
 Vzorový záznam generovaný systémem NEMEA je vyobrazený ve výpisu \ref{code:idea}. Jak je vidět, formát je specifikovaný jako JSON dokument, aby byl přehledný, čitelný v běžné podobě (narozdíl od binárních formátů), lehce přenositelný a efektivní (např. oproti XML\cite{xmlvsjson}).
 
 %\vspace{5mm}
-\begin{figure}[ht]
+\begin{figure}[h]
 \lstset{basicstyle=\small,style=JSON}
 \begin{lstlisting}
 {
@@ -127,6 +125,8 @@ Vzorový záznam generovaný systémem NEMEA je vyobrazený ve výpisu \ref{code
 \label{code:idea}
 \end{figure}
 
+\newpage
+
 \section{Další monitorovací systémy}
 
 Na trhu jsou v současné době různá dostupná řešení pro detekci a vizualizaci síťových bezpečnostních událostí, nicméně valná hromada z nich je komerční a hlavně vázaná na konkrétní hardware od daného výrobce. Klient tudíž většinou nekupuje software, ale hardware s přiloženým software.
@@ -153,12 +153,67 @@ V ranných fázích vývoje se systém NEMEA velmi blížil frameworku Bro, s v�
 
 V této kapitole jsme prezentovali systém NEMEA a jeho architekturu. Popsali jsme jeho nejdůležitější části, zejména jak vypadá modul a jeho komunikační protokol. Dále jsme popsali formát záznamu síťové bezpečnostní události IDEA, který je opěrným bodem pro ukládání dat v systému NEMEA v rámci analýzy událostí koncovým uživatelem. V poslední sekci jsme porovnali systém NEMEA s dalšími veřejně dostupnými monitorovacími systémy.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Kapitola 3
+% Technologie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \chapter{Technologie}
-\section{Dostupné technologie}
+
+Vizualiace síťových bezpečnostních událostí může být vytvořena několika přístupy. Pokud máme IDS, který je dostupný pouze z jednoho stroje, nejčastěji zvolíme tvorbu desktopové aplikace, protože máme jistotu provozního prostředí. V případě vzdálené správy (častější případ) IDS jsme nejčastěji odkázání na vzdálený přístup pomocí příkazové řádky. Tento přístup je bohužel velmi limitovaný a nelze jej využít pro vizualiaci. V současné době je pro vzdálenou správu nejvhodnější vytvořit webovou aplikaci, která je dostupná z Internetu a použitelná na většině dnes používaných zařízeních\footnote{Jedná se zejména o stolní počítače, notebooky, tablety a chytré mobilní telefony.}
+
+Pro tvorbu moderních webové aplikace (zkráceně MWA) je na Internetu dostupná celá řada knihoven, frameworků a systémů. Nicméně první otázkou zůstává co taková MWA je? 
+
+Specifikem MWA je její vysoká interaktivita s uživatelem, vysoká dostupnost služby, kterou poskytuje a rozdělení na dva logické celky. Uživatelskou a serverovou část, často chybně nazývané frontend a backend aplikace. Více o architektuře aplikace v kapitole \ref{architektura}.
+
+Vysoká interaktivita MWA je tvořena pomocí jazyka JavaScript. Ten umožňuje dynamickou změnu stránky bez nutnosti ji znova načítat a tím pádem uživatel nepřichází o dočasná data na stránce. Tento přístup navíc redukuje počet dotazů na server a snižuje tak jeho zátěž.
+
+S přesunem logiky na uživatelskou část MWA jsou ale spojeny nemalé problémy. Zejména pak různorodá interpretace kódu. To se v posledních letech téměř eliminovalo díky moderním prohlížečům a jejich jádrům jako je např. WebKit pro Google Chrome nebo Gecko pro Firefox.
+
+Často se MWA anglicky říká \uv{Single-page} aplikace\cite{spa}. Tento název je ale poněkud zavádějící. Povětšinou je aplikace natolik komplexní, že s jedinou stránkou bychom uživatele zmátli a přetížili informacemi a proto MWA strukturujeme do adresářové podoby. V tu chvíli již aplikace není jednostránková, ale vícestránková a název začíná být nepřesný.
+
+\section{Dostupné technologie pro uživatelskou část}
+
+K vytvoření MWA a zejména uživatelské části existuje několik významných systémů. V této kapitole si tyto technologie představíme a porovnáme mezi sebou. Nejdůležitější částí je JavaScriptová knihovna/framework, který bude nejčastěji interagovat s uživatelem.
+
+\subsection{JavaScript MVC frameworky}
+
+Bylo vybráno 5 JavaScript MVC (Model-View-Controller)\cite{mvc} frameworků, které napomáhají k tvorbě MWA. 
+
+\subsubsection*{React}
+\subsubsection*{Ember.js}
+\subsubsection*{Backbone.js}
+\subsubsection*{AngularJS}
+\subsubsection*{Polymer}
+
+\subsection{Serverová část}
+\subsubsection*{Python Flask}
+\subsubsection*{PHP}
+\subsubsection*{C++ a Mongoose}
+\subsubsection*{NodeJS}
+
+
+
+
+
 \section{Výběr technologií}
+\subsection{Uživatelská část}
+
+\subsection{Serverová část}
+
 \section{Zvolené technologie}
 
 \chapter{Architektura aplikace}
+\label{architektura}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig/mvc.pdf}
+    \caption{MVC architektura} \label{fig:mvc}
+  
+\end{figure}
+
+
 \section{Případy užití}
 \section{REST API}
 \section{Databáze událostí}
