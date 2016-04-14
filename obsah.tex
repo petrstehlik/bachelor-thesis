@@ -174,17 +174,78 @@ S přesunem logiky na uživatelskou část MWA jsou ale spojeny nemalé problém
 
 \section{Dostupné technologie pro uživatelskou část}
 
-K vytvoření MWA a zejména uživatelské části existuje několik významných systémů. V této kapitole si tyto technologie představíme a porovnáme mezi sebou. Nejdůležitější částí je JavaScriptová knihovna/framework, který bude nejčastěji interagovat s uživatelem.
+K vytvoření MWA a zejména uživatelské části existuje několik významných systémů. V této části si tyto technologie představíme a porovnáme mezi sebou. Nejdůležitější částí je JavaScriptová knihovna/framework, který bude nejčastěji interagovat s uživatelem. Další nedílnou součástí je knihovna pro HTML/CSS, která bude definovat vzhled aplikace.
 
 \subsection{JavaScript MVC frameworky}
 
-Bylo vybráno 5 JavaScript MVC (Model-View-Controller)\cite{mvc} frameworků, které napomáhají k tvorbě MWA. 
+Bylo vybráno 5 JavaScript MVC (Model-View-Controller)\cite{mvc} frameworků, které napomáhají k tvorbě MWA. Architektura MVC rozděluje aplikaci na tři celky, které mezi sebou navzájem komunikují. Více informací o MVC architektuře v kapitole \ref{architektura}.
 
-\subsubsection*{React}
+Kritéria užšího výběru frameworků byla zejména následující:
+
+\begin{itemize}  
+\item open-source projekt s MIT nebo BSD licencí,
+\item jednoduché použití,
+\item nenáročný na výpočetní výkon hostitelského stroje,
+\item široká podpora mezi prohlížeči,
+\item projekt má určitou historii a je udržován některou ze známých společností (udržitelnost vývoje).
+\end{itemize}
+
+\subsubsection*{React\cite{react}}
+Framework React je vyvíjen pod hlavičkou společnosti Facebook. Původním cílem návrhářů Reactu bylo vyřešit problémy během vývoje komplexních uživatelských rozhraní s rychle měnícími se daty. Dalším cílem bylo vytvořit takový framework, který lze distribuovat v takovém měřítku jako je Facebook.
+
+React je framework pro uživatelskou část MWA používající tradiční MVC architekturu. Taková architektura je nejvíce znatelná v případě použití obousměrného vázání dat (anglicky two-way data binding), více v sekci \ref{sec:mvc}.
+
+React se zaměřuje zejména na tvorbu UI, z pohledu architektury pohledová část (view), a kvůli tomu se ostatním částem architektury nevěnuje tak detailně, jak by většinu času vývojář potřeboval. Velmi častým řešením je použít React na pohledovou část a na model a kontrolér použít jiný framework, např. AngularJS.
+
+Z této pozice se React nadále vyvíjí 
+
+React pracuje s moderními přístupy k vývoji MWA a boří tak mnoho zažitých technik jak MWA vyvíjet. Místo běžné manipulace s DOM elementy si React, případně vývojář, definuje vlastní DOM elementy, kterým přídává určité vlastnosti, váže na ně data a pohodlně s nimi manipuluje bez větších výkonových ztrát. Toho docílil zejména použitím tzv. shadow DOM\cite{shadowdom}, který je ale novinkou na poli prohlížečů a je podporován pouze jádrem WebKit. Pokud ale není shadow DOM dostupný, používá React standardní DOM, se kterým je sice vykreslování pomalejší, ale stále velmi rychlé. 
+
+\begin{figure}[ht]
+\lstset{basicstyle=\small,style=JSON}
+\begin{lstlisting}
+var HelloMessage = React.createClass({
+    render: function() {
+        return <div>Hello {this.props.name}</div>;
+    }
+});
+
+ReactDOM.render(<HelloMessage name="John" />, mountNode);
+\end{lstlisting}
+\captionof{lstlisting}{\uv{Hello World} příklad v jazyku JSX, který do stránky vykreslí text \uv{Hello John}.}
+\label{code:react}
+\end{figure}
+
+Pro názornou ukázku, jak framework React funguje, je ve výpise \ref{code:react} vytvořen jednoduchý \uv{Hello World} element v JSX\cite{jsx} syntaxi. Tento kód demonstruje pouze minimální možnosti frameworku, ale vypovídá o jednoduchosti použití Reactu.
+
 \subsubsection*{Ember.js}
+
+Ember.js je primárně zaměřen na tvorbu SPA. Toho dosahuje zejména používáním zažitých praktik v rámci komunity vývojářů, širokou funkcionalitou bez nutnosti instalace dalších doplňků a osvědčil se i vysokou stabilitou během celé doby vývoje. Ember je také vždy jedním z prvních frameworků, který implementuje novinky obsažené v nových jádrech webových prohlížečů jako jsou např. JavaScript Promises\cite{jspromises}, Web Components\cite{webcomponents} nebo ES6 syntaxe.
+
+Ember se skládá celkem z pěti klíčových konceptů. Jejich názvy jsou ponechány anglicky pro větší názornost.
+
+\begin{itemize}  
+    \item {\bf Routes} -- každý stav aplikace je reprezentován unikátní cestou a této cestě náleží i odpovídající objekt, který manipuluje s danou cestou.
+    \item {\bf Models} -- každá cesta má svůj korespondující model, který obsahuje data asociována s danou cestou a stavem aplikace. Model slouží zejména k manipulaci s daty.
+    \item {\bf Templates} -- šablony jsou tvořeny v HTML s použitím šablonovacího jazyka HTMLBars\cite{htmlbars}.
+    \item {\bf Components} -- komponenta je vlastní HTML značka definovaná programátorem aplikace. Její chování je implementováno pomocí JavaScriptu a její vzhled pomocí HTMLBars šablon. Komponenta se chová jako běžný DOM element.
+    \item {\bf Services} -- servis je singleton objekt, který v sobě udržuje dlouhodobá data během používání aplikace klientem.
+\end{itemize}
+
 \subsubsection*{Backbone.js}
+
+Framework Backbone se mírně odlišuje od předešlých frameworků a to zejména architekturou, která není MVC, ale MVP (model-view-presenter).
+
 \subsubsection*{AngularJS}
+
+Framework AngularJS je jedním z nejdéle existujících frameworků pro tvorbu MWA.
+
 \subsubsection*{Polymer}
+
+\subsection*{HTML/CSS knihovny}
+\subsubsection*{Bootstrap}
+\subsubsection*{Angular Material}
+\subsubsection*{Foundation}
 
 \subsection{Serverová část}
 \subsubsection*{Python Flask}
@@ -212,6 +273,9 @@ Bylo vybráno 5 JavaScript MVC (Model-View-Controller)\cite{mvc} frameworků, kt
     \caption{MVC architektura} \label{fig:mvc}
   
 \end{figure}
+
+\section{MVC}
+\label{sec:mvc}
 
 
 \section{Případy užití}
