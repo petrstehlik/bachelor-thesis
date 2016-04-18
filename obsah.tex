@@ -1,5 +1,5 @@
 %=========================================================================
-% (c) Michal Bidlo, Bohuslav Křena, 2008
+% (c) Petr Stehlík, 2016
 
 %\usepackage{xcolor}
 \newcommand\note[1]{{\Large \textcolor{red}{#1}}}
@@ -174,7 +174,7 @@ SPA je nejčastěji tvořena pomocí jazyka JavaScript. Ten umožňuje dynamicko
 
 S přesunem logiky na uživatelskou část SPA jsou ale spojeny nemalé problémy. Zejména pak různorodá interpretace kódu. To se v posledních letech téměř eliminovalo díky moderním prohlížečům a jejich jádrům jako je např. WebKit pro Google Chrome nebo Gecko pro Firefox.
 
-\section{Dostupné technologie pro uživatelskou část}
+\section{Uživatelská část}
 
 K vytvoření SPA a zejména uživatelské části existuje několik významných systémů. V této části si tyto technologie představíme a porovnáme mezi sebou. Nejdůležitější částí je JavaScriptová knihovna/framework, který bude nejčastěji interagovat s uživatelem. Další nedílnou součástí je knihovna pro HTML/CSS, která bude definovat vzhled aplikace.
 
@@ -268,6 +268,30 @@ Výhodou Backbone.js je jeho velikost (celková velikost distribuce je méně ne
 
 Z předcházejících faktů lze vyvodit, že Backbone.js je vhodný zejména pro SPA menšího rozsahu, které jsou zaměřeny na velmi konkrétní úkol. To může v pozdějších fázích vývoje SPA znamenat problémy a kompromisy při vývoji další funkcionality aplikace.
 
+\subsubsection*{Shrnutí}
+
+Pro rychlý a stručný přehled byla vypracována tabulka shrnující klíčové vlastnosti každého porovnávaného frameworku.
+
+\begin{table}[ht]
+\centering
+\caption{Porovnání klíčových vlastností JavaScript frameworků}
+\label{tab:js}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+    Název       & 
+    Verze\tablefootnote{Aktuální verze v době psaní práce.}     & 
+    Aktivní vývoj     & 
+    Velikost\tablefootnote{Velikost minifikovaného produkčního kódu.}  & 
+    Licence   \\ \hline
+    React       & 15.0.1    & 3 roky (2013)     & 142 kB    & BSD       \\
+    Ember.js    & 2.5.0     & 4 roky (2011)              & 450 kB    & MIT       \\
+    Backbone.js & 1.3.3     & 5 let (2010)              & 7.5 kB    & MIT       \\
+    AngularJS   & 1.5.3     & 5 let (2010)              & 152 kB    & MIT       \\
+\hline
+\end{tabular}
+\end{table}
+
+\newpage
 
 \subsection{HTML/CSS frameworky}
 
@@ -306,7 +330,10 @@ Jak již název frameworku napovídá je tento vizuální jazyk použit skrz vš
 Z technického hlediska je Angular Material nejpokročilejším frameworkem. Pro mřížkový systém\footnote{angl. grid system} používá flexbox, který je dostupný pouze v nejnovější specifikaci CSS 3 a moderních webových prohlížečích. To může způsobit vážné problémy, pokud je SPA cílena na široké publikum.
 
 
-\subsection{Serverová část}
+\section{Serverová část}
+
+\subsection{REST API}
+
 \subsubsection*{Python Flask}
 \subsubsection*{PHP}
 \subsubsection*{C++ a Mongoose}
@@ -316,12 +343,12 @@ Z technického hlediska je Angular Material nejpokročilejším frameworkem. Pro
 
 
 
-\section{Výběr technologií}
+\section{Vybrané technologie}
 \subsection{Uživatelská část}
 
 \subsection{Serverová část}
 
-\section{Zvolené technologie}
+%\section{Zvolené technologie}
 
 \chapter{Architektura aplikace}
 \label{architektura}
@@ -349,8 +376,8 @@ Z technického hlediska je Angular Material nejpokročilejším frameworkem. Pro
 \section{Distribuce}
 
 \chapter{Dosažené výsledky}
-\section{Názory uživatelů}
-\section{Nasazení v praxi}
+%\section{Názory uživatelů}
+%\section{Nasazení v praxi}
 
 \chapter{Závěr}
 Závěrečná kapitola obsahuje zhodnocení dosažených výsledků se zvlášť vyznačeným vlastním přínosem studenta. Povinně se zde objeví i zhodnocení z pohledu dalšího vývoje projektu, student uvede náměty vycházející ze zkušeností s řešeným projektem a uvede rovněž návaznosti na právě dokončené projekty.
