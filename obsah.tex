@@ -359,7 +359,7 @@ Jeden z nejpoužívanějších jazyků pro tvorbu webových stránek -- PHP neby
 
 \subsubsection*{Flask (Python)}
 
-Flask je mikroframework využívající Werkzeug toolkit, který slouží jako základ pro Flask. Je nazývaný mikroframeworkem, protože vývojáře nenutí využívat konkrétní knihovny nebo nástroje, nedisponuje žádnou abstrakční databázovou vrstvou, verifikací vstupů nebo kterékoliv jinou komponentou běžně dostupnou v běžném frameworku podobného typu.
+Flask je mikroframework využívající Werkzeug toolkit, který slouží jako základ pro Flask. Je nazývaný mikroframeworkem, protože vývojáře nenutí využívat konkrétní knihovny nebo nástroje, nedisponuje žádnou abstrakční databázovou vrstvou, verifikací vstupů nebo kterékoliv jinou komponentou běžně dostupnou ve frameworku podobného typu.
 
 Nicméně Flask podporuje rozšíření, kterými lze rozšířit funkcionalitu přesně dle potřeb programátora. Tím se stává Flask velmi silným nástrojem při vývoji SPA. Jelikož je navíc napsán v jazyku Python je jeho použití více než intuitivní. Například definice cesty a obslužné rutiny je realizováno pomocí dekorátorů jak je znázorněno v následujícím příkladu \ref{code:flask}.
 
@@ -374,13 +374,15 @@ def hello():
 \label{code:flask}
 \end{figure}
 
-Veškeré zde zmíněné skutečnosti dělají z mikroframeworku Flask ideální nástroj pro návrh jak rozsáhlého, tak minimálního REST API, které lze libovolně škálovat.
+Veškeré zde zmíněné skutečnosti dělají z mikroframeworku Flask ideální nástroj pro návrh jak rozsáhlého, tak minimálního REST API, které lze libovolně škálovat dle potřeb projektu.
 
-S ohledem na MongoDB existuje oficiální konektor nazvaný PyMongo. Ten \note{dopsat něco málo pymongu}. 
+S ohledem na MongoDB existuje oficiální konektor nazvaný PyMongo. Ten se použitím velmi podobá mongo shell nástroji přímo v MongoDB. 
 
+\subsubsection*{NodeJS (JavaScript)}
+
+JavaScript je originálně určen do prostředí webových prohlížečů a jejich jader. Google ale vytvořil V8 JavaScriptové jádro primárně určené pro webový prohlížeč, na kterém je ale postaven i framework NodeJS. V8 umožňuje spouštět kód napsaný v JavaScriptu na straně serveru.
 
 \subsubsection*{Mongoose (C/C++)}
-\subsubsection*{NodeJS (JavaScript)}
 
 
 
