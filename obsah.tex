@@ -332,14 +332,55 @@ Z technického hlediska je Angular Material nejpokročilejším frameworkem. Pro
 
 \section{Serverová část}
 
+V rámci serverové části je kladen důraz zejména na výkonnost, stabilitu a efektivitu programu. Tyto faktory jsou ovlivněny zejména použitým programovacím jazykem, knihovnami a návrhem architektury programu.
+
+Jediný požadavek na server je, aby byl typu *nix. To nám zaručuje určité faktory a vlastnosti provozního prostředí jako např. dostupné jazyky a jejich knihovny, podpůrné programy a další.
+
+Na serveru poběží z NEMEA Dashboard pouze REST API\cite{rest}. Jeho vlastnosti a architektura budou detailně popsány v kapitole \ref{architektura}. API se připojuje na NoSQL databázový systém MongoDB. Ta je využívána systémem NEMEA, který do ní ukládá detekované události. MongoDB bylo zvoleno kvůli rychlosti, jednoduchosti použití a pro záznamy ve formátu IDEA bylo potřeba NoSQL databázový systém, který dokáže pracovat s daty stejně nebo podobně jako se pracuje s JSON.
+
 \subsection{REST API}
 
-\subsubsection*{Python Flask}
-\subsubsection*{PHP}
-\subsubsection*{C++ a Mongoose}
-\subsubsection*{NodeJS}
+REST, neboli Representational State Transfer, je architektura rozhraní pro distribuci dat. Tato architektura nám dovoluje přistupovat ke všem zdrojům uniformním rozhraním, které definuje čtyři základní operace nad každým z nich:
+
+\begin{description}
+    \item {\bf Create} -- vytvoření a uložení nového datového objektu.
+    \item {\bf Read} -- čtení datového objektu.
+    \item {\bf Update} -- permanentní aktualizace datového objektu.
+    \item {\bf Delete} -- odstranění datového objektu z permanentního datového prostoru.
+\end{description}
+
+Toto rozhraní zpřístupňuje databázi událostí vytvořenou NEMEA systémem, která je udržována v MongoDB. Navíc tyto data agreguje, předzpracovává či jinak upravuje (funkcionalita REST API je popsána v sekci \ref{restapi})
+
+Pro vytvoření API s REST architekturou rozhraní existují knihovny, které vývoj ulehčují a zrychlují. Ve většině případů ale platí, že takovéto knihovny jsou náročné na zdroje a jsou tím pádem pomalejší. Pro NEMEA Dashboard je potřeba takový jazyk, který je úzce integrovaný se systémem a dokáže využívat systémové nástroje\footnote{Využití systémových nástrojů není součástí této práce, ale byla jednou z podmínek návrhu REST API pro NEMEA Dashboard.}.
+
+Do výběru jsem zahrnul interpretované i kompilované jazyky, aby byl demonstrován rozdíl ve výkonnosti, jednoduchosti použití, množství potřebných závislostí a dalších. Jmenovitě byly zahrnuty jazyky Python, C++ a JavaScript. Pro každý vybraný jazyk existuje několik knihoven pro podporu tvorby REST API, proto pro zpřehlednění byly vybrány nejvhodnější knihovny.
+
+Jeden z nejpoužívanějších jazyků pro tvorbu webových stránek -- PHP nebyl zahrnut z důvodu vysoké režie interpretu při běhuaplikace a mnoha závislostí (zejména Apache webový server), které jsou potřeba pro tvorbu webové stránky v PHP. Navíc jazyk PHP přímo nepodporuje tvorbu REST architektury, vše je řešeno přes Apache server pomocí .htaccess konfigurace.
+
+\subsubsection*{Flask (Python)}
+
+Flask je mikroframework využívající Werkzeug toolkit, který slouží jako základ pro Flask. Je nazývaný mikroframeworkem, protože vývojáře nenutí využívat konkrétní knihovny nebo nástroje, nedisponuje žádnou abstrakční databázovou vrstvou, verifikací vstupů nebo kterékoliv jinou komponentou běžně dostupnou v běžném frameworku podobného typu.
+
+Nicméně Flask podporuje rozšíření, kterými lze rozšířit funkcionalitu přesně dle potřeb programátora. Tím se stává Flask velmi silným nástrojem při vývoji SPA. Jelikož je navíc napsán v jazyku Python je jeho použití více než intuitivní. Například definice cesty a obslužné rutiny je realizováno pomocí dekorátorů jak je znázorněno v následujícím příkladu \ref{code:flask}.
+
+\begin{figure}[h]
+\lstset{basicstyle=\small,style=JSON}
+\begin{lstlisting}
+@app.route("/")
+def hello():
+    return("Hello World!")
+\end{lstlisting}
+\captionof{lstlisting}{Definování cesty a obslužné rutiny v mikroframeworku Flask.}
+\label{code:flask}
+\end{figure}
+
+Veškeré zde zmíněné skutečnosti dělají z mikroframeworku Flask ideální nástroj pro návrh jak rozsáhlého, tak minimálního REST API, které lze libovolně škálovat.
+
+S ohledem na MongoDB existuje oficiální konektor nazvaný PyMongo. Ten \note{dopsat něco málo pymongu}. 
 
 
+\subsubsection*{Mongoose (C/C++)}
+\subsubsection*{NodeJS (JavaScript)}
 
 
 
@@ -366,6 +407,7 @@ Z technického hlediska je Angular Material nejpokročilejším frameworkem. Pro
 
 \section{Případy užití}
 \section{REST API}
+\label{restapi}
 \section{Databáze událostí}
 \section{GUI}
 
