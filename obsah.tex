@@ -9,15 +9,15 @@ Počítačové sítě, zejména Internet, v dnešním světě zaujímají jednu 
 
 Avšak se zvyšujícím počtem uživatelů roste i počet útoků na různé počítačové sítě, kterými se útočníci snaží získat informace či poškodit oběť. Síťový útok je podle \cite{rfc:attack} definován jako záměrný akt, kde se entita snaží překonat bezpečnostní služby a porušit bezpečnost systému. Současně s tím vznikají systémy na detekci takovýchto útoků, aby správcí sítí dokázali včas a efektivně reagovat na vzniklou situaci.
 
-Jeden z těchto systémů vznikl ve sdružení CESNET s názvem NEMEA (Network Measurements Analysis). Tento systém mj. slouží pro analýzu síťového provozu a detekci neobvyklých událostí na síti. Podezřelé toky jako agregované události pak může zaznamenávat  do databáze. Na větší síti (stovky až tisíce připojených zařízení) je takovýchto událostí vytvořeno až několik tisíc denně. S tím nastává problém jak dané události jednoduše analyzovat a rozpoznat na jaké události se zaměřit a na které nebrát zřetel.
+Jeden z těchto systémů vznikl ve sdružení CESNET s názvem NEMEA (Network Measurements Analysis). Tento systém mj. slouží pro analýzu síťového provozu a detekci neobvyklých událostí na síti. Podezřelé toky jako agregované události pak může systém zaznamenávat  do databáze. Na větší síti (stovky až tisíce připojených zařízení) je takovýchto událostí vytvořeno až několik tisíc denně. S tím nastává problém jak dané události jednoduše analyzovat a rozpoznat důležité události, na které se zaměřit a na které nebrát zřetel.
 
-Pro efektivní analýzu velkého množství dat je vhodná vizualizace dle vhodných metrik, které vyplývají z dostupných dat. Cílem této bakalářské práce je vytvořit aplikaci pro vizuální analýzu bezpečnostních událostí na síti primárně monitorované systémem NEMEA, nicméně díky IDEA formátu dat bude aplikace přenositelná na další systémy. 
+Pro analýzu velkého množství dat je efektivní vizualizace dle vhodných metrik, které vyplývají z dostupných dat. Cílem této bakalářské práce je vytvořit aplikaci pro vizuální analýzu bezpečnostních událostí na síti primárně monitorované systémem NEMEA, nicméně díky IDEA formátu dat bude aplikace přenositelná na další systémy. 
 
-Důležitým aspektem vytvořené aplikace je důraz na použití moderních knihoven podporující tvorbu dynamických webových aplikací, které jsou dostupné na různých typech zařízeních. Společně s tím je kladen důraz na uživatelskou přívětivost a jednoduchost prostředí, ve kterém bude probíhat vizuální analýza událostí.
+Důležitým aspektem vytvořené aplikace je důraz na použití moderních nástrojů podporující tvorbu dynamických webových aplikací. Společně s tím je kladen důraz na uživatelskou přívětivost a jednoduchost prostředí, ve kterém bude probíhat vizuální analýza událostí.
 
-Celou aplikaci navíc bude možno libovolně přizpůsobit tak, aby vyhovovala potřebám daného správce sítě. V aplikaci bude zavedena technika {\it drill-down}, která napomáhá rychlé a přehledné analýze velkého množství dat bez ztráty informací o analyzované události. Drill-down spočívá v postupném zvyšování rozlišení dat, která analyzujeme a postupujeme směřem shora dolů.
+Celou aplikaci navíc bude možno přizpůsobit potřebám daného správce sítě. V aplikaci bude zavedena technika {\it drill-down}, která napomáhá rychlé a přehledné analýze velkého množství dat bez ztráty informací o analyzované události. Drill-down spočívá v postupném zvyšování rozlišení dat, která analyzujeme a postupujeme směřem shora dolů.
 
-Aplikace bude pracovat s konkrétním formátem dat nazvaný IDEA. Tento formát dat je specifikován sdružením CESNET a slouží jako prostředek pro sdílení dat bezpečnostních událostí mezi různými systémy. Díky tomu lze systém kdykoliv přenést na jiný zdroj databáze než je systém NEMEA, např. v rámci sdružení CESNET na systém Warden nebo Mentat.
+Aplikace bude pracovat s formátem dat nazvaný IDEA. Tento formát je specifikován sdružením CESNET a slouží jako prostředek pro sdílení dat bezpečnostních událostí mezi různými systémy. Díky tomu lze apliakci kdykoliv přenést na jiný zdroj databáze než je systém NEMEA, např. v rámci sdružení CESNET na systém Warden nebo Mentat.
 
 Aplikace bude integrována do současného NEMEA systému pod názvem NEMEA Dashboard a bude s ním společně distribuována jako front~end celého systému.
 
@@ -380,14 +380,41 @@ S ohledem na MongoDB existuje oficiální konektor nazvaný PyMongo. Ten se pou�
 
 \subsubsection*{NodeJS (JavaScript)}
 
-JavaScript je originálně určen do prostředí webových prohlížečů a jejich jader. Google ale vytvořil V8 JavaScriptové jádro primárně určené pro webový prohlížeč, na kterém je ale postaven i framework NodeJS. V8 umožňuje spouštět kód napsaný v JavaScriptu na straně serveru.
+JavaScript je původně určen do prostředí webových prohlížečů a jejich jader. Google ale vytvořil V8\cite{google:v8} JavaScriptové jádro primárně určené pro webový prohlížeč, na kterém je ale postaven i framework NodeJS. V8 umožňuje spouštět kód napsaný v JavaScriptu na straně serveru.
+
+Architektura NodeJS je založena na principu asynchronních událostí, které dovolují vytvářet vysoce škálovatelné síťové aplikace jako je např. webový server s vysokou dosupností a nároky.
+
+NodeJS není až tak knihovnou nebo frameworkem pro vývoj webových serverů, jako spíše sbírkou modulů, které obsluhují jednotlivé části funkcionality jádra\cite{nodejs}. Tyto moduly využívají API, které zjednodušuje komunikaci mezi moduly. Tím se velmi podobá NEMEA systému.
 
 \subsubsection*{Mongoose (C/C++)}
 
+Posledním kandidátem je framework napsaný v jazyku C. Největší výhodou tohoto řešení je jeho rychlost, která je mnohonásobně vyšší než u interpretovaných jazyků. Mongoose je minimalistický framework vytvořený pro vývoj webových serverů více typů.
 
+Jelikož jazyk C není až tak pohodlný a rychlý pro vývoj abstraktních architektur rozhraní jakou je REST, zejména kvůli práci s textovými řetězci a manipulací s JSON objekty, rozhodl jsem se napsat obálku frameworku Mongoose do jazyka C++. Ten, ačkoliv je pomalejší, je vhodnější pro práci s textovými řetezci a existuje efektivní knihovna pro práci s JSON objetky RapidJSON\note{doplnit odkazem na rapidjson}.
+
+Za použití vytvořené obálky, která je navržena specificky pro návrh REST API, lze velmi rychle vytvořit požadovanou funkcionalitu. Obálka totiž doplňuje možnosti Mongoose, který např. nedisponuje dynamickými URL\footnote{z angl. uniform resource locator} nebo zpracováním URL parametrů do vhodné struktury.
+
+Největším problémem je absence oficiálního konektoru pro MongoDB, ten je nezbytnou podmínkou pro toto REST API. Samozřejmě existují různá řešení nebo knihovny. Ty jsou ale buď neudržované nebo náročné na použití.
 
 \section{Vybrané technologie}
+
+V předcházející kapitole jsem uvedl užší výběr technologií, které jsou vhodné pro tvorbu SPA jak z uživatelské, tak serverové části. Každá z nich je něčím specifická a vyčnívá oproti jiným kandidátům.
+
 \subsection{Uživatelská část}
+
+Prvními aspekty při výběru knihovny pro vývoj SPA v uživatelské části byla zejména velikost knihovny, množství dostupných modulů, licence, udržovatelnost a v neposlední řadě schopnosti \note{featury, lepší slovo}. Pro rychlý přehled je vytvořena tabulka, která tyto faktory porovnává.
+
+\note{doplnit tabulkou o JS frameworks + přidat počet pluginů z bower/npm/github}
+
+Licence BSD a MIT jsou velmi podobné z hlediska vývojáře a jejich možnostmi použití v rámci vývoje otevřeného projektu jakým je NEMEA.
+
+Z hlediska velikosti jasně vyčnívá EmberJS, který je násobně menší než ostatní frameworky, avšak z ostatních faktorů pozbývá funkcionalitu, kterou např. dokáže nabídnout AngularJS.
+
+Všechny frameworky jsou v současné době aktivně vyvíjeny a pravidelně aktualizovány. Navíc kolem každého frameworku, které jsou všechny open-source, je vytvořena aktivní komunita vývojářů, kteří přispívají do daného frameworku.
+
+Pokud se zaměříme na možnosti frameworku, jasně vybočuje AngularJS, který implementuje kompletní MVC/MVVM architekturu. Tím pádem není nutná jakákoliv další knihovna nebo vlastnoruční implementace některých komponent, které budou při vývoji NEMEA Dashboard potřeba.
+
+Poslední faktor je dle mého nejdůležitějším měřítkem při výběru, ten totiž vyváží i větší velikost frameworku a jeho náročnost na prohlížeč, ta se navíc s každou novou verzí většinou snižuje.
 
 \subsection{Serverová část}
 
