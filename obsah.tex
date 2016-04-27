@@ -414,11 +414,55 @@ Všechny frameworky jsou v současné době aktivně vyvíjeny a pravidelně akt
 
 Pokud se zaměříme na možnosti frameworku, jasně vybočuje AngularJS, který implementuje kompletní MVC/MVVM architekturu. Tím pádem není nutná jakákoliv další knihovna nebo vlastnoruční implementace některých komponent, které budou při vývoji NEMEA Dashboard potřeba.
 
-Poslední faktor je dle mého nejdůležitějším měřítkem při výběru, ten totiž vyváží i větší velikost frameworku a jeho náročnost na prohlížeč, ta se navíc s každou novou verzí většinou snižuje.
+Poslední faktor -- možnosti frameworku -- je dle mého nejdůležitějším měřítkem při výběru. Ten totiž vyváží i větší velikost frameworku a jeho náročnost na prohlížeč, ta se navíc s každou novou verzí většinou snižuje.
+
+Tím pádem je jasným vítězem framework AngularJS, který disponuje širokou funkcionalitou. Je navržený přímo pro vývoj komplexních SPA a má opravdu mnoho dostupných rozšíření, které jsou vhodné pro naše účely.
+
+V rámci CSS frameworků bylo rozhodování mnohem přímočarejší, ačkoliv se tak na první pohled nemusí jevit, jelikož všechny tři frameworky nabízejí téměř totožnou funkcionalitu. Ale protože jsem zvolil AngularJS jako javascriptový framework, byla volba zcela jasná, protože Angular Material je přímým rozšířením frameworku AngularJS a do útrob Angular Material je velmi hluboce integrovaný. Navíc používá nejmodernější technologie, které usnadňují vývoj.
 
 \subsection{Serverová část}
 
+Při výběru technologie pro serverovou část jsem se zejména zaměřil na rychlost výsledného REST API a jeho udržitelnost z vývojářského hlediska (modulárnost, OOP). Proto jsem vytvořil velmi jednoduché REST API v každém z kanditátů a změřil jejich výkonnost.
+
+V každém z frameworků jsem vytvořil jednoduché statické API (fixní URL), která pouze vrátila textový řetězec \uv{Hello World}. Pro měření jsem využil osobní virtuální server s následujícími parametry:
+
+\begin{itemize}
+    \item CPU,
+    \item RAM,
+    \item konektivita.
+\end{itemize}
+
+Server nebyl v době testů nijak vytížen a běžely na něm pouze základní služby jako Apache. Konfigurace serveru není nijak výkonná a tím pádem lze odvodit kolik zdrojů jaký jazyk spotřebuje a jak je připravený na škálovatelnost.
+
+Pro vytvoření dostatečného množství dotazů na server jsem použil nástroj wrk, který jsem spuštěl na počítači Mac Mini Server (Intel i5, 8 GB RAM, 1Gbps konektivita). Nástroj wrk jsem spouštěl s následujícími parametry:
+
+\begin{itemize}
+    \item -c\note{DOPLNIT},
+    \item -s,
+    \item -asdf.
+\end{itemize}
+
+Testy jsem spouštěl celkem třikrát pro každý framework, abych se vyvaroval chybě měření a každé měření probíhalo nezávisle na předcházejícím. Server vytvořený ve frameworku byl restarovaný a nikdy se netestoval stejný framework dvakrát za sebou. V následující tabulce jsou naměřené výsledky.
+
+\note{doplnit tabulku rychlosti serverů}
+
+C++ obálka frameworku Mongoose je několikanásobně rychlejší než ostatní frameworky. Tato rychlost je zejména díky použitému jazyku. Alespoň polovičních výsledků bychom dosáhli i s ostatními frameworky, pokud bychom je optimalizovali. Optimalizované instance ale nejsou zahrnuty do testů, protože by byly časově naročné a ve výsledku zbytečné.
+
+C++ obálka je kandidátem díky rychlosti, ale kvůli absenci kvalitního konektoru do MongoDB je nevhodným řešením. 
+
+Pokud porovnáme NodeJS a Flask, zjistíme, že NodeJS potřebuje obrovské množství závislostí pouze pro svůj běh a pokud chceme jakoukoliv pokročilou funkcionalitu, musíme dodat další závisloti.
+
+Tím pádem nám zůstává Flask, který díky implementaci v Pythonu je velmi jednoduchý na použití s udržitelným kódem a pohodlnou prací s JSON objekty. Pokud bychom se zaměřili na rychlost, lze dosáhnout dobrých výsledků zapojením CPython. Navíc Python nedovolí spotřebovat veškeré zdroje stroje, což se stalo při testu Mongoose serveru.
+
 %\section{Zvolené technologie}
+
+\section{Shrnutí}
+
+Vybrané technologie jsou vyváženou kombinací široké funkcionality, rychlosti vývoje a udržitelnosti kódu. To platí jak pro uživatelskou, tak serverou část aplikace.
+
+Pro uživatelskou část jsem vybral JavaScript framework AngularJS společně s CSS frameworkem Angular Material, ty se navzájemně doplňují funkcionalitou a jsou velmi úzce provázány.
+
+Serverová část bude realizována v jazyku Python pomocí mikroframeworku Flask. Ten disponuje všemi potřebnými funkcionalitami pro tvorbu REST API a MongoDB má oficiální konektor pro jazyk Python, který je snadný na použití a má široký repertoár funkcí a nastavení.
 
 \chapter{Architektura aplikace}
 \label{architektura}
