@@ -242,7 +242,7 @@ MVVM je rozdílný zejména ve způsobu nakládání s daty v aplikaci. Viewmode
 
 Vzhledem k rozsáhlosti frameworku se nevyhneme tvorbě aplikace, která prolíná oba typy architektury. AngularJS je ale zejména stavěn na základech MVC architektury.
 
-AngularJS staví na několika základních cílech:
+AngularJS staví na několika elemntárních pilířích:
 
 \begin{itemize}
     \item rozdělit manipulaci DOM od aplikační logiky,
@@ -390,7 +390,7 @@ NodeJS není až tak knihovnou nebo frameworkem pro vývoj webových serverů, j
 
 Posledním kandidátem je framework napsaný v jazyku C. Největší výhodou tohoto řešení je jeho rychlost, která je mnohonásobně vyšší než u interpretovaných jazyků. Mongoose je minimalistický framework vytvořený pro vývoj webových serverů více typů.
 
-Jelikož jazyk C není až tak pohodlný a rychlý pro vývoj abstraktních architektur rozhraní jakou je REST, zejména kvůli práci s textovými řetězci a manipulací s JSON objekty, rozhodl jsem se napsat obálku frameworku Mongoose do jazyka C++. Ten, ačkoliv je pomalejší, je vhodnější pro práci s textovými řetezci a existuje efektivní knihovna pro práci s JSON objetky RapidJSON\note{doplnit odkazem na rapidjson}.
+Jelikož jazyk C není až tak pohodlný a rychlý pro vývoj abstraktních architektur rozhraní jakou je REST, zejména kvůli práci s textovými řetězci a manipulací s JSON objekty, rozhodl jsem se napsat obálku frameworku Mongoose do jazyka C++. Ten, ačkoliv je pomalejší, je vhodnější pro práci s textovými řetezci a existuje efektivní knihovna pro práci s JSON objetky RapidJSON\cite{js:rjson}.
 
 Za použití vytvořené obálky, která je navržena specificky pro návrh REST API, lze velmi rychle vytvořit požadovanou funkcionalitu. Obálka totiž doplňuje možnosti Mongoose, který např. nedisponuje dynamickými URL\footnote{z angl. uniform resource locator} nebo zpracováním URL parametrů do vhodné struktury.
 
@@ -402,9 +402,7 @@ V předcházející kapitole jsem uvedl užší výběr technologií, které jso
 
 \subsection{Uživatelská část}
 
-Prvními aspekty při výběru knihovny pro vývoj SPA v uživatelské části byla zejména velikost knihovny, množství dostupných modulů, licence, udržovatelnost a v neposlední řadě schopnosti \note{featury, lepší slovo}. Pro rychlý přehled je vytvořena tabulka, která tyto faktory porovnává.
-
-\note{doplnit tabulkou o JS frameworks + přidat počet pluginů z bower/npm/github}
+Prvními aspekty při výběru knihovny pro vývoj SPA v uživatelské části byla zejména velikost knihovny, množství dostupných modulů, licence, udržovatelnost a v neposlední řadě dostupné funkce. Pro rychlý přehled byla vytvořena tabulka \ref{tab:js} (viz výše), která tyto faktory porovnává.
 
 Licence BSD a MIT jsou velmi podobné z hlediska vývojáře a jejich možnostmi použití v rámci vývoje otevřeného projektu jakým je NEMEA.
 
@@ -422,37 +420,53 @@ V rámci CSS frameworků bylo rozhodování mnohem přímočarejší, ačkoliv s
 
 \subsection{Serverová část}
 
-Při výběru technologie pro serverovou část jsem se zejména zaměřil na rychlost výsledného REST API a jeho udržitelnost z vývojářského hlediska (modulárnost, OOP). Proto jsem vytvořil velmi jednoduché REST API v každém z kanditátů a změřil jejich výkonnost.
+Při výběru technologie pro serverovou část jsem se zejména zaměřil na rychlost výsledného REST API a jeho udržitelnost z vývojářského hlediska (modulárnost, OOP). Proto jsem vytvořil velmi jednoduché REST API v každém z kanditátů a změřil jejich výkonnost. Ostatní hlediska jsou spíše subjektivním názorem.
 
 V každém z frameworků jsem vytvořil jednoduché statické API (fixní URL), která pouze vrátila textový řetězec \uv{Hello World}. Pro měření jsem využil osobní virtuální server s následujícími parametry:
 
 \begin{itemize}
-    \item CPU,
-    \item RAM,
-    \item konektivita.
+    \item CPU -- Intel(R) Xeon(R) CPU W3520  @ 2.67GHz (2 jádra),
+    \item RAM 1GB DDR3 ECC,
+    \item konektivita -- 500 Mbps.
 \end{itemize}
 
 Server nebyl v době testů nijak vytížen a běžely na něm pouze základní služby jako Apache. Konfigurace serveru není nijak výkonná a tím pádem lze odvodit kolik zdrojů jaký jazyk spotřebuje a jak je připravený na škálovatelnost.
 
-Pro vytvoření dostatečného množství dotazů na server jsem použil nástroj wrk, který jsem spuštěl na počítači Mac Mini Server (Intel i5, 8 GB RAM, 1Gbps konektivita). Nástroj wrk jsem spouštěl s následujícími parametry:
+Pro vytvoření dostatečného množství dotazů na server jsem použil nástroj wrk\footnote{\url{https://github.com/wg/wrk}}, který jsem spuštěl na počítači Mac Mini Server (Intel i7, 8 GB RAM, 1Gbps konektivita). Nástroj wrk jsem spouštěl s následujícími parametry:
 
 \begin{itemize}
-    \item -c\note{DOPLNIT},
-    \item -s,
-    \item -asdf.
+    \item \texttt{-d 20s} -- délka trvání testu,
+    \item \texttt{-t 10} -- počet vláken,
+    \item \texttt{-c 200} -- počet otevřených připojení,
+    \item URL.
 \end{itemize}
 
-Testy jsem spouštěl celkem třikrát pro každý framework, abych se vyvaroval chybě měření a každé měření probíhalo nezávisle na předcházejícím. Server vytvořený ve frameworku byl restarovaný a nikdy se netestoval stejný framework dvakrát za sebou. V následující tabulce jsou naměřené výsledky.
+Testy jsem spouštěl celkem třikrát pro každý framework, abych se vyvaroval chybě měření a každé měření probíhalo nezávisle na předcházejícím. Stejný server se nikdy netestoval dvakrát za sebou. V tabulce \ref{tab:server} nalezneme naměřené výsledky.
 
-\note{doplnit tabulku rychlosti serverů}
+\begin{table}[h]
+\centering
+\caption{Naměřené vlastnosti serverových frameworků pomocí nástroje wrk}
+\label{tab:server}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+    Název       & Celkem požadavků  & Požadavků/s   & Latence   & Vytížení CPU\\ \hline
+    Flask       & 3 373             & 167.9         & 25.82 ms  & ~25\%\\
+    NodeJS      & 117 579           & 5871.6        & 33.60 ms  & ~130\%\\
+    Mongoose    & 136 001           & 6787.5        & 29.80 ms  & ~100\%\\
+   \hline
+\end{tabular}
+\end{table}
 
-C++ obálka frameworku Mongoose je několikanásobně rychlejší než ostatní frameworky. Tato rychlost je zejména díky použitému jazyku. Alespoň polovičních výsledků bychom dosáhli i s ostatními frameworky, pokud bychom je optimalizovali. Optimalizované instance ale nejsou zahrnuty do testů, protože by byly časově naročné a ve výsledku zbytečné.
 
-C++ obálka je kandidátem díky rychlosti, ale kvůli absenci kvalitního konektoru do MongoDB je nevhodným řešením. 
+C++ obálka frameworku Mongoose a NodeJS jsou několikanásobně rychlejší než framework Flask. Tato rychlost je zejména díky použitému jazyku v případě C++. Ten je také použit v případě NodeJS, kde většina komponent je právě napsána v C++. 
 
-Pokud porovnáme NodeJS a Flask, zjistíme, že NodeJS potřebuje obrovské množství závislostí pouze pro svůj běh a pokud chceme jakoukoliv pokročilou funkcionalitu, musíme dodat další závisloti.
+Ačkoliv se může zdát, že NodeJS je jasnou volbou z naměřených výsledků, není tomu tak. NodeJS totiž během testu spotřeboval téměř všechny zdroje daného stroje (zejména CPU). Díky tomu je natolik výkonný. Tohoto výkonu lze dosáhnout i u frameworku Flask, ale ten by musel být doplněn dalšími nástroji pro vyšší konkurentnost serveru.
 
-Tím pádem nám zůstává Flask, který díky implementaci v Pythonu je velmi jednoduchý na použití s udržitelným kódem a pohodlnou prací s JSON objekty. Pokud bychom se zaměřili na rychlost, lze dosáhnout dobrých výsledků zapojením CPython. Navíc Python nedovolí spotřebovat veškeré zdroje stroje, což se stalo při testu Mongoose serveru.
+Pokud porovnáme NodeJS a Flask, zjistíme, že NodeJS potřebuje obrovské množství závislostí pouze pro svůj běh a pokud chceme jakoukoliv pokročilou funkcionalitu, musíme dodat další závisloti. Tím pádem se základní varianta REST API jeví jako velmi výkonná, ale z dlouhodobého hlediska je tato rychlost neudržitelná.
+
+Pokud bychom pracovali v izolovaném prostředí, je nejvhodnější NodeJS. Pokud ale budeme vycházet z architektury aplikace, zjistíme, že server musí nesmí být upřednostňován před databází. V ní totiž probíhají mnohem náročnější operace, které vytvářejí prodlevu v odpovědi v rámci sekund a ne jednotek milisekund jako v případě serveru. 
+
+Tím pádem nám zůstává Flask, který díky implementaci v Pythonu je velmi jednoduchý na použití s udržitelným kódem a pohodlnou prací s JSON objekty. Pokud bychom se zaměřili na rychlost, lze dosáhnout dobrých výsledků zapojením CPython. Navíc Python nedovolí spotřebovat veškeré zdroje stroje, což se stalo při testu Mongoose a zejména pak NodeJS serveru.
 
 %\section{Zvolené technologie}
 
@@ -465,27 +479,61 @@ Pro uživatelskou část jsem vybral JavaScript framework AngularJS společně s
 Serverová část bude realizována v jazyku Python pomocí mikroframeworku Flask. Ten disponuje všemi potřebnými funkcionalitami pro tvorbu REST API a MongoDB má oficiální konektor pro jazyk Python, který je snadný na použití a má široký repertoár funkcí a nastavení.
 
 \chapter{Architektura aplikace}
-
-Před samotnou implementací aplikace je potřeba navrhnout architekturu. Ačkoliv se SPA může jevit jako jednoduchá a přímočará struktura, opak bývá většinou pravdou. Díky plynulosti práce s aplikací uživatel nevnímá změnu mezi pohledy v aplikaci.
-
 \label{architektura}
 
-\section{MVC}
+Před samotnou implementací aplikace je potřeba navrhnout její architekturu. Ačkoliv se SPA může jevit jako jednoduchá a přímočará struktura, opak bývá většinou pravdou. Díky plynulosti práce s aplikací uživatel nevnímá změnu mezi pohledy v aplikaci. Ta se ale v pozadí může asynchronně dotazovat na server.
+
+Celou SPA jsem již při výběru technologií rozdělil na dva logické celky. Uživatelskou a serverovou část. Schéma \ref{fig:system} znázorňuje architekturu SPA a kde jsou jaké technologie použité.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig/SPA.pdf}
+    \caption{Rozvržení SPA na dva logické celky a jaké technologie tyto celky používají.} \label{fig:system}
+\end{figure}
+
+Díky použitým technologiím lze části rozdělit aplikaci i fyzicky na dva typy strojů. Serverová část je spustěna na jednom počítači -- serveru, který disponuje relativně vysokým výkonem a je určen pouze pro databázi a REST API. Databáze může být distribuována na dalším serveru nebo přítomna na stejném stroji. Server tedy zajišťuje funkčnost REST API a při iniciální návštěvě klienta také poskytuje stránku, kterou si klient stáhne na své zařízení.
+
+Tím se distribuuje uživatelská část aplikace na samotná zařízení, která aplikaci zobrazují. Následkem je snížení nároků na serverovou část, která nyní obstarává pouze datovou a autentikační část SPA (vše uvnitř REST API). Jelikož je SPA z větší části uložena u uživatele, můžeme si dovolit při vývoji větší množství dat, které se při prvním načtění musejí stáhnout, protože se následně téměř žádná esenciální data nestahují (jsou tím myšlena např. data nutná pro vykreslení grafů).
+
+Největší využití bude mít v aplikaci Dashboard (odtud i název aplikace), který bude obsahovat konfigurovatelné položky, aby si uživatel mohl Dashboard připravit přesně pro své potřeby.
+
+\section{Případy užití}
+Před samotným návrhem architektury jsem sestavil tři případy užití, které budou opěrnými body pro NEMEA Dashboard. Tyto navržené případy zohledňují širokou škálu úkonů, které při běžném používání IDS mohou nastat.
+
+Jako cílovou skupinu jsem stanovil správce větších sítí. Ti totiž musí být informováni o globálním dění a nemohou se zaobírat menšími událostmi. Většinou jsou takovéto sítě stavěny velmi robustně a jsou dostatečně naddimenzovány. Nicméně i neúplné vítížení sítě může znamenat pro běžné uživatele nedostupnost některých služeb. Těmto výpadkům musí správce sítě předcházet a to zejména díky včasné analýze anomálií na síti.
+
+\begin{description}
+    \item \textit{Běžný přehled o síti a analýza provozu z několika posledních dní} \\
+        Správce sítě musí mít přehled o síti, kterou spravuje. Chce být informován o celkovém počtu útoků, které detekoval systém NEMEA a ty následně uložil jako události v IDEA formátu do databáze. Správce nechce pročítat emailové reporty nebo ručně procházet jednotlivé záznamy.
+    \item \textit{Detekce útoku většího rozsahu na síť} \\
+        Při běžné analýze sítě pomocí NEMEA Dashboard musí být útok většího rozsahu okamžitě vidět ve zobrazených datech. Většinou se takovýto útok nahlásí jako velké množství menších útoků. V tu chvíli je pro správce velmi těžké takový útok odhalit.
+    \item \textit{Analýza konkrétního útoku} \\
+        Uživatele zaujal velmi nezvyklý útok/událost a chce o ní zjistit více. Postupně se dostává k detailnějším informacím pomocí drill-down analýzy. Na konci analýzy vidí přímo událost, která daný útok způsobila a může podniknout další kroky jako např. zjišťování informací o útočníkovi, o oběti, případně o charakteru útoku.
+    \item \textit{Kontinuální přehled o síti} \\
+        Uživatel během své běžné pracovní činnosti Dashboard nijak aktivně nesleduje, pouze se mu autonomně aktualizuje a vidí aktuální dění na síti. Velmi jednoduchou a rychlou vizuální analýzou (běžným pohledem) identifikuje událost, která se právě vyskytla na síti s velmi krátkou časovou prodlevou (až v rámci jednotek minut).
+        
+\end{description}
+
+
+\section{Uživatelská část}
 \label{sec:mvc}
+Pokud se zaměříme konkrétně na architekturu uživatelské části, tak AngularJS využívá architekturu MVC. Ta spočívá v rozdělení aplikace na tři logické celky, které návzájem spolu komunikují a předávají si data.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{fig/mvc.pdf}
     \caption{MVC architektura} \label{fig:mvc}
-  
 \end{figure}
 
+\begin{description}
+    \item {\bf Model} obstaravá logiku a integritu aplikačních dat, které se v SPA nacházejí. Model také získává a odesílá data na server dle pokynů kontroléru. Tím se udržuje uniformní rozhraní pro obousměrnou komunikaci mezi klientem a serverem.
+    \item {\bf View (pohled)} zobrazuje data, která jsou mu dodána od kontroléru. Pohled a kontrolér musí být velmi úzce propojeny, aby obě strany měly co nejaktuálnější data. Na základě požadované cesty router uvnitř AngularJS rozhodne jaký pohled má být vykreslen a předá jej jádru prohlížeče pro vykreslení.
+    \item {\bf Controller (kontrolér)} je prostředníkem mezi modelem a pohledem. Zabezpečuje aktualizaci dat na obou stranách. Avšak v rámci AngurlarJS lze kontrolér obejít a data z modelu může získat přímo pohled. Tím přetváříme architekturu SPA na hybridní mezi MVC a MVVM.
+\end{description}
 
-
-\section{Případy užití}
 \section{REST API}
 \label{restapi}
-\section{Databáze událostí}
+
 \section{GUI}
 
 \chapter{Implementace}
