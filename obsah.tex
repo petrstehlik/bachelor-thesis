@@ -465,7 +465,13 @@ Pro uživatelskou část jsem vybral JavaScript framework AngularJS společně s
 Serverová část bude realizována v jazyku Python pomocí mikroframeworku Flask. Ten disponuje všemi potřebnými funkcionalitami pro tvorbu REST API a MongoDB má oficiální konektor pro jazyk Python, který je snadný na použití a má široký repertoár funkcí a nastavení.
 
 \chapter{Architektura aplikace}
+
+Před samotnou implementací aplikace je potřeba navrhnout architekturu. Ačkoliv se SPA může jevit jako jednoduchá a přímočará struktura, opak bývá většinou pravdou. Díky plynulosti práce s aplikací uživatel nevnímá změnu mezi pohledy v aplikaci.
+
 \label{architektura}
+
+\section{MVC}
+\label{sec:mvc}
 
 \begin{figure}[h]
     \centering
@@ -474,8 +480,6 @@ Serverová část bude realizována v jazyku Python pomocí mikroframeworku Flas
   
 \end{figure}
 
-\section{MVC}
-\label{sec:mvc}
 
 
 \section{Případy užití}
