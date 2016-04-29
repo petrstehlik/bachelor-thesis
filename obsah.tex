@@ -164,7 +164,7 @@ Vizualiace síťových bezpečnostních událostí může být vytvořena někol
 
 Pro tvorbu moderních webové aplikace je na Internetu dostupná celá řada knihoven, frameworků a systémů. Nicméně první otázkou zůstává co taková moderní webová aplikace je?
 
-Ustáleným pojmem pro moderní webovou aplikaci je z anglického single page application\cite{spa} zkratka \uv{SPA}.
+Ustáleným pojmem pro moderní webovou aplikaci je z anglického single page application\cite{spa} zkratka \uv{SPA}. Tato zkratka je používána komunitou vývojářů těchto typů aplikací a lze se s ní setkat zejména na stránkách typu Stack Overflow.
 
 Specifikem SPA je její vysoká interaktivita s uživatelem, vysoká dostupnost služby, kterou poskytuje a rozdělení na dva logické celky. Uživatelskou a serverovou část, často chybně nazývané frontend a backend aplikace. Více o architektuře aplikace v kapitole \ref{architektura}.
 
@@ -495,7 +495,7 @@ Díky použitým technologiím lze části rozdělit aplikaci i fyzicky na dva t
 
 Tím se distribuuje uživatelská část aplikace na samotná zařízení, která aplikaci zobrazují. Následkem je snížení nároků na serverovou část, která nyní obstarává pouze datovou a autentikační část SPA (vše uvnitř REST API). Jelikož je SPA z větší části uložena u uživatele, můžeme si dovolit při vývoji větší množství dat, které se při prvním načtění musejí stáhnout, protože se následně téměř žádná esenciální data nestahují (jsou tím myšlena např. data nutná pro vykreslení grafů).
 
-Největší využití bude mít v aplikaci Dashboard (odtud i název aplikace), který bude obsahovat konfigurovatelné položky, aby si uživatel mohl Dashboard připravit přesně pro své potřeby.
+Největší využití bude mít v aplikaci Dashboard (odtud i název aplikace), který bude obsahovat konfigurovatelné položky, aby si uživatel mohl Dashboard připravit přesně pro své potřeby. Dashboard je také vstupním bodem pro drill-down analýzu.
 
 \section{Případy užití}
 Před samotným návrhem architektury jsem sestavil tři případy užití, které budou opěrnými body pro NEMEA Dashboard. Tyto navržené případy zohledňují širokou škálu úkonů, které při běžném používání IDS mohou nastat.
@@ -531,15 +531,38 @@ Pokud se zaměříme konkrétně na architekturu uživatelské části, tak Angu
     \item {\bf Controller (kontrolér)} je prostředníkem mezi modelem a pohledem. Zabezpečuje aktualizaci dat na obou stranách. Avšak v rámci AngurlarJS lze kontrolér obejít a data z modelu může získat přímo pohled. Tím přetváříme architekturu SPA na hybridní mezi MVC a MVVM.
 \end{description}
 
+Na schématu \ref{fig:frontend} je znázorněno jak aplikace bude pracovat s daty, které získá z REST API. Veškerá data, která lze z REST API získat, jsou JSON objekty. To velmi usnadní práci s nimi a nebude nutná téměř žádná manipulace či konverze, protože JSON je nativní struktura pro JavaScript. Jednotlivé pohledy v aplikaci jsou pouhé koncepty, které reprezentují část SPA. Stejně tak práce s různými typy dat je naznačena pouze koncepčně a vše je konkretizováno v následující kapitole \ref{implementace}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig/mvc.pdf}
+    \caption{Schéma uživatelské části} \label{fig:frontend}
+\end{figure}
+
+
 \section{REST API}
 \label{restapi}
 
+\note{popsat rest api z dizertačky, co to teda je, rozepsat se o CRUD}
+
 \section{GUI}
 
+\note{wireframy do příloh, jeden pro dashboard -- dva pohledy, dashboard a konfigurace dashboardu; přehled eventů a event}
+
 \chapter{Implementace}
+\label{implementace}
 \section{Backend}
+
+\note{do příloh sepsat endpointy a jejich popis}
+
 \section{Frontend}
+
+\note{data na frontendu jsou trojího typu: data událostí, konfigurační a autentikační data.}
+
 \section{Zabezpečení}
+
+\note{flow diagram jak probíhá autentizace -- stejné jako voip volání}
+
 \section{Distribuce}
 
 \chapter{Dosažené výsledky}
