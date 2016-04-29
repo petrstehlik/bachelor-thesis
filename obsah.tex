@@ -90,7 +90,7 @@ IDEA, neboli Intrusion Detection Extensible Alert, je formát záznamu síťové
 Vzorový záznam generovaný systémem NEMEA je vyobrazený ve výpisu \ref{code:idea}. Jak je vidět, formát je specifikovaný jako JSON dokument, aby byl přehledný, čitelný v běžné podobě (narozdíl od binárních formátů), lehce přenositelný a efektivní (např. oproti XML\cite{xmlvsjson}).
 
 %\vspace{5mm}
-\begin{figure}[h]
+\begin{figure}[ht]
 \lstset{basicstyle=\small,style=JSON}
 \begin{lstlisting}
 {
@@ -363,7 +363,7 @@ Flask je mikroframework využívající Werkzeug toolkit, který slouží jako z
 
 Nicméně Flask podporuje rozšíření, kterými lze rozšířit funkcionalitu přesně dle potřeb programátora. Tím se stává Flask velmi silným nástrojem při vývoji SPA. Jelikož je navíc napsán v jazyku Python je jeho použití více než intuitivní. Například definice cesty a obslužné rutiny je realizováno pomocí dekorátorů jak je znázorněno v následujícím příkladu \ref{code:flask}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \lstset{basicstyle=\small,style=JSON}
 \begin{lstlisting}
 @app.route("/")
@@ -443,7 +443,7 @@ Pro vytvoření dostatečného množství dotazů na server jsem použil nástro
 
 Testy jsem spouštěl celkem třikrát pro každý framework, abych se vyvaroval chybě měření a každé měření probíhalo nezávisle na předcházejícím. Stejný server se nikdy netestoval dvakrát za sebou. V tabulce \ref{tab:server} nalezneme naměřené výsledky.
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \caption{Naměřené vlastnosti serverových frameworků pomocí nástroje wrk}
 \label{tab:server}
@@ -485,7 +485,7 @@ Před samotnou implementací aplikace je potřeba navrhnout její architekturu. 
 
 Celou SPA jsem již při výběru technologií rozdělil na dva logické celky. Uživatelskou a serverovou část. Schéma \ref{fig:system} znázorňuje architekturu SPA a kde jsou jaké technologie použité.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{fig/SPA.pdf}
     \caption{Rozvržení SPA na dva logické celky a jaké technologie tyto celky používají.} \label{fig:system}
@@ -514,12 +514,26 @@ Jako cílovou skupinu jsem stanovil správce větších sítí. Ti totiž musí 
         
 \end{description}
 
+Tyto případy užití lze rozdělit do dvou typů dat. Vizualizovaná data pomocí grafů a základní textové informace o databázi v daný časový interval. Z toho lze vyvodit několik základních typů obsahu pro dashboard:
+
+\begin{itemize}
+    \item graf podílů (koláčový graf) -- ukazuje podíly událostí dle kategorie v definovaném časovém okně,
+    \item graf v čase (sloupcový graf) -- zobrazuje množství událostí rozdělené v intervalech v definovaném časovém okně dle kategorií,
+    \item informace o celkovém počtu (text) -- celkový počet událostí v databázi v určitém časovém okně,
+    \item informace o top událostech (text) -- největší události dle statického pole v databázi v určitém časovém okně.
+\end{itemize}
+
+Ze všech typů boxu (kromě o celkovém počtu) bude možná drill-down analýza. V případě grafů bude možnost prokliku na výpis událostí, které jsou filtrované dle určitých metrik (např. kategorie a čas). U boxu s top událostmi bude odkaz přímo na detail dané události.
+
+Další částí NEMEA Dashboard bude přehled všech událostí nazvaný jednoduše \uv{Events}. Zde bude možnost vyhledávat a třídit všechny události, které se v databázi nacházejí. Všechny vyhledané a vyfiltrované události budou přehledně zobrazeny v tabulce, která bude obsahovat základních informace o události. U každé události bude možnost prokliku k detailním informacím, které jsou o události uloženy v databázi.
+
+Poslední částí aplikace budou nastavení. Ty v tuto chvíli budou pouze pro uživatele a jejich správu.
 
 \section{Uživatelská část}
 \label{sec:mvc}
 Pokud se zaměříme konkrétně na architekturu uživatelské části, tak AngularJS využívá architekturu MVC. Ta spočívá v rozdělení aplikace na tři logické celky, které návzájem spolu komunikují a předávají si data.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{fig/mvc.pdf}
     \caption{MVC architektura} \label{fig:mvc}
@@ -527,27 +541,82 @@ Pokud se zaměříme konkrétně na architekturu uživatelské části, tak Angu
 
 \begin{description}
     \item {\bf Model} obstaravá logiku a integritu aplikačních dat, které se v SPA nacházejí. Model také získává a odesílá data na server dle pokynů kontroléru. Tím se udržuje uniformní rozhraní pro obousměrnou komunikaci mezi klientem a serverem.
-    \item {\bf View (pohled)} zobrazuje data, která jsou mu dodána od kontroléru. Pohled a kontrolér musí být velmi úzce propojeny, aby obě strany měly co nejaktuálnější data. Na základě požadované cesty router uvnitř AngularJS rozhodne jaký pohled má být vykreslen a předá jej jádru prohlížeče pro vykreslení.
+
+        Z pohledu AngularJS jsou jednotlivé modely reprezentovány pomocí \uv{service}. Ty jsou pomocí vkládání závislostí spojeny s jednotlivými kontroléry.
+
+    \item {\bf View (pohled)} zobrazuje data, která jsou mu dodána od kontroléru. Pohled a kontrolér musí být velmi úzce propojeny, aby obě strany měly co nejaktuálnější data. To je zaručeno pomocí obousměrného vázání dat (angl. two-way data binding). Na základě požadované cesty router uvnitř AngularJS rozhodne jaký pohled má být vykreslen a předá jej jádru prohlížeče pro vykreslení.
+
+        Pohled lze rozdělit na dvě části. První z nich je šablona, která je vytvořena v HTML. Ta může obsahovat speciální značky i vlastní definované DOM elementy. Tato šablona je následně při zobrazování \uv{kompilována} a zobrazena uživateli. Tímto se zachová obousměrné vázání dat.
+
     \item {\bf Controller (kontrolér)} je prostředníkem mezi modelem a pohledem. Zabezpečuje aktualizaci dat na obou stranách. Avšak v rámci AngurlarJS lze kontrolér obejít a data z modelu může získat přímo pohled. Tím přetváříme architekturu SPA na hybridní mezi MVC a MVVM.
+
+        Jednotlivé kontroléry mohou být do sebe vnořené a navzájem spolu komunikovat pomocí událostí, kde jeden kontrolér událost vyvolá jak směrem nahoru, tak může i dolů a další kontroléry mohou na tuto událost reagovat.
 \end{description}
 
-Na schématu \ref{fig:frontend} je znázorněno jak aplikace bude pracovat s daty, které získá z REST API. Veškerá data, která lze z REST API získat, jsou JSON objekty. To velmi usnadní práci s nimi a nebude nutná téměř žádná manipulace či konverze, protože JSON je nativní struktura pro JavaScript. Jednotlivé pohledy v aplikaci jsou pouhé koncepty, které reprezentují část SPA. Stejně tak práce s různými typy dat je naznačena pouze koncepčně a vše je konkretizováno v následující kapitole \ref{implementace}.
+Na schématu \ref{fig:frontend} je znázorněno jak aplikace bude pracovat s daty, které získá z REST API. Veškerá data, která lze z REST API získat, jsou JSON objekty. To velmi usnadní práci s nimi a nebude nutná téměř žádná manipulace či konverze, protože JSON je nativní struktura pro JavaScript. Jednotlivé cesty v aplikaci jsou pouhé koncepty, které reprezentují část SPA. Stejně tak komunikace s API a obousměrné vázání dat je naznačeno pouze koncepčně a vše je konkretizováno v následující kapitole \ref{implementace}.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=0.5\textwidth]{fig/mvc.pdf}
+    \includegraphics[width=0.9\textwidth]{fig/frontend.pdf}
     \caption{Schéma uživatelské části} \label{fig:frontend}
 \end{figure}
 
+Pokud bychom architekturu popisovali z pohledu uživatele, tak začínáme načtením dané cesty. Zde AngularJS zvolí šablonu a kontrolér, který je k dané cestě definován. 
+
+Poté zavolá kontrolér a spustí se kód, jenž obsahuje. Kód uvnitř kontroléru se naváže na značky specifické pro AngularJS a postupně celou šablonu \uv{zkompiluje}\footnote{V tomto případě se HTML transformuje, přidávají potřebné třídy a identifikátory a nahrazují značky za textové řetězce.}. Tím vznikne obousměrné vázání dat mezi pohledem a kontrolérem.
+
+V kontroléru jsou pomocí vložení závilostí registrovány modely, které kontrolér chce využít (nemusí je nutně použít). Modely jsou instanciovány jako singletony v rámci celé aplikace. To snižuje nároky na výpočetní výkon jádra prohlížeče.
+
+Modely mohou využívat jiných modelů. Tímto zapouzdřením funkcionality lze dosáhnout velmi vysoké abstrakce. V NEMEA Dashboard je tato abstrakce navrhnuta pro dotazy do REST API. V AngularJS je pro tvorbu HTTP požadavků vytvořen unifikovaný model \texttt{\$http}, ten by bylo ale nutné při každém požadavku složitě konfigurovat. Proto bude vytvořen model \texttt{api}, který bude využívat \texttt{\$http} a bude autonomně konfigurovat adresu, parametry, HTTP hlavičky a ošetří návratového hodnoty a data.
 
 \section{REST API}
 \label{restapi}
 
-\note{popsat rest api z dizertačky, co to teda je, rozepsat se o CRUD}
+Representational state transfer, zkráceně REST byl definován v roce 2000 v dizertaci Roye Thomase Fieldinga \cite{rest}. Ten jej definuje jako architektonický styl pro návrh distribuovaného hypermediálního obsahu. REST je postaven na několika základních ideích, které platí i dnes.
+
+\begin{description}
+    \item \textit{Klient--server} \\
+        Tento návrh architektury je nejzákladnějším stylem pro síťové aplikace. Server, nabízející sadu služeb, čeká na žádosti, které následně obslouží. Klient, který se snaží vykonat určitou činnost, posílá žádosti na server skrze předem definovanou cestu. Server žádost v případě nevalidního formátu odmítne, v kladném případě provede žádost a odešle odpověď zpět klientovi.
+
+        Tímto oddělením uživatelské části od serverové získává aplikace vyšší přenositelnost, škálovatelnost a nezávislost komponent. To dovoluje částečn separátní vývoj.
+       
+    \item \textit{Bezestavovost} \\
+        Zřejmě nejdůležitějším aspektem REST API je bezestavová komunikace. Ta se zaručí tak, že každý dotaz, který je na API zaslán, obsahuje veškeré informace, které jsou potřebné pro porozumnění žádosti. Takto se klientovi zabrání využít jakéhokoliv kontextu, který by na serveru mohl být uchován.
+       
+    \item \textit{Vyrovnávací paměť} \\
+        Pro zlepšení výkonu je do rozhraní vhodné implementovat vyrovnávací paměť. To však s sebou nese riziko neaktuálnosti dat, což v případě systému NEMEA je velmi nebezpečná vlastnost. Proto lze tento faktor opomenout v případě vysoce volatilních rozhraní jakým systém NEMEA rozhodně je.
+       
+    \item \textit{Uniformní rozhraní} \\
+        Uniformnost rozhraní je nejdůležitější vlastností REST architektury, která jej odlišuje od ostatních architektonických stylů návrhu jakým je například RPC\cite{restful}. Generalizací rozhraní vývojář získá velmi rychlý přehled o dostupných operací s API a jaké služby poskytují.
+        
+        Aby rozhraní bylo uniformním, musí splňovat několik vlasností: identifikovatelnost zdrojů, manipulace se zdroji skrz reprezentaci, samopopisné zprávy a hypermédia jako jádro aplikačního stavu.
+
+    \item \textit{Vrstvený systém} \\
+        Aby se rozhraní dokázalo v čase přizpůsobovat potřebám vývojáře, je nutné navrhovat rozhraní vrtstveně. To jej dovoluje libovolně rozšiřovat jak do šířky, tak do hloubky. Pokud se na rozhraní díváme jako na jednotlivé komponenty, tak ty, díky vrstvení, nejsou schopné interagovat s dalšími vrstvami a tím pádem jinými komponentami. Z klientské strany to znamená interkaci vždy pouze s jediným zdrojem.
+        
+\end{description}
+
+Při aplikaci těchto ideí do návrhu REST API pro NEMEA Dashboard jsem narazil na několik problémů, které lze vyřešit kompromisy. Jde zejména o typ API, které jsem pro aplikaci navrhul. To totiž z většinové části data pouze získává (cca 95\%). Úprava či zápis dat se realizuje pouze v případě práce s uživateli nebo konfigurací dashboardu.
+
+Tím pádem z CRUD modelu využíváme pouze jednu část, kterou je čtení. Tato část je realizována pomocí HTTP požadavku \texttt{GET}. Ten, ačkoliv dle RFC 2616 \cite{rfc:http} může disponovat tělem zprávy, tělo zprávy většinou nepoužívá. Lépe řečeno jej většina webových serverů nepoužívá a tudíž by při návrhu bylo velmi nevhodnou praktikou toto chování implementovat. 
+
+Tím pádem jsem při návrhu rozhraní zvolil kompromis mezi REST a RPC, který narozdíl od REST využívá URL parametrů. Tento kompromis dovoluje při návrhu architektury použít jedno uniformní rozhraní pro více typů dotazů. To, ačkoliv porušuje základní ideu REST architektury, velmi usnadní vývoj uživatelské části.
+
+Tento kompromis nerozděluje rozhraní dle získaných dat, ale dle typu dat, které uživatelské rozhraní získá. Rozdíl v sémantice dat je totiž daleko důležitějším měřítkem než struktura odeslané zprávy. Konkrétně jsem tento přístup zvolil u agregovaných dat, které jsou vyhodnocovány již na serveru při dotazování do databáze.
 
 \section{GUI}
 
-\note{wireframy do příloh, jeden pro dashboard -- dva pohledy, dashboard a konfigurace dashboardu; přehled eventů a event}
+%\note{wireframy do příloh, jeden pro dashboard -- dva pohledy, dashboard a konfigurace dashboardu; přehled eventů a event}
+
+Při návrhu grafického uživatelského rozhraní jsem se snažil využívat co nejjednodušší drátěné modely. Ty totiž ponechávají dostatečnou flexibilitu a zároveň jsou natolik vyjadřující, že je z nich vidět základní koncept a rozložení prvků v aplikaci.
+
+V příloze \ref{wf:dashboard} je vidět hlavní stránka aplikace, neboli dashboard. Ten se skládá z jednotlivých boxů, které jsou konfigurovatelné jak vzhledem (lze je zmenšit, zvětšit, přidat, smazat), tak obsahem. Ten je konfigurován ve zvláštním okně aplikace, které je specifické pro každý box. Na drátěném modelu \ref{wf:dashboard_edit} lze vidět jeho návrh.
+
+Při prokliku během drill-down analýzy se uživatel přesune na druhou část aplikace -- jednotlivé události, které daný útok/anomálii způsobily. V této části, znázorněné na drátěném modelu \ref{wf:dashboard_events}, má uživatel možnost se libovolně dotazovat do databáze událostí a získat tak z ní události, které přesně hledá. Ty jde nadále živě filtrovat přímo ve výpisu událostí (neprobíhá žádné dotazování na server).
+
+Jednotlivé řádky tabulky obsahují pouze esenciální informace o události (ty se rozhodnout během vývoje a dle zkušeností s prací s databází událostí). Při kliknutí na daný řádek se zobrazí detailnější informace o události a pokud ani to uživateli nestačí, může přejít na detail události, který obsahuje veškeré informace o události obsažené v databázi.
+
+Grafika samotné aplikace bude vznikat během její implementace a to v režii CSS části frameworku Angular Material. Ten má kaskádové styly pro většinu běžně používaných elementů a nevzniknou tak při vývoji výrazné odchylky od prvotního návrhu.
 
 \chapter{Implementace}
 \label{implementace}
