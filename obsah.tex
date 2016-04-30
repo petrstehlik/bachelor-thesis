@@ -623,16 +623,111 @@ Grafika samotné aplikace bude vznikat během její implementace a to v režii C
 NEMEA Dashboard je nyní navržený. Architekturou REST API začínaje, grafickým uživatelským rozhraním konče. Byly připraveny případy užití, které se budou implementovat. Typy dat, které se budou vizualizovat a zpracovávat. Definoval jsem REST API, které bude aplikace na uživatelské části využívat a naznačil průběh drill-down analýzy.
 
 \chapter{Implementace}
+
+Aplikace je navržena z architektonického hlediska a další fází je její tvorba. Prvně se bude implementovat serverová část, která je napojena na databázi událostí reportované systémem NEMEA.
+
+Další fází bude tvorba uživatelské části, která bude dodaná data vizualizovat pomocí interaktivních grafů.
+
 \label{implementace}
-\section{Backend}
+\section{Serverová část}
 
-\note{do příloh sepsat endpointy a jejich popis}
+Prvním krokem při implementaci serverové části bylo vytvoření vývojového prostředí. To, díky jazyku Python, může být na jakémkoliv *nix systému bez nutnosti cokoliv upravovat. V mém případě jsem měl v prvních krocích vývoje lokální vývojové prostředí na systému Mac OS X. Kde jsem replikoval databázi událostí z jednoho ze serverů sdružení CESNET.
 
-\section{Frontend}
+V pozdějších částech vývoje byla serverová část přesunuta na stejný server, kde byla umístěna databáze událostí, do které systém NEMEA ukládal události v reálném čase. Tento přesun byl nutný, abych otestoval přenositelnost serverové části na jiný stroj a díky tomu získal i databázi vyvíjející se v reálném čase.
 
-\note{data na frontendu jsou trojího typu: data událostí, konfigurační a autentikační data.}
+Instalace potřebných Python knihoven proběhla pomocí nástroje \texttt{pip}. Ty zahrnují zejména mikroframework Flask, jeho závislosti a konektor pro MongoDB pymongo. Všechny závislosti jsou uvedeny v příloze \ref{code:requirements} tak, jak jsou uvedeny v souboru \texttt{requirements.txt}, který využívá nástroj \texttt{pip} pro automatickou instalaci všech závislostí.
+
+\begin{figure}[ht]
+\lstset{basicstyle=\small,style=JSON}
+\begin{lstlisting}
+/v2
+    /events
+        /indexes [GET]
+        /:n [GET]
+        /query [GET]
+        /agg [GET]
+        /top [GET]
+        /count [GET]
+        /id/:id [GET]
+    /users [GET, PUT, POST, DELETE]
+        /auth [POST]
+        /logout [DELETE]
+\end{lstlisting}
+\captionof{lstlisting}{Koncové body REST API, které jsou dostupné ze serveru.}
+\label{code:api}
+\end{figure}
+
+V \note{listing} \ref{code:api} je naznačena struktura finálního REST API, která je velmi lehce rozšiřitelná, upravitelná a zejména pochopitelná.
+
+Během vývoje API se několikrát měnila struktura koncových bodů, proto jsem zvolil verzování API pomocí URL, aby v budoucích případech mohlo API fungovat pro více verzí současně. Tuto část URL jsem pracovně nazval prefix verze.
+
+V době psaní této práce je API ve druhé verzi, která se od první verze liší zejména architektuálním typem, kterým je REST. V první verzi se API architekturou podobalo více RPC pouze s několika rysy REST.
+
+Za prefixem verze následuje funkcionální prefix. Ten v současném návrhu rozdluje API na dvě základní části. První část obsluhuje data událostí a je nazvána \texttt{/events}. Za URL \texttt{/v2/events} se nacházejí již jednotlivé koncové body API, ty jsou charakteristické zejména tím, že dovolují pouze jednu HTTP metodu, konkrétně \texttt{GET}.
+
+\begin{description}
+    \item \texttt{/indexes} \\
+        Tato část byla vytvořena prvně jako experimentální část API pro ověření funkcionality a zejména pak správného spojení s databází. V současné chvíli je připravena pouze jako další koncový bod pro budoucí použití.
+
+        Jak již URL napovídá, tento koncový bod pracuje s indexy v databázi. Prvně zkontroluje, zda požadované indexy v databázi existují a v případě existence vrátí nezměněný výstup z MongoDB obsahující informace o indexech.
+
+        V opačném případě pevně definované indexy (index pro seřazení databáze událostí dle klíče \texttt{DetectTime} a automatické mazání záznamů v kolekci \texttt{sessions}
+        
+    \item \texttt{/:n}\\
+        URL \texttt{/:n} znamená dynamickou URL, kde \texttt{n} je číslo od 1 do 10 000 a značí kolik událostí má být vyhledáno seřazených dle času\footnote{Čas se v databázi bude vždy odvozovat od hodnoty klíče \texttt{DetectTime}}. Tento limit je stanoven na serverové části, aby nedošlo k přetížení serveru, protože v případě čísla 0 by databáze navrátila všechny položky, což, v době psaní práce, je přibližně 5 GB textu.
+
+    \item \texttt{/query}\\
+        Tento koncový bod slouží pro pokládání předem specifikovaných dotazů do databáze. API nepřijímá konkrétní MongoDB dotaz, ale pevně mnou specifikovaná pole. Toto omezení je zejména kvůli bezpečnosti. 
+
+    \item \texttt{/agg}\\
+        V tomto bodě byl zejména využit agregační framework uvnitř MongoDB, který je optimalizovaný na práci s velkými daty. Slouží pro vypočítání časových intervalů a počtů položek v databázi uvnitř časových oken.
+
+        Agregační framework v MongoDB pracuje s projekcemi. Tzn. prvně se vyhledají položky splňující zadaná kritéria (běžný dotaz), ty jsou následně projektovány dle časového intervalu (změní se čas události na začátek intervalu). Nakonec jsou všechny události se stejným časem spočteny a ty tento výsledek je vrácen.
+
+    \item \texttt{/top}\\
+        Slouží pro box typu \uv{TOP}. Ten vybírá z databáze událost, která obsahuje nejvyšší číslo \texttt{FlowCount} u každé z kategorií.
+
+    \item \texttt{/count}\\
+        Box typu \uv{COUNT} pouze zobrazuje číslo reprezentující počet událostí, které splnily daná kritérie (časové okno a příp. kategorie).
+    
+    \item \texttt{/id/:id}\\
+        Každá událost v databázi je opatřeba unikátním ID, které samo jádro MongoDB každým záznamem opatří. IDEA formát specifikuje zároveň i vlastní typ ID, nicméně na tuto položku by v databázi musel být vytvořen index, aby vyhledávání bylo efektivní. Nativní databázové \texttt{\_id} tento index má v základu a proto je vyhledání velmi rychlé.
+
+\end{description}
+
+Druhou částí API je práce s uživateli a jejich autentikace. O bezpečnosti aplikace a REST API pojednává poslední sekce \ref{zabezpeceni} v této kapitole. Tyto koncové body již dovolují i ostatní HTTP metody.
+
+\begin{description}
+    \item \texttt{/users}\\
+        Tento koncový bod slouží pro veškerou práci s uživateli. Metoda \texttt{GET} vrátí záznamy o všech uživatelích v NEMEA Dashboard. Tyto záznamy jsou identické k těm v databázi až na absenci hesel, která jsou odstraněna.
+
+        Metoda \texttt{PUT} slouží pro editaci uživatele. Toho je využito zejména při změně konfigurace dashboardu.
+
+        \texttt{POST} metoda vloží do databáze nového uživatele. Ten bude obsahovat předem pevně definovaný dashboard. Vše ostatní je nastavitelné v rámci aplikace.
+
+        Poslední metodou je \texttt{DELETE}. Ta uživatele nenávratně smaže z databáze.
+
+    \item \texttt{/auth}\\
+        Jediný koncový bod v API, který nevyžaduje autentikaci, protože pro ni slouží. Při dotazu na teto bod je metodou \texttt{POST} poslán přihlašovací email a heslo, dle kterých je uživatel v databázi ověřen.
+
+        Ověření probíhá ve dvou úrovních, prvním je nalezení uživatele dle emailu a následně porovnání hash hodnoty poskytnutého hesla a hesla v databázi. Pokud jedna z těchto úrovní selže, API vrací HTTP odpověď typu \uv{401 Not Authorized}. Tuto chybu následně uživatelská část zpropaguje graficky uživateli.
+
+        V případě úspěšného ověření je odpovědí JSON web token (zkráceně JWT)\cite{rfc:jwt}. O JWT více v sekci \ref{zabezpeceni}.
+
+    \item \texttt{/logout}
+        Pro odhlášení uživatele slouží tento koncový bod. Ten, ačkoliv by to bylo možné, není zahrnut do koncového bodu \texttt{/auth} a to zejména kvůli bezpečnosti. Zde totiž využívám jedinou HTTP metodu \texttt{DELETE}, která v sobě nenese žádná data. Identifikace uživatele probíhá opět pomocí JWT.
+\end{description}
+
+REST API je v této chvíli naprogramováno. Je stabilní (ověřeno dlouhodobým provozem na serveru), rychlé a lehké na použití. Koncové body, které byly navrženy, obslouží všechny požadavky uživatelské části aplikace, které byly v případech užití navrženy.
+
+\section{Uživatelská část}
+
+Prvním krokem při vývoji uživatelské části bylo navržení stránky s výpisem poslední. Ta totiž nevyžadovala téměř žádnou konfiguraci a ověřila koncept a funkcionalitu navržené architektury.
+
+%\note{data na frontendu jsou trojího typu: data událostí, konfigurační a autentikační data.}
 
 \section{Zabezpečení}
+\label{zabezpeceni}
 
 \note{flow diagram jak probíhá autentizace -- stejné jako voip volání}
 
