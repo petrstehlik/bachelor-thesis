@@ -712,7 +712,7 @@ Druhou částí API je práce s uživateli a jejich autentikace. O bezpečnosti 
 
         Ověření probíhá ve dvou úrovních, prvním je nalezení uživatele dle emailu a následně porovnání hash hodnoty poskytnutého hesla a hesla v databázi. Pokud jedna z těchto úrovní selže, API vrací HTTP odpověď typu \uv{401 Not Authorized}. Tuto chybu následně uživatelská část zpropaguje graficky uživateli.
 
-        V případě úspěšného ověření je odpovědí JSON web token (zkráceně JWT)\cite{rfc:jwt}. O JWT více v sekci \ref{zabezpeceni}.
+        V případě úspěšného ověření je odpovědí JSON Web Token (zkráceně JWT)\cite{rfc:jwt}. O JWT více v sekci \ref{zabezpeceni}.
 
     \item \texttt{/logout}
         Pro odhlášení uživatele slouží tento koncový bod. Ten, ačkoliv by to bylo možné, není zahrnut do koncového bodu \texttt{/auth} a to zejména kvůli bezpečnosti. Zde totiž využívám jedinou HTTP metodu \texttt{DELETE}, která v sobě nenese žádná data. Identifikace uživatele probíhá opět pomocí JWT.
@@ -802,28 +802,70 @@ Dashboard je realizován jako jednotlivé pohledy na data, které se uživatel s
     \caption{Kontextové menu pohledu.} \label{fig:dashboard_menu}
 \end{figure}
 
-Drill-down analýza je realizována jako odkaz v jednotlivých sloupcích/oddílech grafu nebo jako tlačítko (v případě boxu typu \uv{top}), které odkazuje přímo na danou událost. Při kliknutí na danou část grafu nebo tlačíko je uživatel přesunut do druhé části NEMEA Dashboard nazvanou \uv{Events}. Zde jsou automaticky nastaveny parametry hledání, které jsou následně poslaný v požadavku na API. Odpovědí jsou data splňující zadané parametry.
+Drill-down analýza je realizována jako odkaz v jednotlivých sloupcích/oddílech grafu nebo jako tlačítko (v případě boxu typu \uv{top}), které odkazuje přímo na danou událost. Při kliknutí na danou část grafu nebo tlačíko je uživatel přesunut do druhé části NEMEA Dashboard nazvanou \uv{Events}.
 
-\note{dopsat něco málo o events a detailu události, už to moc nepřehánět}
+Zde jsou automaticky nastaveny parametry hledání, které jsou následně poslány v požadavku na API. Odpovědí jsou data splňující zadané parametry. API vrací standardně prvních sto výsledků, které najde, aby nedošlo k zahlcení připojení a pokud si uživatel přeje více událostí, má dvě možnosti. První možností je změnit parametr hledání a provést hledání znova.
 
+Druhou je tlačítko pod tabulkou výsledků, které načte dalších sto událostí a informuje o počtu zbývajících událostí, které zadané podmínky splňují.
 
+Každá událost v tabulce je rozkliknutelná. Po kliknutí jsou zobrazeny důležité detaily o dané události. Uživatel má následně dostupné tři akce, které může provést. První a druhou akcí je vyhledání událostí se stejnou IP adresou (buď zdrojová nebo cílová IP adresa, pokud je záznam obsahuje).
 
+Poslední možností je zobrazení detailů o dané události. Tato možnost uživatele přesune na novou stránku, kde vidí celý záznam události tak, jak je uložený v databázi s jediným rozdílem. JSON je formátován a přehledně zobrazen jako HTML elementy, aby byl jednoduše čitelný.
+
+Další experimentální funkcionalitou na této stránce je geolokace IP adres v události. S touto funkcionalitou se teprve experimentuje a není v době psaní této práce jisté, že zůstane zachována.
+
+Poslední částí je běžná správa uživatelů a svého uživatelského účtu. Tato část dovoluje přidávát, měnit a mazat uživatele, stejně tak vlastní účet.
+
+Všechny stránky uživatelské části jsou zachyceny v příloze \ref{screens}.
 %\note{data na frontendu jsou trojího typu: data událostí, konfigurační a autentikační data.}
 
 \section{Zabezpečení}
 \label{zabezpeceni}
 
+Jelikož NEMEA Dashboard pracuje s velmi citlivými daty je nutné tyto data dobře zabezpečit. To zejména znamená zabezpečení REST API. To je realizováno pomocí JSON Web Token.
+
+JWT je otevřený standard definový RFC 7519 \cite{rfc:jwt}. Ten jej popisuje jako kompaktní, bezpečný pro URL způsob reprezentace prostředků, které se sdílejí mezi dvěma zdroji.
+
+Z hlediska programátora je důležité, že je velmi kompaktní, využívá totiž velmi úspornou metodu hashování HS256, která je zároveň bezpečná (podporuje i další typy). Každý JWT se skládá ze tří částí, každá oddělená tečkou. První částí je hlavička, která obsahuje informace o hashovacím algoritmu a typu tokenu.
+
+Druhou částí je samotný payload (námi definovaný obsah) a třetí částí je signatura. Ta vezme hlavičku, obsah (ty jsou zakódovány base64 algoritmem), tajný klíč (secret key) a algoritmus specifikovaný v hlavičce a výsledný token podepíše.
+
+Takto zabalený JWT je v NEMEA Dashboard plně v režii serverové části. Ta jej tvoří i upravuje. JWT je přenášen při každé žádosti na API jako součást HTTP hlavičky. Uživatelská část si JWT udržuje v lokálním uložišti.
+
+Pro práci s autentizací uživatele na serverové části byla vytvořena vlastní třída, která řeší celou funkcionalitu, včetně správy sezení (sessions), které jsou realizovány pomocí kolekce v MongoDB. To šetří zejména operační paměť v rámci dlouhodobého běhu aplikace a tím pádem zvyšuje i stabilitu.
+
+Celý autentikační proces je znázorněn v obrázku \ref{fig:auth}, který jej i názorně popisuje. Pouze doplním, že uživatelská část obsahuje interceptor, který hledá odpovědi od serveru s HTTP statusem 401 Not Authorized. V případě zaznamenání tohoto statusu je uživatel okamžitě přesměrován na stránku pro přihlášení.
 
 
 \note{flow diagram jak probíhá autentizace -- stejné jako voip volání}
 
-\section{Distribuce}
+\section{Shrnutí}
 
-\chapter{Dosažené výsledky}
-%\section{Názory uživatelů}
-%\section{Nasazení v praxi}
+NEMEA Dashboard je nyní vytvořený a plně funkční. Během vývoje byl několikrát testován nezávislými profesionály v oboru sítí, ale také lidmi mimo tento obor. Dashboard byl kontinuálně připomínkován a tyto připomínky byly povětšinou zapracovány.
+
+Z původního návrhu architektury API se změnilo pouze několik málo detailů zejména kolem agregačních dotazů, aby se zlepšila sémantika koncových bodů. Ty by jinak musely být velmi komplikované.
+
+Architektura uživatelské části zůstala zachována, pouze s několika rozšířeními jako jsou správa uživatelů a různé pohledy na data v rámci dashboardu.
+
+
 
 \chapter{Závěr}
-Závěrečná kapitola obsahuje zhodnocení dosažených výsledků se zvlášť vyznačeným vlastním přínosem studenta. Povinně se zde objeví i zhodnocení z pohledu dalšího vývoje projektu, student uvede náměty vycházející ze zkušeností s řešeným projektem a uvede rovněž návaznosti na právě dokončené projekty.
 
+NEMEA Dashboard je již nyní plnohodnotnou součástí systému NEMEA. Ten je celý dostupný na stránce GitHub\footnote{\url{https://github.com/CESNET/Nemea}}. Konkrétně celý vývoj NEMEA Dashboard probíhal jako veřejný repozitář na stránce GitHub\footnote{\url{https://github.com/CESNET/Nemea-Dashboard}}.
+
+Před existencí NEMEA Dashboard systém NEMEA nedisponoval žádnou vizualizací dat, které systém vytvořil. Jmenovitě pak detekované události reportované v IDEA formátu do MongoDB databáze.
+
+To Dashboard přesně doplnil a byl tak vytvořen styčný bod mezi uživatelem a systémem, který před musel být používán výhradně přes příkazovou řádku nebo konzumován skrz emailový reportér.
+
+Díky vizuální analýze dat je správce sítě schopen velmi rychle detekovat jakoukoliv rámcově vyšší anomálii na síti a celou ji analyzovat v rámci aplikace. Aplikace byla navržena moderními nástroji pro tvorbu SPA s ohledem na různá zařízení.
+
+Dalším krokem při vývoji aplikace bude zejména hluboká integrace konfigurace systému NEMEA. Tato integrace započne prvně spojením NEMEA Supervisor s Dashboard. Supervisor je CLI nástroj pro správu modulů systému NEMEA. Tato správa je však částmi kostrbatá a pro běžného uživatele velmi nepříjemná (občasná nutnost ručních úprav XML souborů).
+
+Prostor pro rozšíření NEMEA Dashboard je obrovský. Konkrétními příklady z mnoha bude rozšíření možností filtrování v jednotlivých typech boxů (negativní filtry, logické spojky, vícenásobný filtr), přehlednější dotazování v událostech. Možnost rychlé a relativně přesné geolokace IP adres. Dotazování nad IP adresami a jejich rozsahy s čímž souvisí úprava databáze (reprezentovat IP adresy binárně a ne jako textové řetězce). S tím souvisí i podpora pro IP6.
+
+Neméně důležitým rozšířením je vytvoření instalačního průvodce pro instalaci Dashboardu na již existujících instancích NEMEA systému, tak i na nových instancích.
+
+Díky vizuálnímu pojetí dat je NEMEA Dashboard také učinným marketingovým nástrojem, který může působit i na méně odborné publikum.
+
+Tvorba NEMEA Dashboard mě seznámila s MongoDB databází a jejím jádrem pro dotazování a zejména pak tvorbou komplexních SPA, které vyžadují vysokou úroveň konfigurovatelnosti a kde je kladen i důraz na bezpečnost, která je implementována pomocí vlastní metodologie.
 %=========================================================================
