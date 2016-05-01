@@ -722,12 +722,98 @@ REST API je v této chvíli naprogramováno. Je stabilní (ověřeno dlouhodobý
 
 \section{Uživatelská část}
 
-Prvním krokem při vývoji uživatelské části bylo navržení stránky s výpisem poslední. Ta totiž nevyžadovala téměř žádnou konfiguraci a ověřila koncept a funkcionalitu navržené architektury.
+Prvním krokem při vývoji uživatelské části bylo navržení stránky s výpisem posledními událostmi, které byly vloženy do databáze. Ta totiž nevyžadovala téměř žádnou konfiguraci a ověřila koncept a funkcionalitu navržené architektury.
+
+Prvotní návrhy byly velmi strohé, bez použití knihovny Angular Material. Ta byla zapojena až při implementaci dashboardu. Ten je svou povahou komplexním systémem vnořeným uvnitř aplikace. Zejména proto, že každý box v dashboardu je konfigurovatelný nezávisle na ostatních a zároveň musí dashboard všechny boxy navzájem seřadit a umístit do mřížky\footnote{angl. grid}. První pokusy vytvořit vlastní implementaci systému mřížky se nesetkaly s úspěchem.
+
+Původní návrh počítal s návrhem, který byl orientovaný použe řádkově, tzn. prvně se přidala řada, do které se přidávaly jednotlivé boxy, které se automaticky přizpůsobily počtu boxů v řádce. To vytvářelo problémy hlavně pokud by uživatel chtěl box přesunout. Navíc se tento návrh nepřizpůsoboval obsahu a vznikal tak problém se zobrazováním grafů, které velmi často přetékaly mimo box.
+
+Pro další práci se tedy zvolila již existující knihovna Gridster\footnote{\url{https://gridsterurl.com}}, která dovoluje vytvořit komplexní systém mřížky a je velmi dobře konfigurovatelna. Knihovna Gridster má navíc implementaci přímo pro AngularJS, tzn. direktivy, které lze okamžitě použít v šabloně stránky a následně v kontroléru vše spravovat (např. registrace k událostem vyvolané v pohledu po přesunu položky).
+
+Gridster je velmi flexibilním systémem pro tvorbu mřížek. Je založen na minimální, pevně stanovené velikosti jednoho bloku, od kterého se odvíjí velikost boxu v jeho násobcích. Boxu lze následně tahem myši měnit velikost tak, jak je zvykem u běžného desktopového okna. Jediným rozdílem je, že velikost je měněna v násobcích jednoto bloku. Tato velikost je odvozena od výšky nebo šířky jednoho řádku, nebo vypočítána z počtu sloupců. V případě NEMEA Dashboard byla výška řádku stanovena experimetálně na 170 pixelů a 8 řádků. To nám dovoluje dostatečně flexibilní rozložení boxů a zároveň určitou jistotu při návrhu jednotlivých typů boxů.
+
+Pokud uživatel chce přesunout box na jiné místo, Gridster disponuje podporou pro \uv{drag and drop} funkcionalitu. Ta je ještě vylepšena v rámci NEMEA Dashboard o zvýraznění cílového místa, aby uživatel nebyl z počátku překvapen, proč se jednotlivé boxy \uv{samy hýbou}.
+
+Při návrhu jsem opomněl výběr knihovny pro vykreslování grafů. Ta během různých experimentů s několika nejrozšířenějšími knihovnami (Google Charts, HighCharts.js, D3, NVD3 a další) byla velmi promptně vybrána. Zvolil jsem implementaci NVD3 knihovny pro AngularJS (angular-nvd3) a to zejména kvůli jednoduchosti použití, široké škále nastavení a předchozím zkušenostem s touto knihovnou. NVD3 je pouhou obálkou pro knihovnu D3, která je koncipována pro vykreslování jakéhokoliv typu dat v prohlížeči. To sebou nese vysokou flexibilitu, ale zároveň i velmi složitou tvorbu složitějších konstrukcích jakou jsou např. interaktivní grafy.
+
+Jak již při návrhu bylo naznačeno, pro Dashboard se navrhli 4 základní typy grafů, které jsou pracovně nazvány následovně:
+
+\begin{itemize}
+    \item top -- událost s nejvyšší hodnotou \texttt{FlowCount} pro každou kategorii,
+    \item sum -- počet událostí dané kategorie nebo celkový počet všech událostí v daném čase,
+    \item piechart -- koláčkový graf zobrazující podíly událostí dle zadané metriky,
+    \item barchart -- sloupcový graf pro zobrazení událostí agregovaných dle stanoveného časového intervalu.
+\end{itemize}
+
+Pro poslední dva bylo využito grafového knihovny NVD3 a jejich výsledná podoba je znázorně v obrázku \ref{fig:boxes} ve stejném pořadí jako jsou vypsány výše.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{fig/boxes.png}
+    \caption{Vyobrazení jednotlivých typů boxů dostupných v NEMEA Dashboard.} \label{fig:boxes}
+\end{figure}
+
+Pokud se zaměříme na společné části všech boxů, nalezneme pouze 3 části. Titulek, který není vyžadovaný (lze vidět na boxu typu \uv{sum}, který v obrázku \ref{fig:boxes} titulek nemá). Textový obsah boxu, který také není povinný, ale doporučený pro nahrazení titulku v boxu typu \uv{sum}, kvůli poměru velikosti boxu (většinou minimální velikost 1x1 blok) a velikosti písma titulku. Textový obsah je vidět i u boxu typu \uv{barchart}, kde slouží pro upřesnění obsahu daného boxu.
+
+Posledním společným prvkem je menu, které nabízí dvě položky. Editaci a smazání boxu. Toto menu je vidět pouze po kliknutí na ikonu menu, která je u každého boxu symbolizována jako tři krátké vodorovné čáry, slangově nazýváno \uv{burger menu}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.3\textwidth]{fig/box_menu.png}
+    \caption{Kontextové menu přítomné u každého boxu.} \label{fig:boxes}
+\end{figure}
+
+Při konfiguraci boxu se dynamicky mění obsah formuláře, kterým je vše nastavováno. Ten je realizován jako vyskakovací okno v rámci stránky\footnote{angl. lightbox}. Těchto kombinací je větší množství a proto uvedu pouze ukázkový příklad.
+
+Při přidání nového boxu máme v dashboardu pouze obálku pro námi definovaný obsah. Uživatel tedy klikne na kontextové menu boxu a zvolí položku \uv{Edit}. Zde je pouze předem definovaný titulek \uv{New Box}, u kterého lze změnu vidět v reálném čase. Následně zvolí typ boxu, v případě typu \uv{top} má poté na výběr pouze časový interval, ve kterém se mají události hledat. V ostatních případech vybírá metriku (buď předdefinovanou, nebo vlastní) , dle které se výsledky agregují. Uživatel v našem případě zvolí typ \uv{piechart}, který má možnosti filtrování vyhledaných událostí. Jelikož se záznamem události v MongoDB pracuje téměř totožně jako s formátem JSON, můžeme použít tečkovou notaci pro přístup k jednotlivým hodnotám. Ve filtru volíme klíč a hodnotu, dle které se výsledek filtruje. V tomto případě, který je znázorněný na obrázku \ref{fig:box_edit}, filtrujeme události pouze z HostStats, což je sbírka modulů \note{zjistit co to přesně je}.
+
+Posledními možnostmi je nastavení časového okna, ve kterém se událostí mají hledat a textový popisek daného grafu. Poté uživatel klikne na tlačítko \uv{Save} a nastavení se uloží. To spustí rutinu v kontroléru, která pomocí modelu zašle dotaz na API s danými parametry a načte data do nově nakonfigurovaného boxu a vykreslí graf jakmile budou data přítomna u uživatele. Mezitím se v boxu zobrazí nápisek \uv{loading\ldots}.
+
+Pokud uživatel klikne na \uv{Cancel}, box se navrátí do původní konfigurace.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig/box_edit.png}
+    \caption{Editační okno boxu.} \label{fig:box_edit}
+\end{figure}
+
+Takto je možné nakonfigurovat jakýkoliv box v dasboardu, nicméně během vývoje vznikl na požadavek existence více instancí dashboardu, každá s vlastními boxy a nastavením. Na tento požadavek jsem promptně reagoval a byl vytvořen následující systém upravený s ohledem na definové případy užití.
+
+Dashboard je realizován jako jednotlivé pohledy na data, které se uživatel sám specifikuje. Každý takový pohled se chová a vypadá jako jeden dashboard a může mezi nima libovolně přecházet. Každý tento pohled má navíc vlastní konfiguraci, ta je dostupná přes kontextové menu pohledu, které se nachází v pravém dolním rohu.
+
+\begin{description}
+    \item Add item \\
+        Tato možnost přidá do současného pohledu nový box, který si uživatel dále přizpůsobí.
+
+    \item Clear cache \\
+        Během vývoje dashboardu jsem implementoval dočasnou paměť pro načtená data z REST API, aby se s dashboardem mohlo pracovat offline nebo na nestabilním internetovém připojení. Tato funkcionalita je realizována pomocí lokálního uložiště v prohlížeči (local storage). Pokud si uživatel přeje aktualizovat data, použije toto tlačítko. 
+
+    \item Enable autorefresh \\
+        Další funkcionalita, která byla přidána během vývoje jako reakce na požadavek kontinuálního obnovování dat v současném pohledu. Interval obnovení dat nastavitelný pro každý pohled.
+    \item Dashboard settings \\
+        Zobrazí vyskakovací okno podobné tomu u boxu. V tomto okně si uživatel může nastavit obnovovací interval, název pohledu a pohled případně smazat.
+    \item Enable grid\\
+        Během používání dashboardu se uživatelům často stávalo, že si náhodně posunuli s boxem a tím se jim celá mřížka, kterou pečlivě organizovali, přeskládala na nepoužitelnou variantu. Tato možnost vypíná nebo zapíná (záleží na předešlém stavu) \uv{drag and drop} funkcionalitu a změnu velikosti boxu.
+\end{description}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.35\textwidth]{fig/dashboard_menu.png}
+    \caption{Kontextové menu pohledu.} \label{fig:dashboard_menu}
+\end{figure}
+
+Drill-down analýza je realizována jako odkaz v jednotlivých sloupcích/oddílech grafu nebo jako tlačítko (v případě boxu typu \uv{top}), které odkazuje přímo na danou událost. Při kliknutí na danou část grafu nebo tlačíko je uživatel přesunut do druhé části NEMEA Dashboard nazvanou \uv{Events}. Zde jsou automaticky nastaveny parametry hledání, které jsou následně poslaný v požadavku na API. Odpovědí jsou data splňující zadané parametry.
+
+\note{dopsat něco málo o events a detailu události, už to moc nepřehánět}
+
+
 
 %\note{data na frontendu jsou trojího typu: data událostí, konfigurační a autentikační data.}
 
 \section{Zabezpečení}
 \label{zabezpeceni}
+
+
 
 \note{flow diagram jak probíhá autentizace -- stejné jako voip volání}
 
