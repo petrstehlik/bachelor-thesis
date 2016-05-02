@@ -17,13 +17,13 @@ Důležitým aspektem vytvořené aplikace je důraz na použití moderních ná
 
 Celou aplikaci navíc bude možno přizpůsobit potřebám daného správce sítě. V aplikaci bude zavedena technika {\it drill-down}, která napomáhá rychlé a přehledné analýze velkého množství dat bez ztráty informací o analyzované události. Drill-down spočívá v postupném zvyšování rozlišení dat, která analyzujeme a postupujeme směřem shora dolů.
 
-Aplikace bude pracovat s formátem dat nazvaný IDEA. Tento formát je specifikován sdružením CESNET a slouží jako prostředek pro sdílení dat bezpečnostních událostí mezi různými systémy. Díky tomu lze apliakci kdykoliv přenést na jiný zdroj databáze než je systém NEMEA, např. v rámci sdružení CESNET na systém Warden nebo Mentat.
+Aplikace bude pracovat s formátem dat nazvaný IDEA. Tento formát je specifikován sdružením CESNET a slouží jako prostředek pro sdílení dat bezpečnostních událostí mezi různými systémy. Díky tomu lze aplikaci kdykoliv přenést na jiný zdroj databáze než je systém NEMEA, např. v rámci sdružení CESNET na systém Warden nebo Mentat.
 
 Aplikace bude integrována do současného NEMEA systému pod názvem NEMEA Dashboard a bude s ním společně distribuována jako front~end celého systému.
 
 \chapter{Monitorování sítě}
 
-V rozlehlejších sítích jako je např. páteřní či firemní síť je téměř nutností monitorovat a analyzovat provoz na síti, abychom byli informování o jejím aktuálním stavu, vytížení a zejména negativních vlivech na monitorovanou síť. Samozřejmě i sítě menšího rozsahu by měly být monitorované. Pokud se v malé firmě podaří útočníkovi infiltrovat síť, výsledky útoku mohou být pro firmu likvidační.
+V rozlehlejších sítích, jako je např. páteřní či firemní síť, je téměř nutností monitorovat a analyzovat provoz na síti, abychom byli informování o jejím aktuálním stavu, vytížení a zejména negativních vlivech na monitorovanou síť. Samozřejmě i sítě menšího rozsahu by měly být monitorované. Pokud se v malé firmě podaří útočníkovi infiltrovat síť, výsledky útoku mohou být pro firmu likvidační.
 
 Systém pro odhalení průniku (anglicky \uv{Intrusion Detection System}, zkráceně IDS)\cite{idsips} je takový systém, který analyzuje a identifikuje ze zachyceného provozu podezřelé události. Tyto události může IDS dále klasifikovat. IDS může být dvojího typu. 
 
@@ -39,13 +39,13 @@ Network Measurements Analysis, zkráceně NEMEA, je systém, který umožňuje v
 
 Systém se skládá z oddělených stavebních bloků nazývané moduly. Tyto jednotlivé moduly jsou následně propojeny pomocí rozhraní TRAP.
 
-Moduly jsou nezávislé pracovní jednotky, které obecně přijímají proud dat na svých vstupech, zpracují či zanalyzují daná data a následně je odešlou ze svých výstupních rozhraní jako proud dat pro další moduly. Modul může například tvořit statistiky o přijatých datech a na základě těchto statistik detekovat určité typy síťového útoku. Detekovaný útok je popsán datovým záznamem, který je odeslán přes výstupní rozhraní dalším modulům, které s daným záznamem dále pracují, např. jej uloží v IDEA formátu (viz sekce \ref{sec:idea}) do databáze nebo ze získaných statistik dokáží detekovat anomálie v síťovém provozu a dokáží tak jednotlivé pokusy od jednoho útočníka agregovat a zpracovat jej jako jediný útok skládající se z několika desítek až stovek pokusů o útok v delším časovém intervalu a administrátor sítě by je snadno přehlédl nebo ignoroval, pokud by nebyly agregované.
+Moduly jsou nezávislé pracovní jednotky, které obecně přijímají proud dat na svých vstupech, zpracují či zanalyzují daná data a následně je odešlou ze svých výstupních rozhraní jako proud dat pro další moduly. Modul může například tvořit statistiky o přijatých datech a na základě těchto statistik detekovat určité typy síťového útoku. Detekovaný útok je popsán datovým záznamem, který je odeslán přes výstupní rozhraní dalším modulům, které s daným záznamem dále pracují, např. jej uloží v IDEA formátu (viz sekce \ref{sec:idea}) do databáze nebo ze získaných statistik detekují anomálie v síťovém provozu a dokáží tak jednotlivé pokusy od jednoho útočníka agregovat a zpracovat jej jako jediný útok skládající se z několika desítek až stovek pokusů o útok v delším časovém intervalu a administrátor sítě by je snadno přehlédl nebo ignoroval, pokud by nebyly agregované.
 
 Jednotlivé moduly se většinou zaměřují na konkrétní typ událostí, případně činnosti. Jejich spojením je možné získat nástroj pro komplexní detekci a analýzu síťových dat schopný detekovat a identifikovat útoky na monitorovanou síť, který následně detekované události uloží do databáze a webová aplikace, kterou v této práci navrhuji, uložené útoky zobrazí.
 
-NEMEA je také schopná přístupu \uv{store-and-ex-post}, který lze vidět na obrázku \ref{fig:nemea-schema}. Jsou zde dva moduly spojené jedním rozhraním. První modul čte záznamy toků ze souboru a druhý modul počítá statistiky o těchto přečtených tocích. Tento přístup je charakteristický tím jak nakládá se síťovými daty. Ty prvně uloží a až poté začíná systém s analýzou uložených síťových dat. 
+NEMEA je také schopná přístupu \uv{store-and-ex-post}, který lze vidět na obrázku \ref{fig:nemea-schema}. Jsou zde dva moduly spojené jedním rozhraním. První modul čte záznamy toků ze souboru a druhý modul počítá statistiky o těchto přečtených tocích. Tento přístup je charakteristický tím jak nakládá se síťovými daty. Ty prvně uloží a až poté začíná systém s analýzou uložených síťových dat.
 
-Oproti proudovému zpracování síťových dat je tento systém náročnější na prostor pro uložení dat, ale analýza je přesnější a méně náročná na výkon stroje, zejména v případě pokročilejší analýzy. Pokud bychom vykonávali proudové zpracování dat, je zde i velká náročnost na operační paměť, pokud chceme analyzovat velké časové rámce.
+Oproti proudovému zpracování síťových dat je tento systém náročnější na prostor pro uložení dat, ale analýza je přesnější a méně náročná na výkon stroje, zejména v případě pokročilejší analýzy. V případě proudového zpracování dat jsou kladeny velké nároky na operační paměť, pokud chceme analyzovat dlouhé časové rámce.
 
 \begin{figure}[h]
     \centering
@@ -68,7 +68,9 @@ Z takovýchto základních bloků lze postavit i velmi komplexní systém jak je
 
 \subsection{Modul}
 
-Každý modul je samostatný program nezávislý na ostatních. To sice zvyšuje nároky na systém, ale dovoluje větší variabilitu při návrhu modulu. Ten je, díky tomuto návrhu, možno naprogramovat v libovolném jazyce, sledovat a řídit spotřebu zdrojů každého modulu zvlášť a zejména v případě nefungujícího modulu se celý systém NEMEA dokáže zotavit z chyby naprosto bez problémů. Modulární systém navíc dovoluje přidávat a odebírat jednotlivé moduly za běhu, což je v produkčním prostředí jedna ze základních vlastnostní kvalitního monitorovacího systému.
+Každý modul je samostatný program nezávislý na ostatních. To sice zvyšuje nároky na systém, ale dovoluje větší variabilitu při návrhu modulu. Ten je, díky tomuto návrhu, možno naprogramovat v libovolném jazyce\footnote{V současné době jsou moduly programovány v jazycích C, C++ a Python.}, sledovat a řídit spotřebu zdrojů každého modulu zvlášť a zejména, v případě nefungujícího modulu, se celý systém NEMEA dokáže zotavit z chyby bez problémů. 
+
+Modulární systém navíc dovoluje přidávat a odebírat jednotlivé moduly za běhu, což je v produkčním prostředí jedna ze základních vlastnostní kvalitního monitorovacího systému. Pro tyto účely slouží nástroj nazvaný NEMEA Supervisor.
 
 Při zapojení a startu nového modulu se modul periodicky snaží připojit na definované rozhraní. Pokusy o spojení jsou sledovány NEMEA Supervisorem, kterým lze spravovat všechny moduly v systému a pokud se modulu nepodaří po několika pokusech připojit na rozhraní, je modul ukončen.
 
@@ -78,14 +80,14 @@ Všechny rozhraní jsou výhradně jednocestná a přenos dat je realizován for
 
 Protokol pro dynamickou tvorbu formátu je nazván UniRec. Ten specifikuje nejen formát záznamu, ale také jak záznam vytvořit a jak zpracovat -- implementuje formát pro binární reprezentaci síťového záznamu.
 
-Pro tvorbu rozhraní je vytvořena sdílená knihovna libtrap, která využívá Traffic Analysis Platform (zkráceně TRAP) pro komunikaci mezi různými rozhranímia tyto rozhraní využívají protokolu UniRec.
+Pro tvorbu rozhraní je vytvořena sdílená knihovna libtrap, která využívá Traffic Analysis Platform (zkráceně TRAP) pro komunikaci mezi různými rozhraními a tyto rozhraní využívají protokolu UniRec.
 
 \section{IDEA}
 \label{sec:idea}
 
-Pro potřebu sdílení informací o síťových událostech mezi různými skupinami a zařízeními (např. honeypoty, analyzéry systémových zpráv, analyzéry provozu na síti, netflow sondy a další) existuje několik formátů záznamu pro takovéto události. Nicméně žádný z nich není natolik univerzální, aby byl vždy a všude použitelný a pokud se k takovému formátu blíží, tak není natolik detailní, aby pokryl všechny důležité informace.
+Pro potřebu sdílení informací o síťových událostech mezi různými skupinami a zařízeními (např. honeypoty, analyzéry systémových zpráv, analyzéry provozu na síti a netflow sondy) existuje několik formátů záznamu pro takovéto události. Nicméně žádný z nich není natolik univerzální, aby byl vždy a všude použitelný a pokud se k takovému formátu blíží, tak není natolik detailní, aby pokryl všechny důležité informace.
 
-IDEA, neboli Intrusion Detection Extensible Alert, je formát záznamu síťové události specifikovaný sdružením CESNET. IDEA si klade za cíl specifikovat takový formát záznamu, který je univerzální, přenositelný, ale zároveň dost konkrétní a snadno pochopitelný bez potřeby rozsáhlé dokumentace k jednotlivým polím.
+IDEA\footnote{\url{https://idea.cesnet.cz}}, neboli Intrusion Detection Extensible Alert, je formát záznamu síťové události specifikovaný sdružením CESNET. IDEA si klade za cíl specifikovat takový formát záznamu, který je univerzální, přenositelný, ale zároveň dost konkrétní a snadno pochopitelný bez potřeby rozsáhlé dokumentace k jednotlivým polím.
 
 Vzorový záznam generovaný systémem NEMEA je vyobrazený ve výpisu \ref{code:idea}. Jak je vidět, formát je specifikovaný jako JSON dokument, aby byl přehledný, čitelný v běžné podobě (narozdíl od binárních formátů), lehce přenositelný a efektivní (např. oproti XML\cite{xmlvsjson}).
 
@@ -121,7 +123,7 @@ Vzorový záznam generovaný systémem NEMEA je vyobrazený ve výpisu \ref{code
     "Type" : ["Flow","Statistical"],
 }
 \end{lstlisting}
-\captionof{lstlisting}{Vzorový IDEA záznam ze systému NEMEA. Některé části byly vynechány nebo zkráceny a IP adresy změněny na lokální.}
+\captionof{lstlisting}{Vzorový IDEA záznam ze systému NEMEA. Některé části byly vynechány nebo zkráceny a IP adresy anonymizovány.}
 \label{code:idea}
 \end{figure}
 
@@ -136,16 +138,16 @@ Komerčně dostupný produkt je např. Flowmon\cite{flowmon:report} ADS\cite{flo
 Open source projekty jako NEMEA jsou dostupné mnoho let, ale pouze několik z nich dosáhlo znatelnějšího rozšíření v komunitě síťových správců. Nejvýznamnějšími jsou systémy Snort\cite{snort}, VERMONT\cite{vermont} a framework Bro\cite{bro}. 
 
 \subsection*{Snort}
-Tento open-source projekt, od roku 2013 vlastněn firmou Cisco\cite{snort:cisco}, je možno konfigurovat ve 3 hlavních režimech\cite{snort:modes}: \uv{sniffer}, paket logger a jako (N)IDS. V režimu IDS Snort pracuje principiálně velmi podobně jako systém NEMEA. Zachytává síťový provoz, ukládá si důležité informace o něm a analyzuje jej. Ve výsledku ukládá záznamy o síťových událostech. Nicméně Snort není modulárním systémem a tudíž není tak flexibilní a není stavěný na vysokorychlostní rozsáhlé sítě jako systém NEMEA.
+Tento open-source projekt, od roku 2013 vlastněn firmou Cisco\cite{snort:cisco}, je možno konfigurovat ve 3 hlavních režimech\cite{snort:modes}: sniffer, paket logger a jako (N)IDS. V režimu IDS Snort pracuje principiálně velmi podobně jako systém NEMEA. Zachytává síťový provoz, ukládá si důležité informace o něm a analyzuje jej. Ve výsledku ukládá záznamy o síťových událostech. Nicméně Snort není modulárním systémem a tudíž není tak flexibilní a není stavěný na vysokorychlostní rozsáhlé sítě jako systém NEMEA.
 
 \subsection*{VERMONT}
 
 VERMONT (Versatile Monitoring Toolkit) je modulární monitorovací systém obsahující IPFIX kolektor, exportér, analyzátor a další moduly a grafické prostředí pro vizuální analýzu dat. VERMONT byl vyvinut v rámci projektu HISTORY\cite{vermont:history} a evropským projektem DIADEM firewall\cite{vermont:diadem}. Svou architekturou je nejbližší systému NEMEA, protože je částečně modulární. Systém NEMEA je oproti tomu modulární od samotného jádra systému, což dovoluje vyšší flexibilitu při vývoji a menší závislost na použitých technologií.
 
 \subsection*{Bro}
-Dalším v komunitě rozšířeným řešením je framework Bro. Tento framework primárně určený pro síťovou analýzu není podobný systému NEMEA, ani předchozím systémům, protože je to spíše nástroj pro vytváření (N)IDS než-li ucelený systém. Bro se velmi blíží skriptovacímu jazyku (např. Perl) nebo unixovým nástrojům jako tcpdump nebo nfdump. Bro lze rozdělit na dvě vrstvy. První vrstvou je \uv{Bro Event engine}, který analyzuje síťový provoz a generuje neutrální síťové události v podobě \uv{byla vytvořena nějaká událost}. 
+Dalším, v komunitě rozšířeným řešením, je framework Bro. Tento framework primárně určený pro síťovou analýzu není podobný systému NEMEA, ani předchozím systémům, protože je to spíše nástroj pro vytváření (N)IDS než-li ucelený systém. Bro se velmi blíží skriptovacímu jazyku (např. Perl) nebo unixovým nástrojům jako tcpdump nebo nfdump. Bro lze rozdělit na dvě vrstvy. První vrstvou je \uv{Bro Event engine}, který analyzuje síťový provoz a generuje neutrální síťové události v podobě \uv{byla vytvořena nějaká událost}. 
 
-Tyto neurčité události jsou následně analyzovány druhou vrstvou -- \uv{Bro Policy skripty}. V této vrstvě je naimplementovaný zmiňovaný skriptovací jazyk. V současné době existuje mnoho naprogramovaných skriptů, které jsou připraveny k okamžitému použití, včetně pokročilé analýzy síťového provozu.
+Tyto neurčité události jsou následně analyzovány druhou vrstvou -- \uv{Bro Policy skripty}. V této vrstvě je implementovaný zmiňovaný skriptovací jazyk. V současné době existuje mnoho naprogramovaných skriptů, které jsou připraveny k okamžitému použití, včetně pokročilé analýzy síťového provozu.
 
 V ranných fázích vývoje se systém NEMEA velmi blížil frameworku Bro, s vývojem času se ale NEMEA stala uceleným systémem připraveným k okamžitému nasazení na měřící body.
 
@@ -160,7 +162,9 @@ V této kapitole jsme prezentovali systém NEMEA a jeho architekturu. Popsali js
 
 \chapter{Technologie}
 
-Vizualiace síťových bezpečnostních událostí může být vytvořena několika postupy. Pokud máme IDS, který je dostupný pouze z jednoho stroje, nejčastěji zvolíme tvorbu desktopové aplikace, protože máme jistotu provozního prostředí jako je např. operační systém, dostupné balíčky a jejich verze, atd. V případě vzdálené správy IDS (častější případ) jsme nejčastěji odkázání na vzdálený přístup pomocí příkazové řádky. Tento přístup je bohužel velmi limitovaný a nelze jej využít pro vizualiaci. V současné době je pro vzdálenou správu nejvhodnější vytvořit webovou aplikaci, která je dostupná z Internetu a použitelná na většině dnes používaných zařízeních\footnote{Jedná se zejména o stolní počítače, notebooky, tablety a chytré mobilní telefony.}
+Vizualiace síťových bezpečnostních událostí může být vytvořena několika postupy. Pokud máme IDS, který je dostupný pouze z jednoho stroje, nejčastěji zvolíme tvorbu desktopové aplikace, protože máme jistotu provozního prostředí jako je např. operační systém, dostupné balíčky a jejich verze. 
+
+V případě vzdálené správy IDS (častější případ) jsme nejčastěji odkázání na vzdálený přístup pomocí příkazové řádky. Tento přístup je bohužel velmi limitovaný a nelze jej využít pro vizualiaci. V současné době je pro vzdálenou správu nejvhodnější vytvořit webovou aplikaci, která je dostupná z Internetu a použitelná na většině dnes používaných zařízeních\footnote{Jedná se zejména o stolní počítače, notebooky, tablety a chytré mobilní telefony.}.
 
 Pro tvorbu moderních webové aplikace je na Internetu dostupná celá řada knihoven, frameworků a systémů. Nicméně první otázkou zůstává co taková moderní webová aplikace je?
 
@@ -193,13 +197,13 @@ Kritéria užšího výběru frameworků byla zejména následující:
 \end{itemize}
 
 \subsubsection*{React\cite{react}}
-Framework React je vyvíjen pod hlavičkou společnosti Facebook. Původním cílem návrhářů Reactu bylo vyřešit problémy během vývoje komplexních uživatelských rozhraní s rychle měnícími se daty. Dalším cílem bylo vytvořit takový framework, který lze distribuovat v takovém měřítku jako je Facebook.
+Framework React je vyvíjen pod hlavičkou společnosti Facebook. Původním cílem návrhářů Reactu bylo vyřešit problémy během vývoje komplexních uživatelských rozhraní s rychle měnícími se daty. Dalším cílem bylo vytvořit framework, který lze distribuovat v takovém měřítku jako je Facebook.
 
 React je framework pro uživatelskou část SPA používající tradiční MVC architekturu. Taková architektura je nejvíce znatelná v případě použití obousměrného vázání dat (anglicky two-way data binding), více v sekci \ref{sec:mvc}.
 
 React se zaměřuje zejména na tvorbu UI, z pohledu architektury pohledová část (view), a kvůli tomu se ostatním částem architektury nevěnuje tak detailně, jak by většinu času vývojář potřeboval. Velmi častým řešením je použít React na pohledovou část a na model a kontrolér použít jiný framework, např. AngularJS.
 
-React pracuje s moderními přístupy k vývoji SPA a boří tak mnoho zažitých technik jak takovou PSA vyvíjet. Místo běžné manipulace s DOM elementy si React, případně vývojář, definuje vlastní DOM elementy, kterým přídává vlastnosti, váže na ně data a manipuluje s nimi bez větších výkonových ztrát. Toho docílil zejména použitím tzv. shadow DOM\cite{shadowdom}, který je ale novinkou na poli prohlížečů a je podporován pouze jádrem WebKit. 
+React pracuje s moderními přístupy k vývoji SPA a boří tak mnoho zažitých technik jak takovou SPA vyvíjet. Místo běžné manipulace s DOM elementy si React, případně vývojář, definuje vlastní DOM elementy, kterým přídává vlastnosti, váže na ně data a manipuluje s nimi bez větších výkonových ztrát. Toho docílil zejména použitím tzv. shadow DOM\cite{shadowdom}, který je ale novinkou na poli prohlížečů a je podporován pouze jádrem WebKit. 
 
 %Pokud není shadow DOM dostupný, používá React standardní DOM, se kterým je sice vykreslování pomalejší, ale stále velmi rychlé. 
 
@@ -260,7 +264,7 @@ To vše spěje ke snížení zátěže serveru, na kterém je SPA uložena. Vět
 
 \subsubsection*{Backbone.js}
 
-Framework Backbone.js se mírně odlišuje od předešlých a to svou architekturou, která není MVC, ale MVP (model-view-presenter). Presenter je v tomto modelu prostředníkem, který plní logickou funkci a spojuje pohled s modelem. Veškeré akce, které se provedou v pohledu (např. kliknutí na tlačítko) jsou delegovány presenteru. Ten je navíc oddělen od pohledu a komunikuje s ním pouze přes definované rozhraní.
+Framework Backbone.js se mírně odlišuje od předešlých a to svou architekturou, která není MVC, ale MVP (model-view-presenter). Presenter je v tomto případě prostředníkem, který plní logickou funkci a spojuje pohled s modelem. Veškeré akce, které se provedou v pohledu (např. kliknutí na tlačítko) jsou delegovány presenteru. Ten je navíc oddělen od pohledu a komunikuje s ním pouze přes definované rozhraní.
 
 Tento přístup je vhodný zejména pro testování a jasné oddělení jednotlivých částí (zvláště modelu od pohledu). Avšak MVP je náročnější na tvorbu kvůli tomu, že všechny datové vazby musí vytvořit sám programátor.
 
@@ -315,7 +319,7 @@ Foundation je velmi podobný framework jako Bootstrap, také nabízí HTML a CSS
 
 Hlavním rozdílem oproti Bootstrapu je jeho upravitelnost. Foundation dává větší prostor pro úpravu jednotlivých komponent. 
 
-Navíc disponuje styly, které jsou automaticky aplikované na dané HTML elementy -- vývojář nepotřebuje přidávat množství tříd ke každému elementu. To však nemusí každému vyhovovat a mohou nastat neobvyklé konflikty stylů během vývoje.
+Navíc disponuje styly, které jsou automaticky aplikované na dané HTML elementy -- vývojář nepotřebuje přidávat množství tříd ke každému elementu. To však nemusí každému vyhovovat a mohou nastat neobvyklé konflikty aplikovaných stylů během vývoje.
 
 \subsubsection*{Angular Material}
 
@@ -323,11 +327,9 @@ Angular Material není běžným CSS frameworkem, nýbrž je velmi úzce spjat s
 
 Framework také obsahuje mnoho HTML a CSS komponent, ale ty jsou vždy velmi úzce spjaty s AngularJS funkcionalitou jako je např. two-way data binding a již zmíněné direktivy. 
 
-Společnost Google disponuje vizuálním jazykem pro všechny své produkty nazvaný Material Design\footnote{\url{https://www.google.com/design/spec/material-design/introduction.html}}. Ten je založený na tzv. \uv{kartičkách}, které lze skládat na sebe, řadit, organizovat a upravovat.
+Společnost Google disponuje vizuálním jazykem pro všechny své produkty nazvaný Material Design\footnote{\url{https://www.google.com/design/spec/material-design/introduction.html}}. Ten je založený na tzv. \uv{kartičkách}, které lze skládat na sebe, řadit, organizovat a upravovat. Jak již název frameworku napovídá je tento vizuální jazyk použit skrz všechny dostupné komponenty.
 
-Jak již název frameworku napovídá je tento vizuální jazyk použit skrz všechny dostupné komponenty.
-
-Z technického hlediska je Angular Material nejpokročilejším frameworkem. Pro mřížkový systém\footnote{angl. grid system} používá flexbox\cite{flexbox}, který je dostupný pouze v nejnovější specifikaci CSS 3 a moderních webových prohlížečích. To může způsobit vážné problémy, pokud je SPA cílena na široké publikum.
+Z technického hlediska je Angular Material nejpokročilejším frameworkem. Pro mřížkový systém\footnote{angl. grid system} používá flexbox\cite{flexbox}, který je dostupný pouze v nejnovější specifikaci CSS 3 a moderních webových prohlížečích. To může působit mírné problémy, pokud je SPA cílena na široké publikum s různými verzemi prohlížečů.
 
 
 \section{Serverová část}
@@ -353,15 +355,15 @@ Toto rozhraní zpřístupňuje databázi událostí vytvořenou NEMEA systémem,
 
 Pro vytvoření API s REST architekturou rozhraní existují knihovny, které vývoj ulehčují a zrychlují. Ve většině případů ale platí, že takovéto knihovny jsou náročné na zdroje a jsou tím pádem pomalejší. Pro NEMEA Dashboard je potřeba takový jazyk, který je úzce integrovaný se systémem a dokáže využívat systémové nástroje\footnote{Využití systémových nástrojů není součástí této práce, ale byla jednou z podmínek návrhu REST API pro NEMEA Dashboard.}.
 
-Do výběru jsem zahrnul interpretované i kompilované jazyky, aby byl demonstrován rozdíl ve výkonnosti, jednoduchosti použití, množství potřebných závislostí a dalších. Jmenovitě byly zahrnuty jazyky Python, C++ a JavaScript. Pro každý vybraný jazyk existuje několik knihoven pro podporu tvorby REST API, proto pro zpřehlednění byly vybrány nejvhodnější knihovny.
+Do výběru jsem zahrnul interpretované i kompilované jazyky, aby byl demonstrován rozdíl ve výkonnosti, jednoduchosti použití, množství potřebných závislostí a dalších faktorů. Jmenovitě byly zahrnuty jazyky Python, C++ a JavaScript. Pro každý vybraný jazyk existuje několik knihoven pro podporu tvorby REST API, proto pro zpřehlednění byly vybrány nejvhodnější knihovny.
 
-Jeden z nejpoužívanějších jazyků pro tvorbu webových stránek -- PHP nebyl zahrnut z důvodu vysoké režie interpretu při běhuaplikace a mnoha závislostí (zejména Apache webový server), které jsou potřeba pro tvorbu webové stránky v PHP. Navíc jazyk PHP přímo nepodporuje tvorbu REST architektury, vše je řešeno přes Apache server pomocí .htaccess konfigurace.
+Jeden z nejpoužívanějších jazyků pro tvorbu webových stránek -- PHP nebyl zahrnut z důvodu vysoké režie interpretu při běhu aplikace a mnoha závislostí (zejména Apache webový server), které jsou potřeba pro tvorbu webové stránky v PHP. Navíc jazyk PHP přímo nepodporuje tvorbu REST architektury, vše je řešeno přes Apache server pomocí .htaccess konfigurace.
 
 \subsubsection*{Flask (Python)}
 
-Flask je mikroframework využívající Werkzeug toolkit, který slouží jako základ pro Flask. Je nazývaný mikroframeworkem, protože vývojáře nenutí využívat konkrétní knihovny nebo nástroje, nedisponuje žádnou abstrakční databázovou vrstvou, verifikací vstupů nebo kterékoliv jinou komponentou běžně dostupnou ve frameworku podobného typu.
+Flask je mikroframework využívající Werkzeug toolkit, který slouží jako základ pro Flask. Je nazývaný mikroframeworkem, protože vývojáře nenutí využívat konkrétní knihovny nebo nástroje, nedisponuje žádnou abstraktní databázovou vrstvou, verifikací vstupů nebo kteroukoliv jinou komponentou běžně dostupnou ve frameworku podobného typu.
 
-Nicméně Flask podporuje rozšíření, kterými lze rozšířit funkcionalitu přesně dle potřeb programátora. Tím se stává Flask velmi silným nástrojem při vývoji SPA. Jelikož je navíc napsán v jazyku Python je jeho použití více než intuitivní. Například definice cesty a obslužné rutiny je realizováno pomocí dekorátorů jak je znázorněno v následujícím příkladu \ref{code:flask}.
+Nicméně Flask podporuje rozšíření, kterými lze rozšířit funkcionalitu přesně dle potřeb programátora. Tím se stává Flask velmi silným nástrojem při vývoji SPA. Jelikož je navíc napsán v jazyku Python, je jeho použití více než intuitivní. Například definice cesty a obslužné rutiny je realizováno pomocí dekorátorů jak je znázorněno v následujícím příkladu \ref{code:flask}.
 
 \begin{figure}[ht]
 \lstset{basicstyle=\small,style=JSON}
@@ -390,7 +392,7 @@ NodeJS není až tak knihovnou nebo frameworkem pro vývoj webových serverů, j
 
 Posledním kandidátem je framework napsaný v jazyku C. Největší výhodou tohoto řešení je jeho rychlost, která je mnohonásobně vyšší než u interpretovaných jazyků. Mongoose je minimalistický framework vytvořený pro vývoj webových serverů více typů.
 
-Jelikož jazyk C není až tak pohodlný a rychlý pro vývoj abstraktních architektur rozhraní jakou je REST, zejména kvůli práci s textovými řetězci a manipulací s JSON objekty, rozhodl jsem se napsat obálku frameworku Mongoose do jazyka C++. Ten, ačkoliv je pomalejší, je vhodnější pro práci s textovými řetezci a existuje efektivní knihovna pro práci s JSON objetky RapidJSON\cite{js:rjson}.
+Jelikož jazyk C není až tak pohodlný a rychlý pro vývoj abstraktních architektur rozhraní jakou je REST, zejména kvůli práci s textovými řetězci a manipulací s JSON objekty, rozhodl jsem se napsat obálku frameworku Mongoose do jazyka C++\footnote{Tato obálka byla vytvořena mimo rozsah této práce pro jiný projekt.}. Ten, ačkoliv je pomalejší, je vhodnější pro práci s textovými řetezci a existuje efektivní knihovna pro práci s JSON objetky RapidJSON\cite{js:rjson}.
 
 Za použití vytvořené obálky, která je navržena specificky pro návrh REST API, lze velmi rychle vytvořit požadovanou funkcionalitu. Obálka totiž doplňuje možnosti Mongoose, který např. nedisponuje dynamickými URL\footnote{z angl. uniform resource locator} nebo zpracováním URL parametrů do vhodné struktury.
 
@@ -416,11 +418,11 @@ Poslední faktor -- možnosti frameworku -- je dle mého nejdůležitějším m�
 
 Tím pádem je jasným vítězem framework AngularJS, který disponuje širokou funkcionalitou. Je navržený přímo pro vývoj komplexních SPA a má opravdu mnoho dostupných rozšíření, které jsou vhodné pro naše účely.
 
-V rámci CSS frameworků bylo rozhodování mnohem přímočarejší, ačkoliv se tak na první pohled nemusí jevit, jelikož všechny tři frameworky nabízejí téměř totožnou funkcionalitu. Ale protože jsem zvolil AngularJS jako javascriptový framework, byla volba zcela jasná, protože Angular Material je přímým rozšířením frameworku AngularJS a do útrob Angular Material je velmi hluboce integrovaný. Navíc používá nejmodernější technologie, které usnadňují vývoj.
+V rámci CSS frameworků bylo rozhodování mnohem přímočarejší, ačkoliv se tak na první pohled nemusí jevit, jelikož všechny tři frameworky nabízejí téměř totožnou funkcionalitu. Protože jsem ale zvolil AngularJS jako JavaScriptový framework, byla volba zcela jasná, jelikož Angular Material je přímým rozšířením frameworku AngularJS a do útrob Angular Material je velmi hluboce integrovaný. Navíc používá nejmodernější technologie, které usnadňují vývoj.
 
 \subsection{Serverová část}
 
-Při výběru technologie pro serverovou část jsem se zejména zaměřil na rychlost výsledného REST API a jeho udržitelnost z vývojářského hlediska (modulárnost, OOP). Proto jsem vytvořil velmi jednoduché REST API v každém z kanditátů a změřil jejich výkonnost. Ostatní hlediska jsou spíše subjektivním názorem.
+Při výběru technologie pro serverovou část jsem se zaměřil zejména na rychlost výsledného REST API a jeho udržitelnost z vývojářského hlediska (modulárnost, OOP). Proto jsem vytvořil velmi jednoduché REST API v každém z kanditátů a změřil jejich výkonnost. Ostatní hlediska jsou spíše subjektivním názorem.
 
 V každém z frameworků jsem vytvořil jednoduché statické API (fixní URL), která pouze vrátila textový řetězec \uv{Hello World}. Pro měření jsem využil osobní virtuální server s následujícími parametry:
 
@@ -432,7 +434,7 @@ V každém z frameworků jsem vytvořil jednoduché statické API (fixní URL), 
 
 Server nebyl v době testů nijak vytížen a běžely na něm pouze základní služby jako Apache. Konfigurace serveru není nijak výkonná a tím pádem lze odvodit kolik zdrojů jaký jazyk spotřebuje a jak je připravený na škálovatelnost.
 
-Pro vytvoření dostatečného množství dotazů na server jsem použil nástroj wrk\footnote{\url{https://github.com/wg/wrk}}, který jsem spuštěl na počítači Mac Mini Server (Intel i7, 8 GB RAM, 1Gbps konektivita). Nástroj wrk jsem spouštěl s následujícími parametry:
+Pro vytvoření dostatečného množství dotazů na server jsem použil nástroj wrk\footnote{\url{https://github.com/wg/wrk}}, který jsem spouštěl na počítači Mac Mini Server (Intel i7, 8 GB RAM, 1Gbps konektivita). Nástroj wrk jsem spouštěl s následujícími parametry:
 
 \begin{itemize}
     \item \texttt{-d 20s} -- délka trvání testu,
@@ -458,13 +460,13 @@ Testy jsem spouštěl celkem třikrát pro každý framework, abych se vyvaroval
 \end{table}
 
 
-C++ obálka frameworku Mongoose a NodeJS jsou několikanásobně rychlejší než framework Flask. Tato rychlost je zejména díky použitému jazyku v případě C++. Ten je také použit v případě NodeJS, kde většina komponent je právě napsána v C++. 
+C++ obálka frameworku Mongoose a NodeJS jsou několikanásobně rychlejší než framework Flask. Tato rychlost je zejména díky použitému jazyku C++. Ten je použit i v případě NodeJS, kde většina komponent je právě napsána v C++. 
 
 Ačkoliv se může zdát, že NodeJS je jasnou volbou z naměřených výsledků, není tomu tak. NodeJS totiž během testu spotřeboval téměř všechny zdroje daného stroje (zejména CPU). Díky tomu je natolik výkonný. Tohoto výkonu lze dosáhnout i u frameworku Flask, ale ten by musel být doplněn dalšími nástroji pro vyšší konkurentnost serveru.
 
 Pokud porovnáme NodeJS a Flask, zjistíme, že NodeJS potřebuje obrovské množství závislostí pouze pro svůj běh a pokud chceme jakoukoliv pokročilou funkcionalitu, musíme dodat další závisloti. Tím pádem se základní varianta REST API jeví jako velmi výkonná, ale z dlouhodobého hlediska je tato rychlost neudržitelná.
 
-Pokud bychom pracovali v izolovaném prostředí, je nejvhodnější NodeJS. Pokud ale budeme vycházet z architektury aplikace, zjistíme, že server musí nesmí být upřednostňován před databází. V ní totiž probíhají mnohem náročnější operace, které vytvářejí prodlevu v odpovědi v rámci sekund a ne jednotek milisekund jako v případě serveru. 
+Pokud bychom pracovali v izolovaném prostředí, je nejvhodnější NodeJS. Pokud ale budeme vycházet z architektury aplikace, zjistíme, že server nesmí být upřednostňován před databází. V ní totiž probíhají mnohem náročnější operace, které vytvářejí prodlevu v odpovědi v rámci sekund a ne jednotek milisekund jako v případě serveru. 
 
 Tím pádem nám zůstává Flask, který díky implementaci v Pythonu je velmi jednoduchý na použití s udržitelným kódem a pohodlnou prací s JSON objekty. Pokud bychom se zaměřili na rychlost, lze dosáhnout dobrých výsledků zapojením CPython. Navíc Python nedovolí spotřebovat veškeré zdroje stroje, což se stalo při testu Mongoose a zejména pak NodeJS serveru.
 
