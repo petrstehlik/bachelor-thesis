@@ -341,6 +341,7 @@ Jediný požadavek na server je, aby byl typu *nix. To nám zaručuje určité f
 Na serveru poběží z NEMEA Dashboard pouze REST API\cite{rest}. Jeho vlastnosti a architektura budou detailně popsány v kapitole \ref{architektura}. API se připojuje na NoSQL databázový systém MongoDB. Ta je využívána systémem NEMEA, který do ní ukládá detekované události. MongoDB bylo zvoleno kvůli rychlosti, jednoduchosti použití a pro záznamy ve formátu IDEA bylo potřeba NoSQL databázový systém, který dokáže pracovat s daty stejně nebo podobně jako se pracuje s JSON.
 
 \subsection{REST API}
+\label{crud}
 
 REST, neboli Representational State Transfer, je architektura rozhraní pro distribuci dat. Tato architektura nám dovoluje přistupovat ke všem zdrojům uniformním rozhraním, které definuje čtyři základní operace nad každým z nich:
 
@@ -351,7 +352,7 @@ REST, neboli Representational State Transfer, je architektura rozhraní pro dist
     \item {\bf Delete} -- odstranění datového objektu z permanentního datového prostoru.
 \end{description}
 
-Toto rozhraní zpřístupňuje databázi událostí vytvořenou NEMEA systémem, která je udržována v MongoDB. Navíc tyto data agreguje, předzpracovává či jinak upravuje (funkcionalita REST API je popsána v sekci \ref{restapi})
+Toto rozhraní (zkráceně CRUD) zpřístupňuje databázi událostí vytvořenou NEMEA systémem, která je udržována v MongoDB. Navíc tyto data agreguje, předzpracovává či jinak upravuje (funkcionalita REST API je popsána v sekci \ref{restapi})
 
 Pro vytvoření API s REST architekturou rozhraní existují knihovny, které vývoj ulehčují a zrychlují. Ve většině případů ale platí, že takovéto knihovny jsou náročné na zdroje a jsou tím pádem pomalejší. Pro NEMEA Dashboard je potřeba takový jazyk, který je úzce integrovaný se systémem a dokáže využívat systémové nástroje\footnote{Využití systémových nástrojů není součástí této práce, ale byla jednou z podmínek návrhu REST API pro NEMEA Dashboard.}.
 
@@ -495,20 +496,20 @@ Celou SPA jsem již při výběru technologií rozdělil na dva logické celky. 
 
 Díky použitým technologiím lze části rozdělit aplikaci i fyzicky na dva typy strojů. Serverová část je spustěna na jednom počítači -- serveru, který disponuje relativně vysokým výkonem a je určen pouze pro databázi a REST API. Databáze může být distribuována na dalším serveru nebo přítomna na stejném stroji. Server tedy zajišťuje funkčnost REST API a při iniciální návštěvě klienta také poskytuje stránku, kterou si klient stáhne na své zařízení.
 
-Tím se distribuuje uživatelská část aplikace na samotná zařízení, která aplikaci zobrazují. Následkem je snížení nároků na serverovou část, která nyní obstarává pouze datovou a autentikační část SPA (vše uvnitř REST API). Jelikož je SPA z větší části uložena u uživatele, můžeme si dovolit při vývoji větší množství dat, které se při prvním načtění musejí stáhnout, protože se následně téměř žádná esenciální data nestahují (jsou tím myšlena např. data nutná pro vykreslení grafů).
+Tím se distribuuje uživatelská část aplikace na samotná zařízení, která aplikaci zobrazují. Následkem je snížení nároků na serverovou část, která nyní obstarává pouze datovou a autentikační část SPA (vše uvnitř REST API). Jelikož je SPA z větší části uložena u uživatele, můžeme si dovolit při vývoji větší množství dat, které se při prvním načtení musejí stáhnout, protože se následně téměř žádná esenciální data nestahují (jsou tím myšlena např. data nutná pro vykreslení grafů).
 
 Největší využití bude mít v aplikaci Dashboard (odtud i název aplikace), který bude obsahovat konfigurovatelné položky, aby si uživatel mohl Dashboard připravit přesně pro své potřeby. Dashboard je také vstupním bodem pro drill-down analýzu.
 
 \section{Případy užití}
-Před samotným návrhem architektury jsem sestavil tři případy užití, které budou opěrnými body pro NEMEA Dashboard. Tyto navržené případy zohledňují širokou škálu úkonů, které při běžném používání IDS mohou nastat.
+Před samotným návrhem architektury jsem sestavil čtyři případy užití, které budou opěrnými body pro NEMEA Dashboard. Tyto navržené případy zohledňují širokou škálu úkonů, které při běžném používání IDS mohou nastat.
 
-Jako cílovou skupinu jsem stanovil správce větších sítí. Ti totiž musí být informováni o globálním dění a nemohou se zaobírat menšími událostmi. Většinou jsou takovéto sítě stavěny velmi robustně a jsou dostatečně naddimenzovány. Nicméně i neúplné vítížení sítě může znamenat pro běžné uživatele nedostupnost některých služeb. Těmto výpadkům musí správce sítě předcházet a to zejména díky včasné analýze anomálií na síti.
+Jako cílovou skupinu jsem stanovil správce větších sítí. Ti totiž musí být informováni o globálním dění a nemohou se zaobírat menšími událostmi. Většinou jsou takovéto sítě stavěny velmi robustně a jsou dostatečně naddimenzovány. Nicméně i neúplné vytížení (zahlcení) sítě může znamenat pro běžné uživatele nedostupnost některých služeb. Těmto výpadkům musí správce sítě předcházet a to zejména díky včasné analýze anomálií na síti.
 
 \begin{description}
     \item \textit{Běžný přehled o síti a analýza provozu z několika posledních dní} \\
         Správce sítě musí mít přehled o síti, kterou spravuje. Chce být informován o celkovém počtu útoků, které detekoval systém NEMEA a ty následně uložil jako události v IDEA formátu do databáze. Správce nechce pročítat emailové reporty nebo ručně procházet jednotlivé záznamy.
     \item \textit{Detekce útoku většího rozsahu na síť} \\
-        Při běžné analýze sítě pomocí NEMEA Dashboard musí být útok většího rozsahu okamžitě vidět ve zobrazených datech. Většinou se takovýto útok nahlásí jako velké množství menších útoků. V tu chvíli je pro správce velmi těžké takový útok odhalit.
+        Při běžné analýze sítě pomocí NEMEA Dashboard musí být útok většího rozsahu okamžitě vidět ve zobrazených datech. Většinou se takovýto útok nahlásí jako velké množství menších útoků. V tu chvíli je pro správce velmi těžké takový útok odhalit, pokud data nebudou vizualizována.
     \item \textit{Analýza konkrétního útoku} \\
         Uživatele zaujal velmi nezvyklý útok/událost a chce o ní zjistit více. Postupně se dostává k detailnějším informacím pomocí drill-down analýzy. Na konci analýzy vidí přímo událost, která daný útok způsobila a může podniknout další kroky jako např. zjišťování informací o útočníkovi, o oběti, případně o charakteru útoku.
     \item \textit{Kontinuální přehled o síti} \\
@@ -580,7 +581,7 @@ Representational state transfer, zkráceně REST byl definován v roce 2000 v di
     \item \textit{Klient--server} \\
         Tento návrh architektury je nejzákladnějším stylem pro síťové aplikace. Server, nabízející sadu služeb, čeká na žádosti, které následně obslouží. Klient, který se snaží vykonat určitou činnost, posílá žádosti na server skrze předem definovanou cestu. Server žádost v případě nevalidního formátu odmítne, v kladném případě provede žádost a odešle odpověď zpět klientovi.
 
-        Tímto oddělením uživatelské části od serverové získává aplikace vyšší přenositelnost, škálovatelnost a nezávislost komponent. To dovoluje částečn separátní vývoj.
+        Tímto oddělením uživatelské části od serverové získává aplikace vyšší přenositelnost, škálovatelnost a nezávislost komponent. To dovoluje částečně separátní vývoj.
        
     \item \textit{Bezestavovost} \\
         Zřejmě nejdůležitějším aspektem REST API je bezestavová komunikace. Ta se zaručí tak, že každý dotaz, který je na API zaslán, obsahuje veškeré informace, které jsou potřebné pro porozumnění žádosti. Takto se klientovi zabrání využít jakéhokoliv kontextu, který by na serveru mohl být uchován.
@@ -591,20 +592,20 @@ Representational state transfer, zkráceně REST byl definován v roce 2000 v di
     \item \textit{Uniformní rozhraní} \\
         Uniformnost rozhraní je nejdůležitější vlastností REST architektury, která jej odlišuje od ostatních architektonických stylů návrhu jakým je například RPC\cite{restful}. Generalizací rozhraní vývojář získá velmi rychlý přehled o dostupných operací s API a jaké služby poskytují.
         
-        Aby rozhraní bylo uniformním, musí splňovat několik vlasností: identifikovatelnost zdrojů, manipulace se zdroji skrz reprezentaci, samopopisné zprávy a hypermédia jako jádro aplikačního stavu.
+        Aby rozhraní bylo uniformním, musí splňovat několik vlasností: identifikovatelnost zdrojů (jedna URL pro jeden zdroj), manipulace se zdroji skrz reprezentaci (používání podstatných jmen, ne sloves, při definování URL), samopopisné zprávy (pojménovávat přesně a srozumitelně) a hypermédia jako jádro aplikačního stavu.
 
     \item \textit{Vrstvený systém} \\
-        Aby se rozhraní dokázalo v čase přizpůsobovat potřebám vývojáře, je nutné navrhovat rozhraní vrtstveně. To jej dovoluje libovolně rozšiřovat jak do šířky, tak do hloubky. Pokud se na rozhraní díváme jako na jednotlivé komponenty, tak ty, díky vrstvení, nejsou schopné interagovat s dalšími vrstvami a tím pádem jinými komponentami. Z klientské strany to znamená interkaci vždy pouze s jediným zdrojem.
+        Aby se rozhraní dokázalo v čase přizpůsobovat potřebám vývojáře, je nutné navrhovat rozhraní vrstveně. To jej dovoluje libovolně rozšiřovat jak do šířky, tak do hloubky. Pokud se na rozhraní díváme jako na jednotlivé komponenty, tak ty, díky vrstvení, nejsou schopné interagovat s dalšími vrstvami a tím pádem jinými komponentami. Z klientské strany to znamená interkaci vždy pouze s jediným zdrojem.
         
 \end{description}
 
-Při aplikaci těchto ideí do návrhu REST API pro NEMEA Dashboard jsem narazil na několik problémů, které lze vyřešit kompromisy. Jde zejména o typ API, které jsem pro aplikaci navrhul. To totiž z většinové části data pouze získává (cca 95\%). Úprava či zápis dat se realizuje pouze v případě práce s uživateli nebo konfigurací dashboardu.
+Při aplikaci těchto ideí do návrhu REST API pro NEMEA Dashboard jsem narazil na několik problémů, které lze vyřešit kompromisy. Jde zejména o typ API, které jsem pro aplikaci navrhul. To totiž z většinové části data pouze získává (cca 70\%). Úprava či zápis dat se realizuje pouze v případě práce s uživateli nebo konfigurací dashboardu.
 
-Tím pádem z CRUD modelu využíváme pouze jednu část, kterou je čtení. Tato část je realizována pomocí HTTP požadavku \texttt{GET}. Ten, ačkoliv dle RFC 2616 \cite{rfc:http} může disponovat tělem zprávy, tělo zprávy většinou nepoužívá. Lépe řečeno jej většina webových serverů nepoužívá a tudíž by při návrhu bylo velmi nevhodnou praktikou toto chování implementovat. 
+Tím pádem z CRUD modelu (viz \ref{crud}) využíváme pouze jednu část, kterou je čtení. Tato část je realizována pomocí HTTP požadavku \texttt{GET}. Ten, ačkoliv dle RFC 2616 \cite{rfc:http} může disponovat tělem zprávy, tělo zprávy většinou nepoužívá. Lépe řečeno jej většina webových serverů nepoužívá a tudíž by při návrhu bylo velmi nevhodnou praktikou toto chování implementovat. 
 
 Tím pádem jsem při návrhu rozhraní zvolil kompromis mezi REST a RPC, který narozdíl od REST využívá URL parametrů. Tento kompromis dovoluje při návrhu architektury použít jedno uniformní rozhraní pro více typů dotazů. To, ačkoliv porušuje základní ideu REST architektury, velmi usnadní vývoj uživatelské části.
 
-Tento kompromis nerozděluje rozhraní dle získaných dat, ale dle typu dat, které uživatelské rozhraní získá. Rozdíl v sémantice dat je totiž daleko důležitějším měřítkem než struktura odeslané zprávy. Konkrétně jsem tento přístup zvolil u agregovaných dat, které jsou vyhodnocovány již na serveru při dotazování do databáze.
+Tento kompromis nerozděluje rozhraní dle sémantiky získaných dat, ale dle typu dat, které uživatelské rozhraní získá. Rozdíl v sémantice dat je totiž daleko důležitějším měřítkem než struktura odeslané zprávy. Konkrétně jsem tento přístup zvolil u agregovaných dat, které jsou vyhodnocovány již na serveru při dotazování do databáze.
 
 \section{GUI}
 
@@ -637,7 +638,7 @@ Prvním krokem při implementaci serverové části bylo vytvoření vývojovéh
 
 V pozdějších částech vývoje byla serverová část přesunuta na stejný server, kde byla umístěna databáze událostí, do které systém NEMEA ukládal události v reálném čase. Tento přesun byl nutný, abych otestoval přenositelnost serverové části na jiný stroj a díky tomu získal i databázi vyvíjející se v reálném čase.
 
-Instalace potřebných Python knihoven proběhla pomocí nástroje \texttt{pip}. Ty zahrnují zejména mikroframework Flask, jeho závislosti a konektor pro MongoDB pymongo. Všechny závislosti jsou uvedeny v příloze \ref{code:requirements} tak, jak jsou uvedeny v souboru \texttt{requirements.txt}, který využívá nástroj \texttt{pip} pro automatickou instalaci všech závislostí.
+Instalace potřebných Python knihoven proběhla pomocí nástroje \texttt{pip}. Ty zahrnují zejména mikroframework Flask, jeho závislosti a konektor pro MongoDB PyMongo. Všechny závislosti jsou uvedeny v příloze \ref{code:requirements} tak, jak jsou uvedeny v souboru \texttt{requirements.txt}, který využívá nástroj \texttt{pip} pro automatickou instalaci všech závislostí.
 
 \begin{figure}[ht]
 \lstset{basicstyle=\small,style=JSON}
@@ -659,13 +660,13 @@ Instalace potřebných Python knihoven proběhla pomocí nástroje \texttt{pip}.
 \label{code:api}
 \end{figure}
 
-V \note{listing} \ref{code:api} je naznačena struktura finálního REST API, která je velmi lehce rozšiřitelná, upravitelná a zejména pochopitelná.
+Ve výpisu \ref{code:api} je naznačena struktura finálního REST API, která je velmi lehce rozšiřitelná, upravitelná a zejména pochopitelná.
 
 Během vývoje API se několikrát měnila struktura koncových bodů, proto jsem zvolil verzování API pomocí URL, aby v budoucích případech mohlo API fungovat pro více verzí současně. Tuto část URL jsem pracovně nazval prefix verze.
 
 V době psaní této práce je API ve druhé verzi, která se od první verze liší zejména architektuálním typem, kterým je REST. V první verzi se API architekturou podobalo více RPC pouze s několika rysy REST.
 
-Za prefixem verze následuje funkcionální prefix. Ten v současném návrhu rozdluje API na dvě základní části. První část obsluhuje data událostí a je nazvána \texttt{/events}. Za URL \texttt{/v2/events} se nacházejí již jednotlivé koncové body API, ty jsou charakteristické zejména tím, že dovolují pouze jednu HTTP metodu, konkrétně \texttt{GET}.
+Za prefixem verze následuje funkcionální prefix. Ten v současném návrhu rozděluje API na dvě základní části. První část obsluhuje data událostí a je nazvána \texttt{/events}. Za URL \texttt{/v2/events} se nacházejí již jednotlivé koncové body API, ty jsou charakteristické zejména tím, že dovolují pouze jednu HTTP metodu, konkrétně \texttt{GET}.
 
 \begin{description}
     \item \texttt{/indexes} \\
@@ -673,13 +674,13 @@ Za prefixem verze následuje funkcionální prefix. Ten v současném návrhu ro
 
         Jak již URL napovídá, tento koncový bod pracuje s indexy v databázi. Prvně zkontroluje, zda požadované indexy v databázi existují a v případě existence vrátí nezměněný výstup z MongoDB obsahující informace o indexech.
 
-        V opačném případě pevně definované indexy (index pro seřazení databáze událostí dle klíče \texttt{DetectTime} a automatické mazání záznamů v kolekci \texttt{sessions}
+        V opačném případě pevně definované indexy (index pro seřazení databáze událostí dle klíče \texttt{DetectTime} a automatické mazání záznamů v kolekci \texttt{sessions} přidá do databáze.
         
     \item \texttt{/:n}\\
-        URL \texttt{/:n} znamená dynamickou URL, kde \texttt{n} je číslo od 1 do 10 000 a značí kolik událostí má být vyhledáno seřazených dle času\footnote{Čas se v databázi bude vždy odvozovat od hodnoty klíče \texttt{DetectTime}}. Tento limit je stanoven na serverové části, aby nedošlo k přetížení serveru, protože v případě čísla 0 by databáze navrátila všechny položky, což, v době psaní práce, je přibližně 5 GB textu.
+        URL \texttt{/:n} znamená dynamickou URL, kde \texttt{n} je číslo od 1 do 10 000 a značí kolik událostí má být vyhledáno seřazených dle času\footnote{Čas se v databázi bude vždy odvozovat od hodnoty klíče \texttt{DetectTime}}. Tento limit je stanoven na serverové části, aby nedošlo k přetížení serveru, protože v případě čísla 0 by databáze navrátila všechny položky, což, v době psaní práce, je přibližně 5 GB dat.
 
     \item \texttt{/query}\\
-        Tento koncový bod slouží pro pokládání předem specifikovaných dotazů do databáze. API nepřijímá konkrétní MongoDB dotaz, ale pevně mnou specifikovaná pole. Toto omezení je zejména kvůli bezpečnosti. 
+        Tento koncový bod slouží pro pokládání předem specifikovaných dotazů do databáze. API nepřijímá konkrétní MongoDB dotaz, ale pevně specifikovaná pole. Toto omezení je zejména kvůli bezpečnosti. 
 
     \item \texttt{/agg}\\
         V tomto bodě byl zejména využit agregační framework uvnitř MongoDB, který je optimalizovaný na práci s velkými daty. Slouží pro vypočítání časových intervalů a počtů položek v databázi uvnitř časových oken.
@@ -687,7 +688,7 @@ Za prefixem verze následuje funkcionální prefix. Ten v současném návrhu ro
         Agregační framework v MongoDB pracuje s projekcemi. Tzn. prvně se vyhledají položky splňující zadaná kritéria (běžný dotaz), ty jsou následně projektovány dle časového intervalu (změní se čas události na začátek intervalu). Nakonec jsou všechny události se stejným časem spočteny a ty tento výsledek je vrácen.
 
     \item \texttt{/top}\\
-        Slouží pro box typu \uv{TOP}. Ten vybírá z databáze událost, která obsahuje nejvyšší číslo \texttt{FlowCount} u každé z kategorií.
+        Slouží pro box typu \uv{TOP}. Ten vybírá z databáze událost, která obsahuje nejvyšší číslo \texttt{FlowCount} u každé z kategorií v určitém časovém okně.
 
     \item \texttt{/count}\\
         Box typu \uv{COUNT} pouze zobrazuje číslo reprezentující počet událostí, které splnily daná kritérie (časové okno a příp. kategorie).
@@ -710,13 +711,13 @@ Druhou částí API je práce s uživateli a jejich autentikace. O bezpečnosti 
         Poslední metodou je \texttt{DELETE}. Ta uživatele nenávratně smaže z databáze.
 
     \item \texttt{/auth}\\
-        Jediný koncový bod v API, který nevyžaduje autentikaci, protože pro ni slouží. Při dotazu na teto bod je metodou \texttt{POST} poslán přihlašovací email a heslo, dle kterých je uživatel v databázi ověřen.
+        Jediný koncový bod v API, který nevyžaduje autentikaci, protože pro ni slouží. Při dotazu na tento bod je metodou \texttt{POST} poslán přihlašovací email a heslo, dle kterých je uživatel v databázi ověřen.
 
         Ověření probíhá ve dvou úrovních, prvním je nalezení uživatele dle emailu a následně porovnání hash hodnoty poskytnutého hesla a hesla v databázi. Pokud jedna z těchto úrovní selže, API vrací HTTP odpověď typu \uv{401 Not Authorized}. Tuto chybu následně uživatelská část zpropaguje graficky uživateli.
 
         V případě úspěšného ověření je odpovědí JSON Web Token (zkráceně JWT)\cite{rfc:jwt}. O JWT více v sekci \ref{zabezpeceni}.
 
-    \item \texttt{/logout}
+    \item \texttt{/logout}\\
         Pro odhlášení uživatele slouží tento koncový bod. Ten, ačkoliv by to bylo možné, není zahrnut do koncového bodu \texttt{/auth} a to zejména kvůli bezpečnosti. Zde totiž využívám jedinou HTTP metodu \texttt{DELETE}, která v sobě nenese žádná data. Identifikace uživatele probíhá opět pomocí JWT.
 \end{description}
 
@@ -730,24 +731,24 @@ Prvotní návrhy byly velmi strohé, bez použití knihovny Angular Material. Ta
 
 Původní návrh počítal s návrhem, který byl orientovaný použe řádkově, tzn. prvně se přidala řada, do které se přidávaly jednotlivé boxy, které se automaticky přizpůsobily počtu boxů v řádce. To vytvářelo problémy hlavně pokud by uživatel chtěl box přesunout. Navíc se tento návrh nepřizpůsoboval obsahu a vznikal tak problém se zobrazováním grafů, které velmi často přetékaly mimo box.
 
-Pro další práci se tedy zvolila již existující knihovna Gridster\footnote{\url{https://gridsterurl.com}}, která dovoluje vytvořit komplexní systém mřížky a je velmi dobře konfigurovatelna. Knihovna Gridster má navíc implementaci přímo pro AngularJS, tzn. direktivy, které lze okamžitě použít v šabloně stránky a následně v kontroléru vše spravovat (např. registrace k událostem vyvolané v pohledu po přesunu položky).
+Pro další práci se tedy zvolila již existující knihovna Gridster\footnote{\url{http://gridster.net}}, která dovoluje vytvořit komplexní systém mřížky a je velmi dobře konfigurovatelná. Knihovna Gridster má navíc implementaci přímo pro AngularJS, tzn. direktivy, které lze okamžitě použít v šabloně stránky a následně v kontroléru vše spravovat (např. registrace k událostem vyvolané v pohledu po přesunu položky).
 
 Gridster je velmi flexibilním systémem pro tvorbu mřížek. Je založen na minimální, pevně stanovené velikosti jednoho bloku, od kterého se odvíjí velikost boxu v jeho násobcích. Boxu lze následně tahem myši měnit velikost tak, jak je zvykem u běžného desktopového okna. Jediným rozdílem je, že velikost je měněna v násobcích jednoto bloku. Tato velikost je odvozena od výšky nebo šířky jednoho řádku, nebo vypočítána z počtu sloupců. V případě NEMEA Dashboard byla výška řádku stanovena experimetálně na 170 pixelů a 8 řádků. To nám dovoluje dostatečně flexibilní rozložení boxů a zároveň určitou jistotu při návrhu jednotlivých typů boxů.
 
 Pokud uživatel chce přesunout box na jiné místo, Gridster disponuje podporou pro \uv{drag and drop} funkcionalitu. Ta je ještě vylepšena v rámci NEMEA Dashboard o zvýraznění cílového místa, aby uživatel nebyl z počátku překvapen, proč se jednotlivé boxy \uv{samy hýbou}.
 
-Při návrhu jsem opomněl výběr knihovny pro vykreslování grafů. Ta během různých experimentů s několika nejrozšířenějšími knihovnami (Google Charts, HighCharts.js, D3, NVD3 a další) byla velmi promptně vybrána. Zvolil jsem implementaci NVD3 knihovny pro AngularJS (angular-nvd3) a to zejména kvůli jednoduchosti použití, široké škále nastavení a předchozím zkušenostem s touto knihovnou. NVD3 je pouhou obálkou pro knihovnu D3, která je koncipována pro vykreslování jakéhokoliv typu dat v prohlížeči. To sebou nese vysokou flexibilitu, ale zároveň i velmi složitou tvorbu složitějších konstrukcích jakou jsou např. interaktivní grafy.
+Při návrhu jsem opomněl výběr knihovny pro vykreslování grafů. Ta během různých experimentů s několika nejrozšířenějšími knihovnami (Google Charts, HighCharts.js, D3, NVD3 a další) byla velmi promptně vybrána. Zvolil jsem implementaci NVD3 knihovny pro AngularJS (angular-nvd3\footnote{\url{http://krispo.github.io/angular-nvd3/}}) a to zejména kvůli jednoduchosti použití, široké škále nastavení a předchozím zkušenostem s touto knihovnou. NVD3 je pouhou obálkou pro knihovnu D3, která je koncipována pro vykreslování jakéhokoliv typu dat v prohlížeči. To sebou nese vysokou flexibilitu, ale zároveň i velmi složitou tvorbu složitějších konstrukcích jakou jsou např. interaktivní grafy.
 
 Jak již při návrhu bylo naznačeno, pro Dashboard se navrhli 4 základní typy grafů, které jsou pracovně nazvány následovně:
 
 \begin{itemize}
     \item top -- událost s nejvyšší hodnotou \texttt{FlowCount} pro každou kategorii,
     \item sum -- počet událostí dané kategorie nebo celkový počet všech událostí v daném čase,
-    \item piechart -- koláčkový graf zobrazující podíly událostí dle zadané metriky,
+    \item piechart -- koláčový graf zobrazující podíly událostí dle zadané metriky,
     \item barchart -- sloupcový graf pro zobrazení událostí agregovaných dle stanoveného časového intervalu.
 \end{itemize}
 
-Pro poslední dva bylo využito grafového knihovny NVD3 a jejich výsledná podoba je znázorně v obrázku \ref{fig:boxes} ve stejném pořadí jako jsou vypsány výše.
+Pro poslední dva typy bylo využito grafové knihovny NVD3 a jejich výsledná podoba je znázorněna v obrázku \ref{fig:boxes} ve stejném pořadí jako jsou vypsány výše.
 
 \begin{figure}[ht]
     \centering
@@ -762,12 +763,12 @@ Posledním společným prvkem je menu, které nabízí dvě položky. Editaci a 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.3\textwidth]{fig/box_menu.png}
-    \caption{Kontextové menu přítomné u každého boxu.} \label{fig:boxes}
+    \caption{Kontextové menu přítomné u každého boxu.} \label{fig:box_menu}
 \end{figure}
 
 Při konfiguraci boxu se dynamicky mění obsah formuláře, kterým je vše nastavováno. Ten je realizován jako vyskakovací okno v rámci stránky\footnote{angl. lightbox}. Těchto kombinací je větší množství a proto uvedu pouze ukázkový příklad.
 
-Při přidání nového boxu máme v dashboardu pouze obálku pro námi definovaný obsah. Uživatel tedy klikne na kontextové menu boxu a zvolí položku \uv{Edit}. Zde je pouze předem definovaný titulek \uv{New Box}, u kterého lze změnu vidět v reálném čase. Následně zvolí typ boxu, v případě typu \uv{top} má poté na výběr pouze časový interval, ve kterém se mají události hledat. V ostatních případech vybírá metriku (buď předdefinovanou, nebo vlastní) , dle které se výsledky agregují. Uživatel v našem případě zvolí typ \uv{piechart}, který má možnosti filtrování vyhledaných událostí. Jelikož se záznamem události v MongoDB pracuje téměř totožně jako s formátem JSON, můžeme použít tečkovou notaci pro přístup k jednotlivým hodnotám. Ve filtru volíme klíč a hodnotu, dle které se výsledek filtruje. V tomto případě, který je znázorněný na obrázku \ref{fig:box_edit}, filtrujeme události pouze z HostStats, což je sbírka modulů \note{zjistit co to přesně je}.
+Při přidání nového boxu máme v dashboardu pouze obálku pro námi definovaný obsah. Uživatel tedy klikne na kontextové menu boxu a zvolí položku \uv{Edit}. Zde je pouze předem definovaný titulek \uv{New Box}, u kterého lze změnu vidět v reálném čase. Následně zvolí typ boxu, v případě typu \uv{top} má poté na výběr pouze časový interval, ve kterém se mají události hledat. V ostatních případech vybírá metriku (buď předdefinovanou, nebo vlastní) , dle které se výsledky agregují. Uživatel v našem případě zvolí typ \uv{piechart}, který má možnosti filtrování vyhledaných událostí. Jelikož se záznamem události v MongoDB pracuje téměř totožně jako s formátem JSON, můžeme použít tečkovou notaci pro přístup k jednotlivým hodnotám. Ve filtru volíme klíč a hodnotu, dle které se výsledek filtruje. V tomto případě, který je znázorněný na obrázku \ref{fig:box_edit}, filtrujeme události pouze z HostStats, což je modul v NEMEA systému.
 
 Posledními možnostmi je nastavení časového okna, ve kterém se událostí mají hledat a textový popisek daného grafu. Poté uživatel klikne na tlačítko \uv{Save} a nastavení se uloží. To spustí rutinu v kontroléru, která pomocí modelu zašle dotaz na API s danými parametry a načte data do nově nakonfigurovaného boxu a vykreslí graf jakmile budou data přítomna u uživatele. Mezitím se v boxu zobrazí nápisek \uv{loading\ldots}.
 
@@ -779,9 +780,9 @@ Pokud uživatel klikne na \uv{Cancel}, box se navrátí do původní konfigurace
     \caption{Editační okno boxu.} \label{fig:box_edit}
 \end{figure}
 
-Takto je možné nakonfigurovat jakýkoliv box v dasboardu, nicméně během vývoje vznikl na požadavek existence více instancí dashboardu, každá s vlastními boxy a nastavením. Na tento požadavek jsem promptně reagoval a byl vytvořen následující systém upravený s ohledem na definové případy užití.
+Takto je možné nakonfigurovat jakýkoliv box v dasboardu, nicméně během vývoje vznikl požadavek na existenci více instancí dashboardu, každá s vlastními boxy a nastavením. Na tento požadavek jsem promptně reagoval a byl vytvořen následující systém upravený s ohledem na definové případy užití.
 
-Dashboard je realizován jako jednotlivé pohledy na data, které se uživatel sám specifikuje. Každý takový pohled se chová a vypadá jako jeden dashboard a může mezi nima libovolně přecházet. Každý tento pohled má navíc vlastní konfiguraci, ta je dostupná přes kontextové menu pohledu, které se nachází v pravém dolním rohu.
+Dashboard je realizován jako jednotlivé pohledy na data, které si uživatel sám specifikuje. Každý takový pohled se chová a vypadá jako jeden dashboard a může mezi nimi libovolně přecházet. Každý tento pohled má navíc vlastní konfiguraci. Ta je dostupná přes kontextové menu pohledu, které se nachází v pravém dolním rohu s následujícími položkami:
 
 \begin{description}
     \item Add item \\
@@ -791,9 +792,11 @@ Dashboard je realizován jako jednotlivé pohledy na data, které se uživatel s
         Během vývoje dashboardu jsem implementoval dočasnou paměť pro načtená data z REST API, aby se s dashboardem mohlo pracovat offline nebo na nestabilním internetovém připojení. Tato funkcionalita je realizována pomocí lokálního uložiště v prohlížeči (local storage). Pokud si uživatel přeje aktualizovat data, použije toto tlačítko. 
 
     \item Enable autorefresh \\
-        Další funkcionalita, která byla přidána během vývoje jako reakce na požadavek kontinuálního obnovování dat v současném pohledu. Interval obnovení dat nastavitelný pro každý pohled.
+        Další funkcionalita, která byla přidána během vývoje jako reakce na požadavek kontinuálního obnovování dat v současném pohledu. Interval obnovení dat je nastavitelný pro každý pohled.
+
     \item Dashboard settings \\
         Zobrazí vyskakovací okno podobné tomu u boxu. V tomto okně si uživatel může nastavit obnovovací interval, název pohledu a pohled případně smazat.
+        
     \item Enable grid\\
         Během používání dashboardu se uživatelům často stávalo, že si náhodně posunuli s boxem a tím se jim celá mřížka, kterou pečlivě organizovali, přeskládala na nepoužitelnou variantu. Tato možnost vypíná nebo zapíná (záleží na předešlém stavu) \uv{drag and drop} funkcionalitu a změnu velikosti boxu.
 \end{description}
@@ -814,7 +817,7 @@ Každá událost v tabulce je rozkliknutelná. Po kliknutí jsou zobrazeny důle
 
 Poslední možností je zobrazení detailů o dané události. Tato možnost uživatele přesune na novou stránku, kde vidí celý záznam události tak, jak je uložený v databázi s jediným rozdílem. JSON je formátován a přehledně zobrazen jako HTML elementy, aby byl jednoduše čitelný.
 
-Další experimentální funkcionalitou na této stránce je geolokace IP adres v události. S touto funkcionalitou se teprve experimentuje a není v době psaní této práce jisté, že zůstane zachována.
+Další experimentální funkcionalitou na této stránce je geolokace IP adres v události. S touto funkcionalitou se teprve experimentuje a není v době psaní této práce jisté, zda zůstane zachována.
 
 Poslední částí je běžná správa uživatelů a svého uživatelského účtu. Tato část dovoluje přidávát, měnit a mazat uživatele, stejně tak vlastní účet.
 
@@ -824,11 +827,11 @@ Všechny stránky uživatelské části jsou zachyceny v příloze \ref{screens}
 \section{Zabezpečení}
 \label{zabezpeceni}
 
-Jelikož NEMEA Dashboard pracuje s velmi citlivými daty je nutné tyto data dobře zabezpečit. To zejména znamená zabezpečení REST API. To je realizováno pomocí JSON Web Token.
+Jelikož NEMEA Dashboard pracuje s velmi citlivými daty je nutné tyto data dobře zabezpečit. To zejména znamená zabezpečení REST API, které je realizováno pomocí JSON Web Token.
 
 JWT je otevřený standard definový RFC 7519 \cite{rfc:jwt}. Ten jej popisuje jako kompaktní, bezpečný pro URL způsob reprezentace prostředků, které se sdílejí mezi dvěma zdroji.
 
-Z hlediska programátora je důležité, že je velmi kompaktní, využívá totiž velmi úspornou metodu hashování HS256, která je zároveň bezpečná (podporuje i další typy). Každý JWT se skládá ze tří částí, každá oddělená tečkou. První částí je hlavička, která obsahuje informace o hashovacím algoritmu a typu tokenu.
+Z hlediska programátora je důležité, že je velmi kompaktní, využívá totiž velmi úspornou metodu hashování HS256 (HMAC + SHA-256), která je zároveň bezpečná (podporuje i další typy). Každý JWT se skládá ze tří částí, každá oddělená tečkou. První částí je hlavička, která obsahuje informace o hashovacím algoritmu a typu tokenu.
 
 Druhou částí je samotný payload (námi definovaný obsah) a třetí částí je signatura. Ta vezme hlavičku, obsah (ty jsou zakódovány base64 algoritmem), tajný klíč (secret key) a algoritmus specifikovaný v hlavičce a výsledný token podepíše.
 
