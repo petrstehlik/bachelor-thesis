@@ -25,62 +25,9 @@ Aplikace bude integrována do současného NEMEA systému pod názvem NEMEA Dash
 
 V~rozlehlejších sítích, jako je např. páteřní či firemní síť, je téměř nutností monitorovat a analyzovat provoz na síti, abychom byli informování o~jejím aktuálním stavu, vytížení a zejména negativních vlivech na monitorovanou síť. Samozřejmě i sítě menšího rozsahu by měly být monitorované. Pokud se v~malé firmě podaří útočníkovi infiltrovat síť, výsledky útoku mohou být pro firmu likvidační.
 
-Systém pro odhalení průniku (anglicky \uv{Intrusion Detection System}, zkráceně IDS)~\cite{idsips} je takový systém, který analyzuje a identifikuje ze zachyceného provozu podezřelé události. Tyto události může IDS dále klasifikovat. IDS může být dvojího typu. 
+V současné době se provoz analyzuje po tocích, což jsou jednotlivé pakety agregované podle společných metrik a tento záznam je dále zpracováván. To šetří výpočetní výkon a nároky na datový prostor.
 
-Prvním typem je detekce anomálií, který má výhodu v~možnosti detekce jak známých, tak neznámých útoků. Nevýhodou je, že často může označit normální provoz za útok. Tomu se snaží předejít učením a tvorbou datové sady pro rozpoznání škodlivého provozu.
-
-Druhým typem IDS je detekce založená na pravidlech. Tato pravidla jsou pevně daná a systém pouze porovnává síťový provoz s~danými pravidly. Nevýhodou takového systému je neschopnost detekce neznámých útoků. Některé IDS kombinují oba přístupy a tvoří tak hybdridní IDS, který je založen jak na pravidlech, tak na automatické detekci anomálií.
-
-Systém prevence průniku (anglicky \uv{Intrusion Prevention System}, neboli IPS)~\cite{idsips} je narozdíl od IDS aktivním prvkem v~počítačové síti. Nejen že detekuje útoky na síť, ale navíc je aktivně blokuje, případně odklání na speciální uzel v~síti pro hlubší analýzu útoku.
-
-\section{NEMEA}
-
-Network Measurements Analysis, zkráceně NEMEA, je systém, který umožňuje vytvořit komplexní nástroj pro automatizovanou analýzu toků získaných ze síťového monitoringu v~reálném čase. Systém NEMEA je zejména monitorovacím nástrojem, ale slouží také jako IDS.
-
-Systém se skládá z~oddělených stavebních bloků nazývané moduly. Tyto jednotlivé moduly jsou následně propojeny pomocí rozhraní TRAP.
-
-Moduly jsou nezávislé pracovní jednotky, které obecně přijímají proud dat na svých vstupech, zpracují či zanalyzují daná data a následně je odešlou ze svých výstupních rozhraní jako proud dat pro další moduly. Modul může například tvořit statistiky o~přijatých datech a na základě těchto statistik detekovat určité typy síťového útoku. Detekovaný útok je popsán datovým záznamem, který je odeslán přes výstupní rozhraní dalším modulům, které s~daným záznamem dále pracují, např. jej uloží v~IDEA formátu (viz sekce \ref{sec:idea}) do databáze nebo ze získaných statistik detekují anomálie v~síťovém provozu a dokáží tak jednotlivé pokusy od jednoho útočníka agregovat a zpracovat jej jako jediný útok skládající se z~několika desítek až stovek pokusů o~útok v~delším časovém intervalu a administrátor sítě by je snadno přehlédl nebo ignoroval, pokud by nebyly agregované.
-
-Jednotlivé moduly se většinou zaměřují na konkrétní typ událostí, případně činnosti. Jejich spojením je možné získat nástroj pro komplexní detekci a analýzu síťových dat schopný detekovat a identifikovat útoky na monitorovanou síť, který následně detekované události uloží do databáze a webová aplikace, kterou v~této práci navrhuji, uložené útoky zobrazí.
-
-NEMEA je také schopná přístupu \uv{store-and-ex-post}, který lze vidět na obrázku \ref{fig:nemea-schema}. Jsou zde dva moduly spojené jedním rozhraním. První modul čte záznamy toků ze souboru a druhý modul počítá statistiky o~těchto přečtených tocích. Tento přístup je charakteristický tím jak nakládá se síťovými daty. Ty prvně uloží a až poté začíná systém s~analýzou uložených síťových dat.
-
-Oproti proudovému zpracování síťových dat je tento systém náročnější na prostor pro uložení dat, ale analýza je přesnější a méně náročná na výkon stroje, zejména v~případě pokročilejší analýzy. V~případě proudového zpracování dat jsou kladeny velké nároky na operační paměť, pokud chceme analyzovat dlouhé časové rámce.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{fig/nemea-basic.pdf}
-    \caption{Minimální příklad NEMEA systému obsahující pouze dva moduly.} \label{fig:nemea-schema}
-  
-\end{figure}
-
-Z~takovýchto základních bloků lze postavit i velmi komplexní systém jak je vidět na obrázku \ref{fig:nemea-example-2}, kde jsou data přijímána v~reálném čase z~IPFIX\cite{ipfix} kolektoru. Data jsou předzpracována, analyzována několika algoritmy a následně jsou nahlášeny detekované události. Každá z~těchto úloh je jeden modul, který může být znovu použitý na několika různých místech.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=1\textwidth]{fig/nemea-example-2-cz.eps}
-    \caption{Příklad propojení modulů NEMEA systému, který shromažďuje síťová data, detekuje anomálie a útoky a následně události ukládá a reportuje.} \label{fig:nemea-example-2}
-  
-\end{figure}
-
-
-%\subsection*{Hlavní komponenty}
-
-\subsection{Modul}
-
-Každý modul je samostatný program nezávislý na ostatních. To sice zvyšuje nároky na systém, ale dovoluje větší variabilitu při návrhu modulu. Ten je, díky tomuto návrhu, možno naprogramovat v~libovolném jazyce\footnote{V současné době jsou moduly programovány v~jazycích C, C++ a Python.}, sledovat a řídit spotřebu zdrojů každého modulu zvlášť a zejména, v~případě nefungujícího modulu, se celý systém NEMEA dokáže zotavit z~chyby bez problémů. 
-
-Modulární systém navíc dovoluje přidávat a odebírat jednotlivé moduly za běhu, což je v~produkčním prostředí jedna ze základních vlastnostní kvalitního monitorovacího systému. Pro tyto účely slouží nástroj nazvaný NEMEA Supervisor.
-
-Při zapojení a startu nového modulu se modul periodicky snaží připojit na definované rozhraní. Pokusy o~spojení jsou sledovány NEMEA Supervisorem, kterým lze spravovat všechny moduly v~systému a pokud se modulu nepodaří po několika pokusech připojit na rozhraní, je modul ukončen.
-
-\subsection{Rozhraní}
-
-Všechny rozhraní jsou výhradně jednocestná a přenos dat je realizován formou jednotlivých záznamů. Všechny záznamy poslané přes jedno konkrétní rozhraní mají vždy stejný formát, nicméně mezi rozhraními se formát může lišit. 
-
-Protokol pro dynamickou tvorbu formátu je nazván UniRec. Ten specifikuje nejen formát záznamu, ale také jak záznam vytvořit a jak zpracovat -- implementuje formát pro binární reprezentaci síťového záznamu.
-
-Pro tvorbu rozhraní je vytvořena sdílená knihovna libtrap, která využívá Traffic Analysis Platform (zkráceně TRAP) pro komunikaci mezi různými rozhraními a tyto rozhraní využívají protokolu UniRec.
+Systém pro odhalení průniku (anglicky \uv{Intrusion Detection System}, zkráceně IDS)~\cite{idsips} je takový systém, který analyzuje a identifikuje ze zachyceného provozu podezřelé události. Tyto události může IDS dále klasifikovat. 
 
 \section{IDEA}
 \label{sec:idea}
@@ -128,6 +75,26 @@ Vzorový záznam generovaný systémem NEMEA je vyobrazený ve výpisu \ref{code
 \end{figure}
 
 \newpage
+
+\section{NEMEA}
+
+Network Measurements Analysis (zkráceně NEMEA), je systém, který umožňuje vytvořit komplexní nástroj pro automatizovanou analýzu toků získaných ze síťového monitoringu v~reálném čase. Systém NEMEA je zejména monitorovacím nástrojem, ale slouží také jako IDS.
+
+Systém se skládá z~oddělených stavebních bloků nazývané moduly. Tyto jednotlivé moduly jsou následně propojeny pomocí rozhraní TRAP. Moduly jsou nezávislé pracovní jednotky, které obecně přijímají proud dat na svých vstupech, zpracují či zanalyzují daná data a následně je odešlou ze svých výstupních rozhraní jako proud dat pro další moduly. 
+
+Modul může například tvořit statistiky o~přijatých datech a na základě těchto statistik detekovat určité typy síťového útoku. Detekovaný útok je popsán datovým záznamem, který je odeslán přes výstupní rozhraní dalším modulům, které s~daným záznamem dále pracují, např. jej uloží v~IDEA formátu (viz sekce \ref{sec:idea}) do databáze nebo ze získaných statistik detekují anomálie v~síťovém provozu a dokáží tak jednotlivé pokusy od jednoho útočníka agregovat a zpracovat jej jako jediný útok skládající se z~několika desítek až stovek pokusů o~útok v~delším časovém intervalu a administrátor sítě by je snadno přehlédl nebo ignoroval, pokud by nebyly agregované.
+
+Z~těchto bloků lze postavit i velmi komplexní systém jak je vidět na obrázku \ref{fig:nemea-example-2}, kde jsou data přijímána v~reálném čase z~IPFIX\cite{ipfix} kolektoru. Data jsou předzpracována, analyzována několika algoritmy a následně jsou nahlášeny detekované události. Každá z~těchto úloh je jeden modul, který může být znovu použitý na několika různých místech.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{fig/nemea-example-2-cz.eps}
+    \caption{Příklad propojení modulů NEMEA systému, který shromažďuje síťová data, detekuje anomálie a útoky a následně události ukládá a reportuje.} \label{fig:nemea-example-2}
+  
+\end{figure}
+
+
+%\subsection*{Hlavní komponenty}
 
 \section{Další monitorovací systémy}
 
@@ -837,8 +804,11 @@ Pro práci s~autentizací uživatele na serverové části byla vytvořena vlast
 
 Celý autentikační proces je znázorněn v~obrázku \ref{fig:auth}, který jej i názorně popisuje. Pouze doplním, že uživatelská část obsahuje interceptor, který hledá odpovědi od serveru s~HTTP statusem 401 Not Authorized. V~případě zaznamenání tohoto statusu je uživatel okamžitě přesměrován na stránku pro přihlášení.
 
-
-\note{flow diagram jak probíhá autentizace -- stejné jako voip volání}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.35\textwidth]{fig/auth_flow.pdf}
+    \caption{Kontextové menu pohledu.} \label{fig:auth}
+\end{figure}
 
 \section{Shrnutí}
 
@@ -848,7 +818,8 @@ Z~původního návrhu architektury API se změnilo pouze několik málo detailů
 
 Architektura uživatelské části zůstala zachována, pouze s~několika rozšířeními jako jsou správa uživatelů a různé pohledy na data v~rámci dashboardu.
 
-
+\chapter{Testování}
+\note{něco vymyslet o testování}
 
 \chapter{Závěr}
 
