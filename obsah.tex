@@ -145,28 +145,30 @@ S~přesunem logiky na uživatelskou část SPA jsou ale spojeny nemalé problém
 
 \section{Uživatelská část}
 
-K~vytvoření SPA a zejména uživatelské části existuje několik významných systémů. V~této části si tyto technologie představíme a porovnáme mezi sebou. Nejdůležitější částí je JavaScriptový framework, který bude nejčastěji interagovat s~uživatelem. Další nedílnou součástí je knihovna pro HTML/CSS, která bude definovat vzhled aplikace.
+K~vytvoření SPA a zejména uživatelské části existuje několik významných systémů. V~této části tyto technologie budou představeny a porovnány mezi sebou. Nejdůležitější částí je JavaScriptový framework, se kterým bude interagovat uživatel. Další nedílnou součástí je knihovna pro HTML/CSS definující vzhled aplikace.
 
 \subsection{JavaScriptové frameworky}
 
-Bylo vybráno 5 JavaScript frameworků, které napomáhají k~tvorbě SPA. Kritéria užšího výběru frameworků byla zejména následující:
+V rámci této práce bylo vybráno 5 JavaScript frameworků, které napomáhají k~tvorbě SPA. Kritéria užšího výběru frameworků byla zejména následující:
 
 \begin{itemize}  
-\item open-source projekt s~MIT nebo BSD licencí,
+\item open-source projekt s~licencí pro volné použití,
 \item jednoduché použití,
-\item relativně nenáročný na výpočetní výkon hostitelského stroje,
+\item nenáročný na výpočetní výkon hostitelského stroje,
 \item široká podpora mezi prohlížeči,
-\item projekt má určitou historii a je udržován některou ze známých společností (udržitelnost vývoje).
+\item projekt má historii a je vyvíjen některou ze známých společností (udržitelnost vývoje).
 \end{itemize}
 
 \subsubsection*{React~\cite{react}}
-Framework React je vyvíjen pod hlavičkou společnosti Facebook. Původním cílem návrhářů Reactu bylo vyřešit problémy během vývoje komplexních uživatelských rozhraní s~rychle měnícími se daty. Dalším cílem bylo vytvořit framework, který lze distribuovat v~takovém měřítku jako je Facebook.
+Knihovna React je vyvíjena pod hlavičkou společnosti Facebook. Původním cílem návrhářů Reactu bylo vyřešit problémy během vývoje komplexních uživatelských rozhraní s~rychle měnícími se daty. Dalším cílem bylo vytvořit platformu, kterou lze distribuovat v~takovém měřítku jako je Facebook.
 
-React je framework pro uživatelskou část SPA používající tradiční MVC architekturu. Taková architektura je nejvíce znatelná v~případě použití obousměrného vázání dat (anglicky two-way data binding), více v~sekci \ref{sec:mvc}.
+React je knihovna pro uživatelskou část SPA používající tradiční MVC architekturu~\cite{mvc}. Taková architektura je nejvíce znatelná v~případě použití obousměrného vázání dat (anglicky two-way data binding), více v~sekci \ref{sec:mvc}.
 
-React se zaměřuje zejména na tvorbu UI, z~pohledu architektury pohledová část (view), a kvůli tomu se ostatním částem architektury nevěnuje tak detailně, jak by většinu času vývojář potřeboval. Velmi častým řešením je použít React na pohledovou část a na model a kontrolér použít jiný framework, např. AngularJS.
+React se zaměřuje zejména na tvorbu uživatelského rozhraní\footnote{Z~pohledu MVC architektury na pohledovou část (angl. view).} a kvůli tomu se ostatním částem architektury nevěnuje tak detailně, jak by většinu času vývojář potřeboval. Velmi častým řešením je použít React na pohledovou část a na model a kontrolér použít jiný framework, např. AngularJS.
 
-React pracuje s~moderními přístupy k~vývoji SPA a boří tak mnoho zažitých technik jak takovou SPA vyvíjet. Místo běžné manipulace s~DOM elementy si React, případně vývojář, definuje vlastní DOM elementy, kterým přídává vlastnosti, váže na ně data a manipuluje s~nimi bez větších výkonových ztrát. Toho docílil zejména použitím tzv. shadow DOM~\cite{shadowdom}, který je ale novinkou na poli prohlížečů a je podporován pouze jádrem WebKit. 
+React pracuje s~moderními přístupy k~vývoji SPA a boří tak mnoho zažitých technik jak takovou SPA vyvíjet. Místo běžné manipulace s~DOM elementy si React, případně vývojář, definuje vlastní DOM\footnote{Angl. Document Object Model je konvence pro objektovou reprezentaci a interakci s objekty v HTML dokumentu.} elementy.
+
+Těmto elementům dynamicky mění jejich obsah, manipuluje s nimi a to bez větších výkonových ztrát. Toho docílil zejména použitím tzv. shadow DOM~\cite{shadowdom}, který je ale novinkou na poli prohlížečů a je podporován pouze jádrem WebKit\footnote{Využívá jej např. prohlížeč Google Chrome nebo Safari.}. 
 
 %Pokud není shadow DOM dostupný, používá React standardní DOM, se kterým je sice vykreslování pomalejší, ale stále velmi rychlé. 
 
@@ -179,9 +181,9 @@ var HelloMessage = React.createClass({
     }
 });
 
-ReactDOM.render(<HelloMessage name="John" />, mountNode);
+ReactDOM.render(<HelloMessage name="World" />, mountNode);
 \end{lstlisting}
-\captionof{lstlisting}{\uv{Hello World} příklad v~jazyku JSX, který do stránky vykreslí text \uv{Hello John}.}
+\captionof{lstlisting}{\uv{Hello World} příklad v~jazyku JSX, který do stránky vykreslí text \uv{Hello World}.}
 \label{code:react}
 \end{figure}
 
@@ -189,45 +191,45 @@ Pro názornou ukázku, jak framework React funguje, je ve výpise \ref{code:reac
 
 \subsubsection*{Ember.js}
 
-Ember.js je primárně zaměřen na tvorbu SPA. Toho dosahuje zejména používáním zažitých praktik v~rámci komunity vývojářů, širokou funkcionalitou bez nutnosti instalace dalších doplňků a osvědčil se i vysokou stabilitou během celé doby vývoje. Ember je také vždy jedním z~prvních frameworků, který implementuje novinky obsažené v~nových jádrech webových prohlížečů jako jsou např. JavaScript Promises~\cite{jspromises}, Web Components~\cite{webcomponents} nebo ES6 syntaxe.
+Ember.js je primárně zaměřen na tvorbu SPA. Toho dosahuje obsáhlou funkcionalitou bez nutnosti instalace dalších doplňků a osvědčil se i vysokou stabilitou během celé doby vývoje. Ember je také vždy jedním z~prvních frameworků, který implementuje novinky obsažené v~nových jádrech webových prohlížečů jako jsou např. JavaScript Promises~\cite{jspromises}, Web Components~\cite{webcomponents} nebo ES6 syntaxe.
 
-Ember se skládá celkem z~pěti klíčových konceptů. Jejich názvy jsou ponechány anglicky pro větší názornost.
+Ember se skládá celkem z~pěti klíčových konceptů:
 
 \begin{itemize}  
-    \item {\bf Routes} -- každý stav aplikace je reprezentován unikátní cestou a této cestě náleží i odpovídající objekt, který manipuluje s~danou cestou.
-    \item {\bf Models} -- každá cesta má svůj korespondující model, který obsahuje data asociována s~danou cestou a stavem aplikace. Model slouží zejména k~manipulaci s~daty.
-    \item {\bf Templates} -- šablony jsou tvořeny v~HTML s~použitím šablonovacího jazyka HTMLBars~\cite{htmlbars}.
-    \item {\bf Components} -- komponenta je vlastní HTML značka definovaná programátorem aplikace. Její chování je implementováno pomocí JavaScriptu a její vzhled pomocí HTMLBars šablon. Komponenta se chová jako běžný DOM element.
-    \item {\bf Services} -- servis je singleton objekt, který v~sobě udržuje dlouhodobá data během používání aplikace klientem.
+    \item {\bf Cesty} (angl. routes) -- každý stav aplikace je reprezentován unikátní cestou a této cestě náleží i odpovídající objekt, který manipuluje s~danou cestou.
+    \item {\bf Modely} (angl. models) -- každá cesta má svůj korespondující model, který obsahuje data asociována s~danou cestou a stavem aplikace. Model slouží zejména k~manipulaci s~daty.
+    \item {\bf Šablony} (angl. templates) -- šablony jsou tvořeny v~HTML s~použitím šablonovacího jazyka HTMLBars~\cite{htmlbars}. Do této šablony jsou při vykreslování stránky dynamicky navázány na proměnné v JavaScript kódu Ember.js. 
+    \item {\bf Komponenty} (angl. components) -- komponenta je vlastní HTML značka definovaná programátorem aplikace. Její chování je implementováno pomocí JavaScriptu a její vzhled pomocí HTMLBars šablon. Komponenta se chová jako běžný DOM element.
+    \item {\bf Služby} (angl. services) -- servis je singleton\footnote{Během doby běhu aplikace lze vytvořit pouze jednu instanci třídy.} objekt, který v~sobě udržuje dlouhodobá data během používání aplikace klientem.
 \end{itemize}
 
 \subsubsection*{AngularJS}
 
-AngularJS je jedním z~nejdéle existujících frameworků pro tvorbu SPA. Je udržován společností Google a poskytuje ucelené prostředí k~vývoji komplexních SPA. AngularJS poskytuje dvě metodiky návrhu architektury aplikace. MVC a MVVM (model-view-viewmodel)~\cite{mvvm}.
+AngularJS je jedním z~nejdéle existujících frameworků pro tvorbu SPA. Je vyvíjen společností Google a poskytuje ucelené prostředí k~vývoji komplexních SPA. AngularJS poskytuje dvě metodiky návrhu architektury aplikace. MVC a MVVM (model-view-viewmodel)~\cite{mvvm}.
 
-MVVM je rozdílný zejména ve způsobu nakládání s~daty v~aplikaci. Viewmodel pouze reflektuje změny modelu v~pohledu a naopak. Viewmodel lze chápat jako interpret dat získaných z~modelu, které jsou požadovány v~pohledu.
+MVVM je rozdílný zejména ve způsobu nakládání s~daty v~aplikaci. Viewmodel pouze reflektuje změny modelu v~pohledu a naopak. Ten lze chápat také jako interpret dat získaných z~modelu, které jsou požadovány v~pohledu.
 
-Vzhledem k~rozsáhlosti frameworku se nevyhneme tvorbě aplikace, která prolíná oba typy architektury. AngularJS je ale zejména stavěn na základech MVC architektury.
+Vzhledem k~rozsáhlosti knihovny se nevyhneme tvorbě aplikace, která prolíná oba typy architektury. AngularJS je ale založen na základech MVC architektury.
 
-AngularJS staví na několika elemntárních pilířích:
+AngularJS staví na třech základních pravidlech:
 
 \begin{itemize}
-    \item rozdělit manipulaci DOM od aplikační logiky,
-    \item rozdělit klientskou a serverovou stranu aplikace,
+    \item odddělit manipulaci DOM a aplikační logiku,
+    \item diferenciovat klientskou a serverovou stranu aplikace,
     \item poskytnout strukturu pro vývoj SPA.
 \end{itemize}
 
-Manipulace s~DOM je zajišťována v~pohledové části architektury. Aplikační logika je v~tomto případě oddělena a to dovoluje simultánní tvorbu na obou částích aplikace. To dovoluje strukturovat kód do uzavřených logických celků, které mohou být znovu použity v~dalších částech aplikace.
+Manipulace s~DOM je zajišťována v~pohledové části architektury. Aplikační logika je oddělena, což umožňuje simultánní tvorbu na obou částech aplikace. To dovoluje strukturovat kód do uzavřených logických celků, které mohou být znovu použity v~dalších částech aplikace.
 
-Rozdělením klientské a serverové strany aplikace získává AngularJS celkovou kontrolu nad klientskou stranou a dokáže tak abstrahovat jednotlivé vrstvy aplikace. To dovoluje hlubokou integraci MVC architektury do klientské části.
+Rozdělením klientské a serverové strany aplikace získává AngularJS celkovou kontrolu nad klientskou stranou a dokáže tak abstrahovat jednotlivé vrstvy aplikace. To integruje MVC architekturu do klientské části.
 
-Toto rozdělení dovoluje frameworku implementovat takové možnosti jako je např. vkládání závislostí nebo pohledově závislé kontroléry.
+Toto rozdělení dovoluje AngularJS implementovat takové možnosti jako je např. vkládání závislostí (pozdní instanciace daných závislostí) nebo pohledově závislé kontroléry (daný kód je spouštěn pouze při daném pohledu).
 
 To vše spěje ke snížení zátěže serveru, na kterém je SPA uložena. Většina, ne-li všechna, aplikační logiky totiž probíhá na klientské straně a server pro svou práci vůbec nepotřebuje. Ten je potřeba až v~momentě kdy chceme získat nebo uložit data pro dlouhodobé užití.
 
 \subsubsection*{Backbone.js}
 
-Framework Backbone.js se mírně odlišuje od předešlých a to svou architekturou, která není MVC, ale MVP (model-view-presenter). Presenter je v~tomto případě prostředníkem, který plní logickou funkci a spojuje pohled s~modelem. Veškeré akce, které se provedou v~pohledu (např. kliknutí na tlačítko) jsou delegovány presenteru. Ten je navíc oddělen od pohledu a komunikuje s~ním pouze přes definované rozhraní.
+Framework Backbone.js se mírně odlišuje od předešlých a to svou architekturou, která není MVC, ale MVP (model-view-presenter). Prezentér je v~tomto případě prostředníkem, který plní logickou funkci a spojuje pohled s~modelem. Veškeré akce, které se provedou v~pohledu (např. kliknutí na tlačítko) jsou delegovány prezentéru. Ten je navíc oddělen od pohledu a komunikuje s~ním pouze přes definované rozhraní.
 
 Tento přístup je vhodný zejména pro testování a jasné oddělení jednotlivých částí (zvláště modelu od pohledu). Avšak MVP je náročnější na tvorbu kvůli tomu, že všechny datové vazby musí vytvořit sám programátor.
 
@@ -246,9 +248,9 @@ Pro rychlý a stručný přehled byla vypracována tabulka shrnující klíčov�
 \begin{tabular}{|l|l|l|l|l|}
 \hline
     Název       & 
-    Verze\tablefootnote{Aktuální verze v~době psaní práce.}     & 
+    Verze\tablefootnote{Aktuální verze v~době psaní této práce.}     & 
     Aktivní vývoj     & 
-    Velikost\tablefootnote{Velikost minifikovaného produkčního kódu.}  & 
+    Velikost\tablefootnote{Velikost komprimovaného produkčního kódu.}  & 
     Licence   \\ \hline
     React       & 15.0.1    & 3 roky (2013)     & 142 kB    & BSD       \\
     Ember.js    & 2.5.0     & 4 roky (2011)              & 450 kB    & MIT       \\
@@ -264,13 +266,13 @@ Pro rychlý a stručný přehled byla vypracována tabulka shrnující klíčov�
 
 Důležitým aspektem SPA je také její vzhled, nebo spíše UX (user-experience)~\cite{ux:iso}. UX je zejména vnímání a reakce osoby, které plyne z~používání nebo předpokládaného užití/chování výrobku, systému nebo služby. Důraz se musí klást zejména na předpokládáné chování systému, tím pádem může uživatel procházet plynule aplikací, aniž by musel odhadovat chování té části aplikace, ve které se právě nachází.
 
-Toho lze dosáhnout zejména uceleností vzhledu a chování jednotlivých komponent SPA. Pro tento účel existují tzv. HTML/CSS knihovny. Na Internetu je jich velké množství a výběr jsem zúžil pouze na 3 knihovny, které jsou známé; mají širokou škálu komponent, které lze v~SPA využít a jsou open-source.
+Toho lze dosáhnout zejména uceleností vzhledu a chování jednotlivých komponent SPA. Pro tento účel existují tzv. HTML/CSS knihovny. Na Internetu je jich velké množství a v rámci této práce byl výběr zúžen na tři běžně používané knihovny mající širokou škálu komponent, které lze v~SPA využít a jejich zdrojové kódy jsou volně dostupné.
 
-Poslední podmínkou jsou zdrojové kódy CSS v~jednom z~CSS preprocesorů~\cite{css:preproc} -- LESS\footnote{\url{http://lesscss.org}} nebo SASS\footnote{\url{http://sass-lang.com}}, aby v~aplikaci byla zaručena konzistence proměnných (např. barvy, velikost, odsazení).
+Zdrojové kódy jazyka CSS by měly být vytvořeny v~jednom z~CSS preprocesorů~\cite{css:preproc} -- LESS\footnote{\url{http://lesscss.org}} nebo SASS\footnote{\url{http://sass-lang.com}}, aby v~aplikaci byla zaručena konzistence proměnných (např. barvy, velikost, odsazení).
 
 \subsubsection*{Bootstrap}
 
-Bootstrap je nejpopulárnějším frameworkem pro tvorbu vzhledu SPA. Obsahuje HTML a CSS komponenty pro ucelenou typografii, formuláře, tlačítka, navigaci a další. Bootstrap také nabízí komponenty, které jsou částečně nebo zcela napsány v~JavaScriptu.
+Bootstrap je velmi populární knihovnou pro tvorbu vzhledu SPA. Obsahuje HTML a CSS komponenty pro ucelenou typografii, formuláře, tlačítka, navigaci a další. Bootstrap také nabízí komponenty, které jsou částečně nebo zcela napsány v~JavaScriptu.
 
 Bootstrap je udržován zejména společností Twitter, kde také vznikl na popud tvorby interních firemních aplikací s~uceleným vzhledem a také UX, aby se ušetřily náklady na údržbu takovýchto aplikací.
 
@@ -278,7 +280,7 @@ Díky Bootstrapu se velmi rychle ujal trend responzivního designu a mobile-firs
 
 \subsubsection*{Foundation}
 
-Foundation je velmi podobný framework jako Bootstrap, také nabízí HTML a CSS komponenty pro různé části SPA včetně JavaScript komponent. Nemá sice za sebou takovou společnost jakou je Twitter, ale je neméně kvalitní a udržovaný.
+Foundation je velmi podobný framework jako Bootstrap. Také nabízí HTML a CSS komponenty pro různé části SPA včetně JavaScript komponent, je neméně kvalitní (z hlediska vývojáře) a udržovaný.
 
 Hlavním rozdílem oproti Bootstrapu je jeho upravitelnost. Foundation dává větší prostor pro úpravu jednotlivých komponent. 
 
@@ -286,27 +288,27 @@ Navíc disponuje styly, které jsou automaticky aplikované na dané HTML elemen
 
 \subsubsection*{Angular Material}
 
-Angular Material není běžným CSS frameworkem, nýbrž je velmi úzce spjat s~JavaScript frameworkem AngularJS a využívá jeho mnoha možností jako jsou např. vlastní HTML elementy (direktivy).
+Angular Material není běžnou CSS knihovnou, nýbrž je velmi úzce spjat s~AngularJS a využívá jeho mnoha možností jako jsou např. vlastní HTML elementy (direktivy).
 
-Framework také obsahuje mnoho HTML a CSS komponent, ale ty jsou vždy velmi úzce spjaty s~AngularJS funkcionalitou jako je např. two-way data binding a již zmíněné direktivy. 
+Také obsahuje mnoho HTML a CSS komponent, ale ty jsou vždy velmi úzce spjaty s~AngularJS funkcionalitou jako je např. two-way data binding a již zmíněné direktivy. 
 
-Společnost Google disponuje vizuálním jazykem pro všechny své produkty nazvaný Material Design\footnote{\url{https://www.google.com/design/spec/material-design/introduction.html}}. Ten je založený na tzv. \uv{kartičkách}, které lze skládat na sebe, řadit, organizovat a upravovat. Jak již název frameworku napovídá je tento vizuální jazyk použit skrz všechny dostupné komponenty.
+Společnost Google disponuje vizuálním jazykem pro všechny své produkty nazvaný Material Design\footnote{\url{https://www.google.com/design/spec/material-design/introduction.html}}. Ten je založený na tzv. \uv{kartách}, které lze skládat na sebe, řadit, organizovat a upravovat. Jak již název napovídá, je tento vizuální jazyk použit skrz všechny dostupné komponenty.
 
-Z~technického hlediska je Angular Material nejpokročilejším frameworkem. Pro mřížkový systém\footnote{angl. grid system} používá flexbox~\cite{flexbox}, který je dostupný pouze v~nejnovější specifikaci CSS 3 a moderních webových prohlížečích. To může působit mírné problémy, pokud je SPA cílena na široké publikum s~různými verzemi prohlížečů.
+Z~technického hlediska je Angular Material nejpokročilejší knihovnou. Pro mřížkový systém (angl. grid system) používá flexbox~\cite{flexbox}, který je dostupný pouze v~nejnovější specifikaci CSS 3 a moderních webových prohlížečích. To může působit mírné problémy, pokud je SPA cílena na široké publikum s~různými verzemi prohlížečů.
 
 
 \section{Serverová část}
 
-V~rámci serverové části je kladen důraz zejména na výkonnost, stabilitu a efektivitu programu. Tyto faktory jsou ovlivněny zejména použitým programovacím jazykem, knihovnami a návrhem architektury programu.
+V~rámci serverové části je kladen důraz zejména na poměr výkonnost/spotřeba zdrojů, stabilitu a efektivitu programu. Tyto faktory jsou ovlivněny zejména použitým programovacím jazykem, knihovnami a návrhem architektury programu.
 
-Jediný požadavek na server je, aby byl typu *nix. To nám zaručuje určité faktory a vlastnosti provozního prostředí jako např. dostupné jazyky a jejich knihovny, podpůrné programy a další.
+Požadavkem pro server v této práci je, aby byl typu Unix/Linux. To nám zaručuje určité faktory a vlastnosti provozního prostředí jako např. dostupné jazyky a jejich knihovny, podpůrné programy a další.
 
-Na serveru poběží z~NEMEA Dashboard pouze REST API~\cite{rest}. Jeho vlastnosti a architektura budou detailně popsány v~kapitole \ref{architektura}. API se připojuje na NoSQL databázový systém MongoDB. Ta je využívána systémem NEMEA, který do ní ukládá detekované události. MongoDB bylo zvoleno kvůli rychlosti, jednoduchosti použití a pro záznamy ve formátu IDEA bylo potřeba NoSQL databázový systém, který dokáže pracovat s~daty stejně nebo podobně jako se pracuje s~JSON.
+Z aplikace NEMEA Dashboard bude na serveru spuštěno REST API\footnote{Rozhraní pro programování aplikací, angl. application programming interface.}~\cite{rest}(viz kapitola \ref{architektura}). API se připojuje na NoSQL databázový systém MongoDB. Ta je využívána systémem NEMEA pro ukládání detekovaných událostí. MongoDB bylo zvoleno kvůli rychlosti, jednoduchosti použití a pro záznamy ve formátu IDEA bylo potřeba NoSQL databázový systém, který dokáže pracovat s~daty stejně nebo podobně jako se pracuje s~formátem JSON.
 
 \subsection{REST API}
 \label{crud}
 
-REST, neboli Representational State Transfer, je architektura rozhraní pro distribuci dat. Tato architektura nám dovoluje přistupovat ke všem zdrojům uniformním rozhraním, které definuje čtyři základní operace nad každým z~nich:
+REST, neboli Representational State Transfer, je architektura rozhraní pro distribuci dat. Tato architektura dovoluje přistupovat ke všem zdrojům jednotným rozhraním, které definuje čtyři základní operace nad každým z~nich:
 
 \begin{description}
     \item {\bf Create} -- vytvoření a uložení nového datového objektu.
@@ -315,62 +317,51 @@ REST, neboli Representational State Transfer, je architektura rozhraní pro dist
     \item {\bf Delete} -- odstranění datového objektu z~permanentního datového prostoru.
 \end{description}
 
-Toto rozhraní (zkráceně CRUD) zpřístupňuje databázi událostí vytvořenou NEMEA systémem, která je udržována v~MongoDB. Navíc tyto data agreguje, předzpracovává či jinak upravuje (funkcionalita REST API je popsána v~sekci \ref{restapi})
+Toto rozhraní (zkráceně CRUD) zpřístupňuje databázi událostí vytvořenou NEMEA systémem a udržovánou v~MongoDB. Navíc tato data agreguje, předzpracovává či jinak upravuje (funkcionalita REST API je popsána v~sekci \ref{restapi})
 
 Pro vytvoření API s~REST architekturou rozhraní existují knihovny, které vývoj ulehčují a zrychlují. Ve většině případů ale platí, že takovéto knihovny jsou náročné na zdroje a jsou tím pádem pomalejší. Pro NEMEA Dashboard je potřeba takový jazyk, který je úzce integrovaný se systémem a dokáže využívat systémové nástroje\footnote{Využití systémových nástrojů není součástí této práce, ale byla jednou z~podmínek návrhu REST API pro NEMEA Dashboard.}.
 
-Do výběru jsem zahrnul interpretované i kompilované jazyky, aby byl demonstrován rozdíl ve výkonnosti, jednoduchosti použití, množství potřebných závislostí a dalších faktorů. Jmenovitě byly zahrnuty jazyky Python, C++ a JavaScript. Pro každý vybraný jazyk existuje několik knihoven pro podporu tvorby REST API, proto pro zpřehlednění byly vybrány nejvhodnější knihovny.
+Do výběru jsem zahrnul interpretované i kompilované jazyky, aby byl demonstrován rozdíl ve výkonnosti, jednoduchosti použití, množství potřebných závislostí a dalších faktorů. Jmenovitě byly zahrnuty jazyky Python, C++ a JavaScript. Pro každý vybraný jazyk existuje několik knihoven pro podporu tvorby REST API, proto pro zpřehlednění byly vybrány knihovny, se kterými mám předešlé zkušenosti.
 
 Jeden z~nejpoužívanějších jazyků pro tvorbu webových stránek -- PHP nebyl zahrnut z~důvodu vysoké režie interpretu při běhu aplikace a mnoha závislostí (zejména Apache webový server), které jsou potřeba pro tvorbu webové stránky v~PHP. Navíc jazyk PHP přímo nepodporuje tvorbu REST architektury, vše je řešeno přes Apache server pomocí .htaccess konfigurace.
 
 \subsubsection*{Flask (Python)}
 
-Flask je mikroframework využívající Werkzeug toolkit, který slouží jako základ pro Flask. Je nazývaný mikroframeworkem, protože vývojáře nenutí využívat konkrétní knihovny nebo nástroje, nedisponuje žádnou abstraktní databázovou vrstvou, verifikací vstupů nebo kteroukoliv jinou komponentou běžně dostupnou ve frameworku podobného typu.
+Flask je tzv. mikroframework, čímž vývojáře nenutí využívat konkrétní knihovny nebo nástroje, nedisponuje žádnou abstraktní databázovou vrstvou, verifikací vstupů nebo kteroukoliv jinou komponentou běžně dostupnou ve frameworku podobného typu.
 
-Nicméně Flask podporuje rozšíření, kterými lze rozšířit funkcionalitu přesně dle potřeb programátora. Tím se stává Flask velmi silným nástrojem při vývoji SPA. Jelikož je navíc napsán v~jazyku Python, je jeho použití více než intuitivní. Například definice cesty a obslužné rutiny je realizováno pomocí dekorátorů jak je znázorněno v~následujícím příkladu \ref{code:flask}.
+Nicméně Flask podporuje rozšíření, kterými lze rozšířit funkcionalitu přesně dle potřeb programátora. Tím se stává Flask velmi silným nástrojem při vývoji SPA.
 
-\begin{figure}[ht]
-\lstset{basicstyle=\small,style=JSON}
-\begin{lstlisting}
-@app.route("/")
-def hello():
-    return("Hello World!")
-\end{lstlisting}
-\captionof{lstlisting}{Definování cesty a obslužné rutiny v~mikroframeworku Flask.}
-\label{code:flask}
-\end{figure}
+Veškeré zde zmíněné skutečnosti dělají z Flask ideální nástroj pro návrh jak rozsáhlého, tak minimálního REST API, které lze libovolně škálovat dle potřeb projektu.
 
-Veškeré zde zmíněné skutečnosti dělají z~mikroframeworku Flask ideální nástroj pro návrh jak rozsáhlého, tak minimálního REST API, které lze libovolně škálovat dle potřeb projektu.
-
-S~ohledem na MongoDB existuje oficiální konektor nazvaný PyMongo. Ten se použitím velmi podobá mongo shell nástroji přímo v~MongoDB. 
+S~ohledem na MongoDB existuje konektor PyMongo vytvořený autory MongoDB. Ten se použitím velmi podobá příkazové řádce přímo v~MongoDB. 
 
 \subsubsection*{NodeJS (JavaScript)}
 
-JavaScript je původně určen do prostředí webových prohlížečů a jejich jader. Google ale vytvořil V8~\cite{google:v8} JavaScriptové jádro primárně určené pro webový prohlížeč, na kterém je ale postaven i framework NodeJS. V8 umožňuje spouštět kód napsaný v~JavaScriptu na straně serveru.
+JavaScript je původně určen do prostředí webových prohlížečů a jejich jader. Společnost Google ale vytvořila V8~\cite{google:v8} JavaScriptové jádro primárně určené pro webový prohlížeč, na kterém je postaven i nástroj NodeJS. V8 umožňuje spouštět kód napsaný v~JavaScriptu na straně serveru.
 
-Architektura NodeJS je založena na principu asynchronních událostí, které dovolují vytvářet vysoce škálovatelné síťové aplikace jako je např. webový server s~vysokou dosupností a nároky.
+Architektura NodeJS je založena na principu asynchronních událostí, které dovolují vytvářet vysoce škálovatelné síťové aplikace, jako je např. webový server s~vysokou dosupností.
 
-NodeJS není až tak knihovnou nebo frameworkem pro vývoj webových serverů, jako spíše sbírkou modulů, které obsluhují jednotlivé části funkcionality jádra~\cite{nodejs}. Tyto moduly využívají API, které zjednodušuje komunikaci mezi moduly. Tím se velmi podobá NEMEA systému.
+NodeJS není až tak knihovnou nebo nástrojem pro vývoj webových serverů, jako spíše sbírkou modulů, které obsluhují jednotlivé části funkcionality jádra~\cite{nodejs}. Tyto moduly využívají API, které zjednodušuje komunikaci mezi moduly. Tím se velmi podobá NEMEA systému.
 
 \subsubsection*{Mongoose (C/C++)}
 
-Posledním kandidátem je framework napsaný v~jazyku C. Největší výhodou tohoto řešení je jeho rychlost, která je mnohonásobně vyšší než u~interpretovaných jazyků. Mongoose je minimalistický framework vytvořený pro vývoj webových serverů více typů.
+Posledním kandidátem je framework napsaný v~jazyku C. Největší výhodou tohoto řešení je jeho rychlost, která je násobně vyšší než u~interpretovaných jazyků\footnote{Z měření (viz \ref{serv:fin}) až 40 krát rychlejší než Python.}. Mongoose je minimalistický framework vytvořený pro vývoj webových serverů více typů.
 
-Jelikož jazyk C není až tak pohodlný a rychlý pro vývoj abstraktních architektur rozhraní jakou je REST, zejména kvůli práci s~textovými řetězci a manipulací s~JSON objekty, rozhodl jsem se napsat obálku frameworku Mongoose do jazyka C++\footnote{Tato obálka byla vytvořena mimo rozsah této práce pro jiný projekt.}. Ten, ačkoliv je pomalejší, je vhodnější pro práci s~textovými řetezci a existuje efektivní knihovna pro práci s~JSON objetky RapidJSON~\cite{js:rjson}.
+Jelikož jazyk C není až tak pohodlný a rychlý pro vývoj abstraktních architektur rozhraní jakou je REST, zejména kvůli práci s~textovými řetězci a manipulací s~JSON objekty, rozhodl jsem se napsat obálku frameworku Mongoose do jazyka C++\footnote{Tato obálka byla vytvořena mimo rozsah této práce pro jiný projekt.}. Ten je vhodnější pro práci s~textovými řetezci a existuje efektivní knihovna pro práci s~JSON objetky RapidJSON~\cite{js:rjson}.
 
 Za použití vytvořené obálky, která je navržena specificky pro návrh REST API, lze velmi rychle vytvořit požadovanou funkcionalitu. Obálka totiž doplňuje možnosti Mongoose, který např. nedisponuje dynamickými URL\footnote{z angl. uniform resource locator} nebo zpracováním URL parametrů do vhodné struktury.
 
-Největším problémem je absence oficiálního konektoru pro MongoDB, ten je nezbytnou podmínkou pro toto REST API. Samozřejmě existují různá řešení nebo knihovny. Ty jsou ale buď neudržované nebo náročné na použití.
+Největším problémem je absence oficiálního konektoru pro MongoDB, ten je nezbytnou podmínkou pro toto REST API. Existují různá řešení nebo knihovny. Ty jsou ale buď neudržované nebo náročné na použití.
 
 \section{Vybrané technologie}
 
-V~předcházející kapitole jsem uvedl užší výběr technologií, které jsou vhodné pro tvorbu SPA jak z~uživatelské, tak serverové části. Každá z~nich je něčím specifická a vyčnívá oproti jiným kandidátům.
+V~předcházející kapitole byl uveden užší výběr technologií, které jsou vhodné pro tvorbu SPA jak z~uživatelské, tak serverové části. Každá z~nich je něčím specifická a vyčnívá oproti jiným kandidátům.
 
 \subsection{Uživatelská část}
 
-Prvními aspekty při výběru knihovny pro vývoj SPA v~uživatelské části byla zejména velikost knihovny, množství dostupných modulů, licence, udržovatelnost a v~neposlední řadě dostupné funkce. Pro rychlý přehled byla vytvořena tabulka \ref{tab:js} (viz výše), která tyto faktory porovnává.
+Prvními aspekty při výběru knihovny pro vývoj SPA v~uživatelské části byla zejména velikost knihovny, množství dostupných modulů, licence, udržovatelnost a v~neposlední řadě dostupné funkce. Pro rychlý přehled byla vytvořena tabulka \ref{tab:js}, která některé z těchto faktorů porovnává.
 
-Licence BSD a MIT jsou velmi podobné z~hlediska vývojáře a jejich možnostmi použití v~rámci vývoje otevřeného projektu jakým je NEMEA.
+Licence BSD a MIT jsou velmi podobné z~pohledu vývojáře a jejich možnostmi použití v~rámci vývoje otevřeného projektu jakým je NEMEA.
 
 Z~hlediska velikosti jasně vyčnívá EmberJS, který je násobně menší než ostatní frameworky, avšak z~ostatních faktorů pozbývá funkcionalitu, kterou např. dokáže nabídnout AngularJS.
 
@@ -380,25 +371,24 @@ Pokud se zaměříme na možnosti frameworku, jasně vybočuje AngularJS, který
 
 Poslední faktor -- možnosti frameworku -- je dle mého nejdůležitějším měřítkem při výběru. Ten totiž vyváží i větší velikost frameworku a jeho náročnost na prohlížeč, ta se navíc s~každou novou verzí většinou snižuje.
 
-Tím pádem je jasným vítězem framework AngularJS, který disponuje širokou funkcionalitou. Je navržený přímo pro vývoj komplexních SPA a má opravdu mnoho dostupných rozšíření, které jsou vhodné pro naše účely.
+Tím pádem je jasným vítězem framework AngularJS, který disponuje širokou funkcionalitou. Je navržený přímo pro vývoj komplexních SPA a má mnoho dostupných rozšíření.
 
-V~rámci CSS frameworků bylo rozhodování mnohem přímočarejší, ačkoliv se tak na první pohled nemusí jevit, jelikož všechny tři frameworky nabízejí téměř totožnou funkcionalitu. Protože jsem ale zvolil AngularJS jako JavaScriptový framework, byla volba zcela jasná, jelikož Angular Material je přímým rozšířením frameworku AngularJS a do útrob Angular Material je velmi hluboce integrovaný. Navíc používá nejmodernější technologie, které usnadňují vývoj.
+Volba AngularJS značně ovlivnila výběr CSS knihovny, protože Angular Material je přímým rozšířením frameworku AngularJS a do útrob Angular Material je velmi hluboce integrovaný. Navíc používá nejmodernější technologie, které usnadňují vývoj.
 
 \subsection{Serverová část}
+\label{serv:fin}
 
-Při výběru technologie pro serverovou část jsem se zaměřil zejména na rychlost výsledného REST API a jeho udržitelnost z~vývojářského hlediska (modulárnost, OOP). Proto jsem vytvořil velmi jednoduché REST API v~každém z~kanditátů a změřil jejich výkonnost. Ostatní hlediska jsou spíše subjektivním názorem.
+Při výběru technologie pro serverovou část byl kladen důraz zejména na rychlost výsledného REST API a jeho udržitelnost z~vývojářského hlediska (modulárnost, OOP\footnote{Objektově orientované programování.}). Proto jsem vytvořil velmi jednoduché REST API v~každém z~kanditátů a změřil jejich výkonnost.
 
-V~každém z~frameworků jsem vytvořil jednoduché statické API (fixní URL), která pouze vrátila textový řetězec \uv{Hello World}. Pro měření jsem využil osobní virtuální server s~následujícími parametry:
+V~každém z~frameworků jsem vytvořil jednoduché statické API (fixní URL), která vrátilo textový řetězec \uv{Hello World}. Pro měření jsem využil virtuální server s~následujícími parametry:
 
 \begin{itemize}
     \item CPU -- Intel(R) Xeon(R) CPU W3520  @ 2.67GHz (2 jádra),
     \item RAM 1GB DDR3 ECC,
-    \item konektivita -- 500 Mbps.
+    \item rychlost připojení do Internetu -- 500 Mbps.
 \end{itemize}
 
-Server nebyl v~době testů nijak vytížen a běžely na něm pouze základní služby jako Apache. Konfigurace serveru není nijak výkonná a tím pádem lze odvodit kolik zdrojů jaký jazyk spotřebuje a jak je připravený na škálovatelnost.
-
-Pro vytvoření dostatečného množství dotazů na server jsem použil nástroj wrk\footnote{\url{https://github.com/wg/wrk}}, který jsem spouštěl na počítači Mac Mini Server (Intel i7, 8 GB RAM, 1Gbps konektivita). Nástroj wrk jsem spouštěl s~následujícími parametry:
+Server nebyl v~době testů nijak vytížen a běžely na něm pouze základní služby. Pro vytvoření dostatečného množství dotazů na server jsem použil nástroj wrk\footnote{\url{https://github.com/wg/wrk}}. Ten byl spouštěn s~následujícími parametry:
 
 \begin{itemize}
     \item \texttt{-d 20s} -- délka trvání testu,
@@ -407,7 +397,7 @@ Pro vytvoření dostatečného množství dotazů na server jsem použil nástro
     \item URL.
 \end{itemize}
 
-Testy jsem spouštěl celkem třikrát pro každý framework, abych se vyvaroval chybě měření a každé měření probíhalo nezávisle na předcházejícím. Stejný server se nikdy netestoval dvakrát za sebou. V~tabulce \ref{tab:server} nalezneme naměřené výsledky.
+Testy byly spouštěny celkem třikrát pro každý framework, aby se vyvarovalo chybě měření a každé měření probíhalo nezávisle na předcházejícím. Stejný server se nikdy netestoval dvakrát za sebou. V~tabulce \ref{tab:server} jsou zaznamenány naměřené výsledky.
 
 \begin{table}[ht]
 \centering
@@ -424,15 +414,13 @@ Testy jsem spouštěl celkem třikrát pro každý framework, abych se vyvaroval
 \end{table}
 
 
-C++ obálka frameworku Mongoose a NodeJS jsou několikanásobně rychlejší než framework Flask. Tato rychlost je zejména díky použitému jazyku C++. Ten je použit i v~případě NodeJS, kde většina komponent je právě napsána v~C++. 
+C++ obálka frameworku Mongoose a NodeJS jsou několikanásobně rychlejší než framework Flask. V případě C++ obálky je tomu díky použitému jazyku a NodeJS je koncipovaný pro multivláknovou síťovou komunikaci. Ten jediný v základu podporuje vícevláknové zpracování požadavků. 
 
-Ačkoliv se může zdát, že NodeJS je jasnou volbou z~naměřených výsledků, není tomu tak. NodeJS totiž během testu spotřeboval téměř všechny zdroje daného stroje (zejména CPU). Díky tomu je natolik výkonný. Tohoto výkonu lze dosáhnout i u~frameworku Flask, ale ten by musel být doplněn dalšími nástroji pro vyšší konkurentnost serveru.
+Ačkoliv se může zdát, že NodeJS je jasnou volbou z~naměřených výsledků, není tomu tak. NodeJS totiž během testu spotřeboval téměř všechny zdroje daného stroje (zejména CPU). Díky tomu je natolik výkonný. Tohoto výkonu lze dosáhnout i u~frameworku Flask, ale ten by musel být doplněn dalšími nástroji pro efektivní vícevláknové zpracování požadavků.
 
-Pokud porovnáme NodeJS a Flask, zjistíme, že NodeJS potřebuje obrovské množství závislostí pouze pro svůj běh a pokud chceme jakoukoliv pokročilou funkcionalitu, musíme dodat další závisloti. Tím pádem se základní varianta REST API jeví jako velmi výkonná, ale z~dlouhodobého hlediska je tato rychlost neudržitelná.
+Pokud bychom pracovali v~izolovaném prostředí, je nejvhodnější NodeJS. Pokud ale budeme vycházet z~architektury aplikace, zjistíme, že REST API nesmí být upřednostňováno před databází. V~ní totiž probíhají mnohem náročnější operace, které vytvářejí prodlevu v~odpovědi v~rámci sekund a ne jednotek milisekund jako v~případě serveru. 
 
-Pokud bychom pracovali v~izolovaném prostředí, je nejvhodnější NodeJS. Pokud ale budeme vycházet z~architektury aplikace, zjistíme, že server nesmí být upřednostňován před databází. V~ní totiž probíhají mnohem náročnější operace, které vytvářejí prodlevu v~odpovědi v~rámci sekund a ne jednotek milisekund jako v~případě serveru. 
-
-Tím pádem nám zůstává Flask, který díky implementaci v~Pythonu je velmi jednoduchý na použití s~udržitelným kódem a pohodlnou prací s~JSON objekty. Pokud bychom se zaměřili na rychlost, lze dosáhnout dobrých výsledků zapojením CPython. Navíc Python nedovolí spotřebovat veškeré zdroje stroje, což se stalo při testu Mongoose a zejména pak NodeJS serveru.
+Flask je v poměru rychlost/spotřebované zdroje nejvhodnějším kandidátem, navíc díky implementaci v~Pythonu je velmi jednoduchý na použití, s~udržitelným kódem a pohodlnou prací s~JSON objekty. Pokud bychom se zaměřili na rychlost, lze dosáhnout dobrých výsledků zapojením CPython. Navíc Python nedovolí spotřebovat veškeré zdroje stroje, což se stalo při testu Mongoose a zejména pak NodeJS serveru.
 
 %\section{Zvolené technologie}
 
@@ -440,9 +428,9 @@ Tím pádem nám zůstává Flask, který díky implementaci v~Pythonu je velmi 
 
 Vybrané technologie jsou vyváženou kombinací široké funkcionality, rychlosti vývoje a udržitelnosti kódu. To platí jak pro uživatelskou, tak serverou část aplikace.
 
-Pro uživatelskou část jsem vybral JavaScript framework AngularJS společně s~CSS frameworkem Angular Material, ty se navzájemně doplňují funkcionalitou a jsou velmi úzce provázány.
+Pro uživatelskou část jsem vybral JavaScript framework AngularJS společně s~CSS frameworkem Angular Material, ty se navzájemně doplňují funkcionalitou a jsou úzce provázány.
 
-Serverová část bude realizována v~jazyku Python pomocí mikroframeworku Flask. Ten disponuje všemi potřebnými funkcionalitami pro tvorbu REST API a MongoDB má oficiální konektor pro jazyk Python, který je snadný na použití a má široký repertoár funkcí a nastavení.
+Serverová část bude realizována v~jazyku Python pomocí mikroframeworku Flask. Ten disponuje všemi potřebnými funkcionalitami pro tvorbu REST API a MongoDB disponuje konektorem PyMongo pro jazyk Python, který je snadný na použití a má široký repertoár funkcí a nastavení.
 
 \chapter{Architektura aplikace}
 \label{architektura}
@@ -790,24 +778,24 @@ Všechny stránky uživatelské části jsou zachyceny v~příloze \ref{screens}
 \section{Zabezpečení}
 \label{zabezpeceni}
 
-Jelikož NEMEA Dashboard pracuje s~velmi citlivými daty je nutné tyto data dobře zabezpečit. To zejména znamená zabezpečení REST API, které je realizováno pomocí JSON Web Token.
+Jelikož NEMEA Dashboard pracuje s~velmi citlivými daty je nutné tyto data dobře zabezpečit. To zejména znamená zabezpečení REST API. Existuje několik doporučených postupů jak takové API zabezpečit. Nejčastější řešení je pomocí SAML 2.0 dle RFC7522~\cite{rfc:saml}, které je definováno v XML, čímž se stává nevhodným. Druhým nejčastějším řešením je JSON Web Token (zkáceně JWT), který je realizován v JSON.
 
 JWT je otevřený standard definový RFC 7519~\cite{rfc:jwt}. Ten jej popisuje jako kompaktní, bezpečný pro URL způsob reprezentace prostředků, které se sdílejí mezi dvěma zdroji.
 
-Z~hlediska programátora je důležité, že je velmi kompaktní, využívá totiž velmi úspornou metodu hashování HS256 (HMAC + SHA-256), která je zároveň bezpečná (podporuje i další typy). Každý JWT se skládá ze tří částí, každá oddělená tečkou. První částí je hlavička, která obsahuje informace o~hashovacím algoritmu a typu tokenu.
+Z~hlediska programátora je důležité, že je velmi kompaktní, využívá totiž velmi úspornou metodu hashování HS256 (HMAC + SHA-256), která je zároveň dostatečně bezpečná (JWT podporuje i další typy hashování).
 
-Druhou částí je samotný payload (námi definovaný obsah) a třetí částí je signatura. Ta vezme hlavičku, obsah (ty jsou zakódovány base64 algoritmem), tajný klíč (secret key) a algoritmus specifikovaný v~hlavičce a výsledný token podepíše.
+Každý JWT se skládá ze tří částí, každá oddělená tečkou. První částí je hlavička, která obsahuje informace o~hashovacím algoritmu a typu tokenu. Druhou částí je samotný payload (námi definovaný obsah) a třetí částí je signatura. Ta vezme hlavičku, obsah (ty jsou zakódovány base64 algoritmem), tajný klíč (secret key) a algoritmus specifikovaný v~hlavičce a výsledný token podepíše.
 
-Takto zabalený JWT je v~NEMEA Dashboard plně v~režii serverové části. Ta jej tvoří i upravuje. JWT je přenášen při každé žádosti na API jako součást HTTP hlavičky. Uživatelská část si JWT udržuje v~lokálním uložišti.
+Takto zabalený JWT je v~NEMEA Dashboard plně v~režii serverové části. Ta jej tvoří i upravuje. JWT je přenášen při každé žádosti na API jako součást HTTP hlavičky. Uživatelská část si JWT udržuje v~lokálním uložišti a může pouze dekódovat .
 
 Pro práci s~autentizací uživatele na serverové části byla vytvořena vlastní třída, která řeší celou funkcionalitu, včetně správy sezení (sessions), které jsou realizovány pomocí kolekce v~MongoDB. To šetří zejména operační paměť v~rámci dlouhodobého běhu aplikace a tím pádem zvyšuje i stabilitu.
 
-Celý autentikační proces je znázorněn v~obrázku \ref{fig:auth}, který jej i názorně popisuje. Pouze doplním, že uživatelská část obsahuje interceptor, který hledá odpovědi od serveru s~HTTP statusem 401 Not Authorized. V~případě zaznamenání tohoto statusu je uživatel okamžitě přesměrován na stránku pro přihlášení.
+Celý autentikační proces je znázorněn v~obrázku~\ref{fig:auth}, který jej i názorně popisuje. Pouze doplním, že uživatelská část obsahuje interceptor, který hledá odpovědi od serveru s~HTTP statusem 401 Not Authorized. V~případě zaznamenání tohoto statusu je uživatel okamžitě přesměrován na stránku pro přihlášení.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.35\textwidth]{fig/auth_flow.pdf}
-    \caption{Kontextové menu pohledu.} \label{fig:auth}
+    \includegraphics[width=0.5\textwidth]{fig/auth_flow.pdf}
+    \caption{Příklad autentizace a používání REST API.} \label{fig:auth}
 \end{figure}
 
 \section{Shrnutí}
