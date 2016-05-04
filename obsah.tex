@@ -413,7 +413,6 @@ Testy byly spouštěny celkem třikrát pro každý framework, aby se vyvarovalo
 \end{tabular}
 \end{table}
 
-
 C++ obálka frameworku Mongoose a NodeJS jsou několikanásobně rychlejší než framework Flask. V případě C++ obálky je tomu díky použitému jazyku a NodeJS je koncipovaný pro multivláknovou síťovou komunikaci. Ten jediný v základu podporuje vícevláknové zpracování požadavků. 
 
 Ačkoliv se může zdát, že NodeJS je jasnou volbou z~naměřených výsledků, není tomu tak. NodeJS totiž během testu spotřeboval téměř všechny zdroje daného stroje (zejména CPU). Díky tomu je natolik výkonný. Tohoto výkonu lze dosáhnout i u~frameworku Flask, ale ten by musel být doplněn dalšími nástroji pro efektivní vícevláknové zpracování požadavků.
@@ -421,8 +420,6 @@ Ačkoliv se může zdát, že NodeJS je jasnou volbou z~naměřených výsledků
 Pokud bychom pracovali v~izolovaném prostředí, je nejvhodnější NodeJS. Pokud ale budeme vycházet z~architektury aplikace, zjistíme, že REST API nesmí být upřednostňováno před databází. V~ní totiž probíhají mnohem náročnější operace, které vytvářejí prodlevu v~odpovědi v~rámci sekund a ne jednotek milisekund jako v~případě serveru. 
 
 Flask je v poměru rychlost/spotřebované zdroje nejvhodnějším kandidátem, navíc díky implementaci v~Pythonu je velmi jednoduchý na použití, s~udržitelným kódem a pohodlnou prací s~JSON objekty. Pokud bychom se zaměřili na rychlost, lze dosáhnout dobrých výsledků zapojením CPython. Navíc Python nedovolí spotřebovat veškeré zdroje stroje, což se stalo při testu Mongoose a zejména pak NodeJS serveru.
-
-%\section{Zvolené technologie}
 
 \section{Shrnutí}
 
@@ -455,6 +452,8 @@ Největší využití bude mít v~aplikaci Dashboard (odtud i název aplikace), 
 Před samotným návrhem architektury jsem sestavil čtyři případy užití, které budou opěrnými body pro NEMEA Dashboard. Tyto navržené případy zohledňují širokou škálu úkonů, které při běžném používání IDS mohou nastat.
 
 Jako cílovou skupinu jsem stanovil správce větších sítí. Ti totiž musí být informováni o~globálním dění a nemohou se zaobírat menšími událostmi. Většinou jsou takovéto sítě stavěny velmi robustně a jsou dostatečně naddimenzovány. Nicméně i neúplné vytížení (zahlcení) sítě může znamenat pro běžné uživatele nedostupnost některých služeb. Těmto výpadkům musí správce sítě předcházet a to zejména díky včasné analýze anomálií na síti.
+
+\label{sec:aud}
 
 \begin{description}
     \item \textit{Běžný přehled o~síti a analýza provozu z~několika posledních dní} \\
@@ -559,8 +558,6 @@ Tím pádem jsem při návrhu rozhraní zvolil kompromis mezi REST a RPC, který
 Tento kompromis nerozděluje rozhraní dle sémantiky získaných dat, ale dle typu dat, které uživatelské rozhraní získá. Rozdíl v~sémantice dat je totiž daleko důležitějším měřítkem než struktura odeslané zprávy. Konkrétně jsem tento přístup zvolil u~agregovaných dat, které jsou vyhodnocovány již na serveru při dotazování do databáze.
 
 \section{GUI}
-
-%\note{wireframy do příloh, jeden pro dashboard -- dva pohledy, dashboard a konfigurace dashboardu; přehled eventů a event}
 
 Při návrhu grafického uživatelského rozhraní jsem se snažil využívat co nejjednodušší drátěné modely. Ty totiž ponechávají dostatečnou flexibilitu a zároveň jsou natolik vyjadřující, že je z~nich vidět základní koncept a rozložení prvků v~aplikaci.
 
@@ -808,27 +805,72 @@ Architektura uživatelské části zůstala zachována, pouze s~několika rozš�
 
 \chapter{Testování}
 
-Důležitou částí vývoje aplikace je testování jednotlivých částí aplikace. Ty lze testovat odděleně díky implementované architektuře SPA.
+Důležitou částí vývoje je testování jednotlivých částí aplikace. Ty lze testovat odděleně díky implementované architektuře SPA. Testování probíhalo počas celého vývoje a bylo prováděno manuálně vzhledem ke změnám v API během vývoje.
 
-Během vývoje jednotlivých částí aplikace byla funkcionalita testována pouze ručně. Na serverové části aplikace byl vždy 
+\section{Testování serverové části}
+
+Testování probíhalo v několika úrovních během implementace API. Jednotlivé úrovně se testovaly nezávisle na sobě a následně se provedl integrační test, který ověřil funkcionalitu celého koncového bodu API. Jednotlivé úrovně testování lze definovat následovně:
+
+\begin{description}
+    \item Databázové dotazy\\
+        Během implementace se vytvořil obecný dotaz, do kterého byly dosazovány jednotlivé proměnné. Jejich korektní dosazení bylo ověřováno ladícími výpisy na standardní výstup do příkazové řádky. Tyto výpisy jednotlivých dotazů byly následně spuštěny v příkazové řádce MongoDB a byly porovnány výsledky generovaného dotazu a manuálně nalezené události.
+
+    \item Testování koncového bodu API
+        Po úspěšném otestování dotazů byly implementovány jednotlivé koncové body API. Jejich návratové hodnoty byly testovány průběžně i během implementace uživatelské části, jelikož knihovna pro tvorbu grafů NVD3 očekávala konkrétní formát dat. Ten byl upraven na serverové části.
+
+        Testování probíhalo pomocí systémového nástroje \texttt{curl}\footnote{\url{https://curl.haxx.se}}. Zde se vytvořila žádost, která byla zaslána na API a byl ověřen formát odpovědi. Takto byly otestovány všechny koncové body a jejich dostupné HTTP metody. Po implementaci autentikace zde byly testovány i chybové odpovědi.
+
+    \item Integrační testování\\
+        Integrační testy byly provedeny po implementaci modelů v uživatelské části aplikace. Tím se otestovala komunikace mezi serverem a klientem, včetně zabezpečení pomocí JWT. Ověřovány byly stejné skutečnosti jako v případě testování koncového bodu.
+
+\end{description}
+
+\section{Testování uživatelské části}
+
+V uživatelské části byly provedeny akceptační testy~\cite{acp:tests}, ty lze definovat jako splnění požadavků klienta na funkcionalitu aplikace. V rámci této práce byly provedeny základní testy na cílové skupině uživatelů (viz \ref{sec:aud}) formou hromadného testování a následných rozhovorů s účastníky.
+
+Akceptační testy byly provedeny celkově dvakrát. V příloze \ref{screens:before} jsou zachyceny jednotlivé obrazovky aplikace před prvním kolem akceptačních testů.
+
+Během rozhovorů s účastníky byly otázky zaměřeny zejména na uživatelské rozhraní a UX. Z nich vyplynulo několik závěrů:
+
+\begin{itemize}
+    \item Nevýrazné oddělení jednotlivých boxů v sekci dashboard.
+    \item Nejasná práce s boxy (úprava velikosti, změna pozice).
+    \item Uživatelé nechápali rozdíl mezi zadáváním dotazu a aplikováním filtru ve výpisu událostí.
+    \item Nekonzistentní rozhraní.
+\end{itemize}
+
+Po vyhodnocení získaných skutečností byly upraveny detaily. V aplikaci se pozadí změnilo z bílé na 1\% šedou\footnote{Konkrétně z hex hodnot barvy \#ffffff na \#f4f5f8.}, což dostatečně výrazně oddělilo jednotlivé boxy v dashboardu od sebe. Upraven byl kurzor během přemišťování boxu (ze standardního ukazele na směrový kříž). Sjednocením vzhledu byl vyřešen i problém rozdělení zadávání dotazu a filtrem.
+
+Při úpravách vzhledu proběhly i změny v JavaScript a HTML kódu. Během práce s NEMEA Dashboard na různých zařízených se vyskytly různé chyby, zejména pak v prohlížeči Firefox na systému CentOS 7 (Linux) byly objeveny chyby zobrazovaných informací ve výpisu nalezených událostí, které byly způsobeny odlišnou interpretací flexbox modelu oproti jádru WebKit. 
+
+Všechny vizuální změny jsou zobrazeny v příloze~\ref{screens:after}. Ty byly otestovány na dalších subjektech, které s NEMEA Dashboard byly seznámeny právě během testů, abych jejich názor nebyl ovlivněn předešlými zkušenostmi. Takto mohly být porovnány výsledky prvního a druhého kola akceptačních testů.
+
+Druhé kolo testů proběhlo bez problémů a pouze byly obdrženy návrhy na další funkcionalitu NEMEA Dashboard.
+
+\section{Shrnutí}
+
+Během manuálních testů serverové části a zejména během integračních testů byly objeveny chyby, které by v budoucnu mohly negativně ovlivnit bezpečnost a stabilitu API. Tyto chyby byly okamžitě opraveny a znova otestovány stejným způsobem jako předtím. 
+
+Během testování uživatelské části byla obdržena kvalitní zpětná vazba, která byla zapracována do aplikace a opět otestována.Ve druhém kole testů nebyly nalezeny žádné chyby, pouze nápady na vylepšení funkcionality.  
 
 \chapter{Závěr}
 
-NEMEA Dashboard je již nyní plnohodnotnou součástí systému NEMEA. Ten je celý dostupný na stránce GitHub\footnote{\url{https://github.com/CESNET/Nemea}}. Konkrétně celý vývoj NEMEA Dashboard probíhal jako veřejný repozitář na stránce GitHub\footnote{\url{https://github.com/CESNET/Nemea-Dashboard}}.
+NEMEA Dashboard je již nyní plnohodnotnou součástí systému NEMEA. Ten je dostupný na službě GitHub\footnote{\url{https://github.com/CESNET/Nemea}}. Konkrétně vývoj NEMEA Dashboard probíhal na veřejném repozitáři služby GitHub\footnote{\url{https://github.com/CESNET/Nemea-Dashboard}}.
 
-Před existencí NEMEA Dashboard systém NEMEA nedisponoval žádnou vizualizací dat, které systém vytvořil. Jmenovitě pak detekované události reportované v~IDEA formátu do MongoDB databáze.
+Před existencí NEMEA Dashboard systém NEMEA nedisponoval vizualizací dat, které systém vytvořil. Jmenovitě pak detekované události reportované v~IDEA formátu do MongoDB databáze.
 
-To Dashboard přesně doplnil a byl tak vytvořen styčný bod mezi uživatelem a systémem, který před musel být používán výhradně přes příkazovou řádku nebo konzumován skrz emailový reportér.
+To NEMEA Dashboard doplnil a byl tak vytvořen styčný bod mezi uživatelem a systémem, který před tím musel být používán výhradně přes příkazovou řádku nebo konzumován skrz emailový reportér.
 
-Díky vizuální analýze dat je správce sítě schopen velmi rychle detekovat jakoukoliv rámcově vyšší anomálii na síti a celou ji analyzovat v~rámci aplikace. Aplikace byla navržena moderními nástroji pro tvorbu SPA s~ohledem na různá zařízení.
+Díky vizuální analýze dat je uživatel schopen velmi rychle detekovat jakoukoliv anomálii na síti (zejména pak významnou) a zcela ji analyzovat v~rámci aplikace. Ta byla navržena moderními nástroji pro tvorbu SPA s~ohledem na různá zařízení.
 
-Dalším krokem při vývoji aplikace bude zejména hluboká integrace konfigurace systému NEMEA. Tato integrace započne prvně spojením NEMEA Supervisor s~Dashboard. Supervisor je CLI nástroj pro správu modulů systému NEMEA. Tato správa je však částmi kostrbatá a pro běžného uživatele velmi nepříjemná (občasná nutnost ručních úprav XML souborů).
+Dalším krokem při vývoji aplikace bude zejména správa systému NEMEA. Tato integrace započne prvně spojením NEMEA Supervisor s~Dashboard. Supervisor je CLI nástroj pro správu modulů systému NEMEA. Tato správa je však částmi kostrbatá a pro běžného uživatele velmi nepříjemná (občasná nutnost ručních úprav XML souborů).
 
-Prostor pro rozšíření NEMEA Dashboard je obrovský. Konkrétními příklady z~mnoha bude rozšíření možností filtrování v~jednotlivých typech boxů (negativní filtry, logické spojky, vícenásobný filtr), přehlednější dotazování v~událostech. Možnost rychlé a relativně přesné geolokace IP adres. Dotazování nad IP adresami a jejich rozsahy s~čímž souvisí úprava databáze (reprezentovat IP adresy binárně a ne jako textové řetězce). S~tím souvisí i podpora pro IP6.
+Prostor pro rozšíření NEMEA Dashboard je široký. Konkrétními příklady z~mnoha bude rozšíření možností filtrování v~jednotlivých typech boxů (negativní filtry, logické spojky, vícenásobné filtry), přehlednější dotazování v~událostech. Možnost rychlé a relativně přesné geolokace IP adres. Dotazování nad IP adresami a jejich rozsahy, s~čímž souvisí úprava databáze (reprezentovat IP adresy binárně a ne jako textové řetězce). S~tím souvisí i podpora pro IP6.
 
-Neméně důležitým rozšířením je vytvoření instalačního průvodce pro instalaci Dashboardu na již existujících instancích NEMEA systému, tak i na nových instancích.
+Neméně důležitým rozšířením je vytvoření instalačního průvodce pro instalaci NEMEA Dashboard na již existujících instancích NEMEA systému, tak i na nových instancích.
 
-Díky vizuálnímu pojetí dat je NEMEA Dashboard také učinným marketingovým nástrojem, který může působit i na méně odborné publikum.
+Díky vizuálnímu pojetí dat je NEMEA Dashboard také učinným marketingovým nástrojem, který může působit i na méně odborné publikum a tím může systém NEMEA získat popularitu v komunitě.
 
-Tvorba NEMEA Dashboard mě seznámila s~MongoDB databází a jejím jádrem pro dotazování a zejména pak tvorbou komplexních SPA, které vyžadují vysokou úroveň konfigurovatelnosti a kde je kladen i důraz na bezpečnost, která je implementována pomocí vlastní metodologie.
+Tvorba NEMEA Dashboard mě seznámila s~MongoDB databází, jejím jádrem pro dotazování a agregaci.Tvorba uživatelské části pak s tvorbou komplexních SPA, které vyžadují vysokou úroveň konfigurovatelnosti s důrazem na bezpečnost, která je implementována pomocí vlastní metodologie.
 %=========================================================================
