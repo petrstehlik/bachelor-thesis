@@ -432,9 +432,9 @@ Serverová část bude realizována v~jazyku Python pomocí mikroframeworku Flas
 \chapter{Architektura aplikace}
 \label{architektura}
 
-Před samotnou implementací aplikace je potřeba navrhnout její architekturu. Ačkoliv se SPA může jevit jako jednoduchá a přímočará struktura, opak bývá většinou pravdou. Díky plynulosti práce s~aplikací uživatel nevnímá změnu mezi pohledy v~aplikaci. Ta se ale v~pozadí může asynchronně dotazovat na server.
+Před samotnou implementací aplikace je potřeba navrhnout její architekturu. Ačkoliv se SPA může jevit jako jednoduchá a přímočará struktura, opak bývá většinou pravdou. Bez nutnosti načítání stránky uživatel nevnímá změnu mezi jednotlivými pohledy v~aplikaci. Ta se ale v~pozadí asynchronně dotazuje na server a procházení stránky je tak velmi plynulé.
 
-Celou SPA jsem již při výběru technologií rozdělil na dva logické celky. Uživatelskou a serverovou část. Schéma \ref{fig:system} znázorňuje architekturu SPA a kde jsou jaké technologie použité.
+Celá SPA byla již při výběru technologií rozdělena na dva logické celky. Uživatelskou a serverovou část. Schéma \ref{fig:system} znázorňuje architekturu SPA a kde jsou jaké technologie použité.
 
 \begin{figure}[ht]
     \centering
@@ -442,49 +442,49 @@ Celou SPA jsem již při výběru technologií rozdělil na dva logické celky. 
     \caption{Rozvržení SPA na dva logické celky a jaké technologie tyto celky používají.} \label{fig:system}
 \end{figure}
 
-Díky použitým technologiím lze části rozdělit aplikaci i fyzicky na dva typy strojů. Serverová část je spustěna na jednom počítači -- serveru, který disponuje relativně vysokým výkonem a je určen pouze pro databázi a REST API. Databáze může být distribuována na dalším serveru nebo přítomna na stejném stroji. Server tedy zajišťuje funkčnost REST API a při iniciální návštěvě klienta také poskytuje stránku, kterou si klient stáhne na své zařízení.
+Díky použitým technologiím lze části rozdělit aplikačně i fyzicky na dva stroje. Serverová část je spustěna na jednom počítači -- serveru, jenž je určen pouze pro databázi a REST API. Server tedy zajišťuje funkčnost REST API a při iniciální návštěvě klienta také poskytuje kód uživatelské části, který je spuštěn u klienta.
 
-Tím se distribuuje uživatelská část aplikace na samotná zařízení, která aplikaci zobrazují. Následkem je snížení nároků na serverovou část, která nyní obstarává pouze datovou a autentikační část SPA (vše uvnitř REST API). Jelikož je SPA z~větší části uložena u~uživatele, můžeme si dovolit při vývoji větší množství dat, které se při prvním načtení musejí stáhnout, protože se následně téměř žádná esenciální data nestahují (jsou tím myšlena např. data nutná pro vykreslení grafů).
+Tím se distribuuje uživatelská část aplikace na samotná zařízení, která aplikaci zobrazují. Následkem je snížení nároků na serverovou část obstarávající pouze datovou a autentikační část SPA (vše uvnitř REST API).
 
-Největší využití bude mít v~aplikaci Dashboard (odtud i název aplikace), který bude obsahovat konfigurovatelné položky, aby si uživatel mohl Dashboard připravit přesně pro své potřeby. Dashboard je také vstupním bodem pro drill-down analýzu.
+Největší využití bude mít v~aplikaci dashboard (odtud i název aplikace), který bude obsahovat konfigurovatelné položky, aby si uživatel mohl Dashboard připravit přesně pro své potřeby. Dashboard je také vstupním bodem pro drill-down analýzu.
 
 \section{Případy užití}
-Před samotným návrhem architektury jsem sestavil čtyři případy užití, které budou opěrnými body pro NEMEA Dashboard. Tyto navržené případy zohledňují širokou škálu úkonů, které při běžném používání IDS mohou nastat.
+Před samotným návrhem architektury byly určeny čtyři případy užití, ze kterých vychází návrh pro NEMEA Dashboard. Tyto navržené případy zohledňují širokou škálu úkonů, které při běžném používání IDS mohou nastat.
 
-Jako cílovou skupinu jsem stanovil správce větších sítí. Ti totiž musí být informováni o~globálním dění a nemohou se zaobírat menšími událostmi. Většinou jsou takovéto sítě stavěny velmi robustně a jsou dostatečně naddimenzovány. Nicméně i neúplné vytížení (zahlcení) sítě může znamenat pro běžné uživatele nedostupnost některých služeb. Těmto výpadkům musí správce sítě předcházet a to zejména díky včasné analýze anomálií na síti.
+Jako cílová skupina uživatelů jsou uvažování správci větších sítí. Ti musí být informováni o~stavu spravované sítě. Většinou jsou takovéto sítě stavěny velmi robustně a jsou dostatečně naddimenzovány. Neobvyklé událostí na síti je ale nutné monitorovat a předcházet jim.
 
 \label{sec:aud}
 
 \begin{description}
     \item \textit{Běžný přehled o~síti a analýza provozu z~několika posledních dní} \\
-        Správce sítě musí mít přehled o~síti, kterou spravuje. Chce být informován o~celkovém počtu útoků, které detekoval systém NEMEA a ty následně uložil jako události v~IDEA formátu do databáze. Správce nechce pročítat emailové reporty nebo ručně procházet jednotlivé záznamy.
+        Správce sítě musí mít přehled o~síti, kterou spravuje. Chce být informován o~celkovém počtu útoků, které detekoval systém NEMEA a ty následně uložil jako události. Správce nechce pročítat emailové reporty nebo ručně procházet jednotlivé události. Proto chce využít NEMEA Dashboard pro zobrazení významných událostí a agregovaného pohledu na ně.
     \item \textit{Detekce útoku většího rozsahu na síť} \\
-        Při běžné analýze sítě pomocí NEMEA Dashboard musí být útok většího rozsahu okamžitě vidět ve zobrazených datech. Většinou se takovýto útok nahlásí jako velké množství menších útoků. V~tu chvíli je pro správce velmi těžké takový útok odhalit, pokud data nebudou vizualizována.
-    \item \textit{Analýza konkrétního útoku} \\
-        Uživatele zaujal velmi nezvyklý útok/událost a chce o~ní zjistit více. Postupně se dostává k~detailnějším informacím pomocí drill-down analýzy. Na konci analýzy vidí přímo událost, která daný útok způsobila a může podniknout další kroky jako např. zjišťování informací o~útočníkovi, o~oběti, případně o~charakteru útoku.
+        Při běžné analýze sítě pomocí NEMEA Dashboard musí být útok okamžitě vidět ve zobrazených datech. Většinou se takovýto útok nahlásí jako velké množství menších útoků. V~tu chvíli je pro správce velmi těžké takový útok odhalit, pokud data nebudou vizualizována a agregována.
+    \item \textit{Analýza nezvyklé události} \\
+        Uživatele zaujala velmi nezvyklá událost a chce o~ní zjistit více. Postupně se dostává k~detailnějším informacím pomocí drill-down analýzy. Na konci analýzy vidí podrobné detaily o události (jako jsou např. IP adresa zdroje a cíle, typ události, jaký modul ji reportoval, atp) a může tak podniknout další kroky jako např. změnit konfiguraci firewallu, aby blokovalútočníka, informovat oběť emailem, případně podniknout další opatření.
     \item \textit{Kontinuální přehled o~síti} \\
-        Uživatel během své běžné pracovní činnosti Dashboard nijak aktivně nesleduje, pouze se mu autonomně aktualizuje a vidí aktuální dění na síti. Velmi jednoduchou a rychlou vizuální analýzou (běžným pohledem) identifikuje událost, která se právě vyskytla na síti s~velmi krátkou časovou prodlevou (až v~rámci jednotek minut).
+        Uživatel během své běžné pracovní činnosti Dashboard sleduje pasivně, tzn. dashboard se autonomně aktualizuje a uživatel vidí aktuální dění na síti. Velmi jednoduchou a rychlou vizuální analýzou (běžným pohledem) identifikuje událost, která se právě vyskytla na síti s~krátkou časovou prodlevou (v~rámci jednotek minut).
         
 \end{description}
 
-Tyto případy užití lze rozdělit do dvou typů dat. Vizualizovaná data pomocí grafů a základní textové informace o~databázi v~daný časový interval. Z~toho lze vyvodit několik základních typů obsahu pro dashboard:
+Tyto případy užití lze rozdělit do dvou typů dat. Vizualizovaná data pomocí grafů a textové informace o~uložených událostech v~daný časový interval. Z~toho lze vyvodit několik základních typů zobrazovaného obsahu pro dashboard:
 
 \begin{itemize}
     \item graf podílů (koláčový graf) -- ukazuje podíly událostí dle kategorie v~definovaném časovém okně,
     \item graf v~čase (sloupcový graf) -- zobrazuje množství událostí rozdělené v~intervalech v~definovaném časovém okně dle kategorií,
-    \item informace o~celkovém počtu (text) -- celkový počet událostí v~databázi v~určitém časovém okně,
-    \item informace o~top událostech (text) -- největší události dle statického pole v~databázi v~určitém časovém okně.
+    \item informace o~nejvýznamnějších (tzv. top-N) událostech (text) -- největší události dle statického pole v~databázi v~určitém časovém okně.
+    \item informace o~celkovém počtu (text) -- celkový počet detekovaných událostí v~určitém časovém okně,
 \end{itemize}
 
-Ze všech typů boxu (kromě o~celkovém počtu) bude možná drill-down analýza. V~případě grafů bude možnost prokliku na výpis událostí, které jsou filtrované dle určitých metrik (např. kategorie a čas). U~boxu s~top událostmi bude odkaz přímo na detail dané události.
+Ze tří prvních uvedených zobrazovaných prvků bude možná drill-down analýza. V~případě grafů bude možnost prokliku na výpis událostí, které jsou filtrované dle odpovídajících atributů (např. kategorie a čas). U~boxu s~nejvýznamnějšími událostmi bude odkaz přímo na detail dané události.
 
 Další částí NEMEA Dashboard bude přehled všech událostí nazvaný jednoduše \uv{Events}. Zde bude možnost vyhledávat a třídit všechny události, které se v~databázi nacházejí. Všechny vyhledané a vyfiltrované události budou přehledně zobrazeny v~tabulce, která bude obsahovat základních informace o~události. U~každé události bude možnost prokliku k~detailním informacím, které jsou o~události uloženy v~databázi.
 
-Poslední částí aplikace budou nastavení. Ty v~tuto chvíli budou pouze pro uživatele a jejich správu.
+Poslední částí aplikace budou nastavení. Ty v~rámci této práce budou pouze pro uživatele a jejich správu (přidání, editace a smazání uživatele).
 
 \section{Uživatelská část}
 \label{sec:mvc}
-Pokud se zaměříme konkrétně na architekturu uživatelské části, tak AngularJS využívá architekturu MVC. Ta spočívá v~rozdělení aplikace na tři logické celky, které návzájem spolu komunikují a předávají si data.
+Architektura uživatelské části je definována knihovnou AngularJS, která využívá MVC architekturu. Ta spočívá v~rozdělení aplikace na tři logické celky, které návzájem spolu komunikují a předávají si data.
 
 \begin{figure}[ht]
     \centering
@@ -493,11 +493,9 @@ Pokud se zaměříme konkrétně na architekturu uživatelské části, tak Angu
 \end{figure}
 
 \begin{description}
-    \item {\bf Model} obstaravá logiku a integritu aplikačních dat, které se v~SPA nacházejí. Model také získává a odesílá data na server dle pokynů kontroléru. Tím se udržuje uniformní rozhraní pro obousměrnou komunikaci mezi klientem a serverem.
+    \item {\bf Model} obstaravá logiku nakládání s daty a zajišťuje integritu aplikačních dat, které se v~SPA nacházejí. Model také získává a odesílá data na server dle pokynů kontroléru. Tím se udržuje uniformní rozhraní pro obousměrnou komunikaci mezi klientem a serverem.
 
-        Z~pohledu AngularJS jsou jednotlivé modely reprezentovány pomocí \uv{service}. Ty jsou pomocí vkládání závislostí spojeny s~jednotlivými kontroléry.
-
-    \item {\bf View (pohled)} zobrazuje data, která jsou mu dodána od kontroléru. Pohled a kontrolér musí být velmi úzce propojeny, aby obě strany měly co nejaktuálnější data. To je zaručeno pomocí obousměrného vázání dat (angl. two-way data binding). Na základě požadované cesty router uvnitř AngularJS rozhodne jaký pohled má být vykreslen a předá jej jádru prohlížeče pro vykreslení.
+    \item {\bf Pohled (angl. view)} zobrazuje data, která jsou mu dodána od kontroléru. Pohled a kontrolér musí být velmi úzce propojeny, aby obě strany měly co nejaktuálnější data. To je zaručeno pomocí obousměrného vázání dat (angl. two-way data binding). Na základě požadované cesty směrovač\footnote{V rámci AngularJS nahrazuje server (detekuje URL a obsluhuje dané cesty) a spojuje definované kontroléry s pohledy dle aktuální URL.} uvnitř AngularJS rozhodne jaký pohled má být vykreslen a předá jej jádru prohlížeče pro vykreslení.
 
         Pohled lze rozdělit na dvě části. První z~nich je šablona, která je vytvořena v~HTML. Ta může obsahovat speciální značky i vlastní definované DOM elementy. Tato šablona je následně při zobrazování \uv{kompilována} a zobrazena uživateli. Tímto se zachová obousměrné vázání dat.
 
