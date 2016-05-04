@@ -499,12 +499,12 @@ Architektura uživatelské části je definována knihovnou AngularJS, která vy
 
         Pohled lze rozdělit na dvě části. První z~nich je šablona, která je vytvořena v~HTML. Ta může obsahovat speciální značky i vlastní definované DOM elementy. Tato šablona je následně při zobrazování \uv{kompilována} a zobrazena uživateli. Tímto se zachová obousměrné vázání dat.
 
-    \item {\bf Controller (kontrolér)} je prostředníkem mezi modelem a pohledem. Zabezpečuje aktualizaci dat na obou stranách. Avšak v~rámci AngurlarJS lze kontrolér obejít a data z~modelu může získat přímo pohled. Tím přetváříme architekturu SPA na hybridní mezi MVC a MVVM.
+    \item {\bf Kontrolér (angl. controller)} je prostředníkem mezi modelem a pohledem. Zabezpečuje aktualizaci dat na obou stranách. Avšak v~rámci AngurlarJS lze kontrolér obejít a data z~modelu může získat přímo pohled. Tím přetváříme architekturu SPA na hybridní mezi MVC a MVVM.
 
-        Jednotlivé kontroléry mohou být do sebe vnořené a navzájem spolu komunikovat pomocí událostí, kde jeden kontrolér událost vyvolá jak směrem nahoru, tak může i dolů a další kontroléry mohou na tuto událost reagovat.
+        Jednotlivé kontroléry mohou být do sebe vnořené a navzájem spolu komunikovat pomocí událostí.
 \end{description}
 
-Na schématu \ref{fig:frontend} je znázorněno jak aplikace bude pracovat s~daty, které získá z~REST API. Veškerá data, která lze z~REST API získat, jsou JSON objekty. To velmi usnadní práci s~nimi a nebude nutná téměř žádná manipulace či konverze, protože JSON je nativní struktura pro JavaScript. Jednotlivé cesty v~aplikaci jsou pouhé koncepty, které reprezentují část SPA. Stejně tak komunikace s~API a obousměrné vázání dat je naznačeno pouze koncepčně a vše je konkretizováno v~následující kapitole \ref{implementace}.
+Na schématu \ref{fig:frontend} je znázorněno jak aplikace bude pracovat s~daty, které získá z~REST API. Veškerá data, která lze z~REST API získat, jsou JSON objekty. To velmi usnadní práci s~nimi a nebude nutná téměř žádná manipulace či konverze, protože formát JSON je nativní struktura pro JavaScript. 
 
 \begin{figure}[ht]
     \centering
@@ -512,64 +512,64 @@ Na schématu \ref{fig:frontend} je znázorněno jak aplikace bude pracovat s~dat
     \caption{Schéma uživatelské části} \label{fig:frontend}
 \end{figure}
 
-Pokud bychom architekturu popisovali z~pohledu uživatele, tak začínáme načtením dané cesty. Zde AngularJS zvolí šablonu a kontrolér, který je k~dané cestě definován. 
+Při požadavku na konkrétní cestu AngularJS zvolí šablonu a spustí odpovídající kontrolér, který je k~dané cestě definován. Kód uvnitř kontroléru se naváže na značky specifické pro AngularJS a postupně celou šablonu \uv{zkompiluje}\footnote{V tomto případě se HTML transformuje, přidávají potřebné třídy a identifikátory a nahrazují značky za textové řetězce.}. Tím vznikne obousměrné vázání dat mezi pohledem a kontrolérem.
 
-Poté zavolá kontrolér a spustí se kód, jenž obsahuje. Kód uvnitř kontroléru se naváže na značky specifické pro AngularJS a postupně celou šablonu \uv{zkompiluje}\footnote{V tomto případě se HTML transformuje, přidávají potřebné třídy a identifikátory a nahrazují značky za textové řetězce.}. Tím vznikne obousměrné vázání dat mezi pohledem a kontrolérem.
+V~kontroléru jsou pomocí vkládání závilostí (angl. dependency injection) registrovány modely, které kontrolér může využít. Modely jsou instanciovány jako tzv. singletony v~rámci celé aplikace. To snižuje nároky na výpočetní výkon jádra prohlížeče.
 
-V~kontroléru jsou pomocí vložení závilostí registrovány modely, které kontrolér chce využít (nemusí je nutně použít). Modely jsou instanciovány jako singletony v~rámci celé aplikace. To snižuje nároky na výpočetní výkon jádra prohlížeče.
-
-Modely mohou využívat jiných modelů. Tímto zapouzdřením funkcionality lze dosáhnout velmi vysoké abstrakce. V~NEMEA Dashboard je tato abstrakce navrhnuta pro dotazy do REST API. V~AngularJS je pro tvorbu HTTP požadavků vytvořen unifikovaný model \texttt{\$http}, ten by bylo ale nutné při každém požadavku složitě konfigurovat. Proto bude vytvořen model \texttt{api}, který bude využívat \texttt{\$http} a bude autonomně konfigurovat adresu, parametry, HTTP hlavičky a ošetří návratového hodnoty a data.
+Modely mohou využívat jiných modelů. Takovýmto zapouzdřováním funkcionality lze dosáhnout vysoké abstrakce. V~NEMEA Dashboard je tato abstrakce navržena pro dotazy do REST API. V~AngularJS je pro tvorbu HTTP požadavků vytvořen unifikovaný model, ten by bylo ale nutné při každém požadavku složitě konfigurovat. Proto bude vytvořen vlastní model, který bude autonomně konfigurovat adresu, parametry, HTTP hlavičky a ošetří návratového hodnoty a dat.
 
 \section{REST API}
 \label{restapi}
 
-Representational state transfer, zkráceně REST byl definován v~roce 2000 v~dizertaci Roye Thomase Fieldinga \cite{rest}. Ten jej definuje jako architektonický styl pro návrh distribuovaného hypermediálního obsahu. REST je postaven na několika základních ideích, které platí i dnes.
+Representational state transfer, zkráceně REST byl definován v~roce 2000 v~dizertaci Roye Thomase Fieldinga \cite{rest}. Ten jej definuje jako architektonický styl pro návrh distribuovaného mediálního obsahu. REST je postaven na několika základních ideích, které platí i dnes.
 
 \begin{description}
     \item \textit{Klient--server} \\
-        Tento návrh architektury je nejzákladnějším stylem pro síťové aplikace. Server, nabízející sadu služeb, čeká na žádosti, které následně obslouží. Klient, který se snaží vykonat určitou činnost, posílá žádosti na server skrze předem definovanou cestu. Server žádost v~případě nevalidního formátu odmítne, v~kladném případě provede žádost a odešle odpověď zpět klientovi.
+        Tento návrh architektury je základním stylem pro síťové aplikace. Server, nabízející sadu služeb, čeká na žádosti od klienta, které následně obslouží. Klient, který se snaží vykonat určitou činnost, posílá žádosti na server skrze předem definovanou cestu. Pokud server žádosti nerozumí (např. nevalidní formát), ji odmítne, v~kladném případě provede žádost a odešle odpověď zpět klientovi.
 
         Tímto oddělením uživatelské části od serverové získává aplikace vyšší přenositelnost, škálovatelnost a nezávislost komponent. To dovoluje částečně separátní vývoj.
        
     \item \textit{Bezestavovost} \\
         Zřejmě nejdůležitějším aspektem REST API je bezestavová komunikace. Ta se zaručí tak, že každý dotaz, který je na API zaslán, obsahuje veškeré informace, které jsou potřebné pro porozumnění žádosti. Takto se klientovi zabrání využít jakéhokoliv kontextu, který by na serveru mohl být uchován.
+
+        To zaručuje vyšší bezpečnost API a všechny dotazy, které na něj přijdou nemohou být ovlivněny jinými dotazy.
        
     \item \textit{Vyrovnávací paměť} \\
-        Pro zlepšení výkonu je do rozhraní vhodné implementovat vyrovnávací paměť. To však s~sebou nese riziko neaktuálnosti dat, což v~případě systému NEMEA je velmi nebezpečná vlastnost. Proto lze tento faktor opomenout v~případě vysoce volatilních rozhraní jakým systém NEMEA rozhodně je.
+        Pro zlepšení výkonu je do rozhraní vhodné implementovat vyrovnávací paměť. To však s~sebou nese riziko neaktuálnosti dat, což v~případě systému NEMEA\footnote{NEMEA Dashboard staví na co nejaktuálnějších datech.} je velmi nebezpečná vlastnost.
        
     \item \textit{Uniformní rozhraní} \\
-        Uniformnost rozhraní je nejdůležitější vlastností REST architektury, která jej odlišuje od ostatních architektonických stylů návrhu jakým je například RPC~\cite{restful}. Generalizací rozhraní vývojář získá velmi rychlý přehled o~dostupných operací s~API a jaké služby poskytují.
+        Uniformnost rozhraní je důležitou vlastností REST architektury, která jej odlišuje od ostatních architektonických stylů návrhu jakým je například RPC~\cite{restful}. Generalizací rozhraní vývojář získá velmi rychlý přehled o~dostupných operací s~API a jaké služby poskytují.
         
-        Aby rozhraní bylo uniformním, musí splňovat několik vlasností: identifikovatelnost zdrojů (jedna URL pro jeden zdroj), manipulace se zdroji skrz reprezentaci (používání podstatných jmen, ne sloves, při definování URL), samopopisné zprávy (pojménovávat přesně a srozumitelně) a hypermédia jako jádro aplikačního stavu.
+        Aby rozhraní bylo uniformním, musí splňovat několik vlasností: jednoznačná identifikovatelnost zdrojů (jedna URL pro jeden zdroj), samopopisné zprávy (pojménovávat přesně a srozumitelně) a média jako jádro aplikačního stavu.
 
     \item \textit{Vrstvený systém} \\
-        Aby se rozhraní dokázalo v~čase přizpůsobovat potřebám vývojáře, je nutné navrhovat rozhraní vrstveně. To jej dovoluje libovolně rozšiřovat jak do šířky, tak do hloubky. Pokud se na rozhraní díváme jako na jednotlivé komponenty, tak ty, díky vrstvení, nejsou schopné interagovat s~dalšími vrstvami a tím pádem jinými komponentami. Z~klientské strany to znamená interkaci vždy pouze s~jediným zdrojem.
+        Aby se rozhraní dokázalo v~čase přizpůsobovat potřebám vývojáře, je nutné navrhovat rozhraní vrstveně. To jej dovoluje libovolně rozšiřovat jak do šířky, tak do hloubky. Pokud se na rozhraní díváme jako na jednotlivé komponenty, tak ty, díky vrstvení, nejsou schopné interagovat s~dalšími vrstvami a tím pádem jinými komponentami, což podporuje bezestavovost API. Z~klientské strany to znamená interkaci vždy pouze s~jediným zdrojem.
         
 \end{description}
 
-Při aplikaci těchto ideí do návrhu REST API pro NEMEA Dashboard jsem narazil na několik problémů, které lze vyřešit kompromisy. Jde zejména o~typ API, které jsem pro aplikaci navrhul. To totiž z~většinové části data pouze získává (cca 70\%). Úprava či zápis dat se realizuje pouze v~případě práce s~uživateli nebo konfigurací dashboardu.
+Při aplikaci těchto ideí do návrhu REST API pro NEMEA Dashboard jsem narazil na několik problémů. Jde zejména o~typ API, které jsem pro aplikaci navrhul. To totiž z~většinové části data pouze získává (cca 90\% dotazů jsou typu GET). Úprava či zápis dat se realizuje pouze v~případě práce s~uživateli\footnote{Přidávání, editace a mazání } nebo konfigurací dashboardu.
 
-Tím pádem z~CRUD modelu (viz \ref{crud}) využíváme pouze jednu část, kterou je čtení. Tato část je realizována pomocí HTTP požadavku \texttt{GET}. Ten, ačkoliv dle RFC 2616~\cite{rfc:http} může disponovat tělem zprávy, tělo zprávy většinou nepoužívá. Lépe řečeno jej většina webových serverů nepoužívá a tudíž by při návrhu bylo velmi nevhodnou praktikou toto chování implementovat. 
+Tím pádem z~CRUD modelu (viz \ref{crud}) je využívána pouze jedna část -- čtení. Tato část je realizována pomocí HTTP požadavku \texttt{GET}. Ten, ačkoliv dle RFC 2616~\cite{rfc:http} může disponovat tělem zprávy, tělo zprávy většinou nepoužívá. Lépe řečeno jej většina webových serverů nepoužívá a tudíž by při návrhu bylo velmi nevhodnou praktikou toto chování implementovat. 
 
 Tím pádem jsem při návrhu rozhraní zvolil kompromis mezi REST a RPC, který narozdíl od REST využívá URL parametrů. Tento kompromis dovoluje při návrhu architektury použít jedno uniformní rozhraní pro více typů dotazů. To, ačkoliv porušuje základní ideu REST architektury, velmi usnadní vývoj uživatelské části.
 
-Tento kompromis nerozděluje rozhraní dle sémantiky získaných dat, ale dle typu dat, které uživatelské rozhraní získá. Rozdíl v~sémantice dat je totiž daleko důležitějším měřítkem než struktura odeslané zprávy. Konkrétně jsem tento přístup zvolil u~agregovaných dat, které jsou vyhodnocovány již na serveru při dotazování do databáze.
+Tento kompromis spočívá v používání URL parametrů při koncovém bodě, který agreguje získaná data a to proto, že tento koncový bod vyžaduje mnoho parametrů, dle kterých se data filtrují a následně agregují.
 
 \section{GUI}
 
-Při návrhu grafického uživatelského rozhraní jsem se snažil využívat co nejjednodušší drátěné modely. Ty totiž ponechávají dostatečnou flexibilitu a zároveň jsou natolik vyjadřující, že je z~nich vidět základní koncept a rozložení prvků v~aplikaci.
+Při návrhu grafického uživatelského rozhraní byly využity co nejjednodušší drátěné modely. Ty totiž ponechávají dostatečnou flexibilitu a zároveň mají dostatečnou vyjadřovací sílu pro zobrazení základních konceptu a rozložení prvků v~aplikaci.
 
-V~příloze \ref{wf:dashboard} je vidět hlavní stránka aplikace, neboli dashboard. Ten se skládá z~jednotlivých boxů, které jsou konfigurovatelné jak vzhledem (lze je zmenšit, zvětšit, přidat, smazat), tak obsahem. Ten je konfigurován ve zvláštním okně aplikace, které je specifické pro každý box. Na drátěném modelu \ref{wf:dashboard_edit} lze vidět jeho návrh.
+V~příloze \ref{wf:dashboard} se nachází hlavní model stránky aplikace, neboli dashboard. Ten se skládá z~jednotlivých boxů, které jsou konfigurovatelné jak vzhledem (lze je zmenšit, zvětšit, přidat, smazat), tak obsahem. Ten je konfigurován ve zvláštním okně aplikace, které je specifické pro každý box. Na drátěném modelu v příloze \ref{wf:dashboard_edit} lze vidět jeho návrh.
 
-Při prokliku během drill-down analýzy se uživatel přesune na druhou část aplikace -- jednotlivé události, které daný útok/anomálii způsobily. V~této části, znázorněné na drátěném modelu \ref{wf:dashboard_events}, má uživatel možnost se libovolně dotazovat do databáze událostí a získat tak z~ní události, které přesně hledá. Ty jde nadále živě filtrovat přímo ve výpisu událostí (neprobíhá žádné dotazování na server).
+Při prokliku během drill-down analýzy se uživatel přesune na druhou část aplikace -- jednotlivé události, které danou anomálii způsobily. V~této části, znázorněné na drátěném modelu \ref{wf:dashboard_events}, má uživatel možnost se libovolně dotazovat do databáze událostí a získat tak z~ní události, které přesně hledá. Ty jde nadále živě filtrovat přímo ve výpisu událostí (neprobíhá žádné dotazování na server).
 
-Jednotlivé řádky tabulky obsahují pouze esenciální informace o~události (ty se rozhodnout během vývoje a dle zkušeností s~prací s~databází událostí). Při kliknutí na daný řádek se zobrazí detailnější informace o~události a pokud ani to uživateli nestačí, může přejít na detail události, který obsahuje veškeré informace o~události obsažené v~databázi.
+Jednotlivé řádky tabulky obsahují pouze základní informace o~události. Při kliknutí na daný řádek se zobrazí detailnější informace o~události a pokud ani to uživateli nestačí, může přejít na detail události, který obsahuje veškeré informace o~události obsažené v~databázi.
 
 Grafika samotné aplikace bude vznikat během její implementace a to v~režii CSS části frameworku Angular Material. Ten má kaskádové styly pro většinu běžně používaných elementů a nevzniknou tak při vývoji výrazné odchylky od prvotního návrhu.
 
 \section{Shrnutí}
 
-NEMEA Dashboard je nyní navržený. Architekturou REST API začínaje, grafickým uživatelským rozhraním konče. Byly připraveny případy užití, které se budou implementovat. Typy dat, které se budou vizualizovat a zpracovávat. Definoval jsem REST API, které bude aplikace na uživatelské části využívat a naznačil průběh drill-down analýzy.
+V této kapitole byl uveden návrh aplikace NEMEA Dashboard. Architekturou API začínaje, grafickým uživatelským rozhraním konče. Byly připraveny případy užití, které se budou implementovat. Typy dat, které se budou vizualizovat a zpracovávat. Navržené hybridní REST/RPC API, které bude aplikace na uživatelské části využívat, je rozumným kompromisem mezi striktní architekturou a reálným použitím a byl naznačen průběh drill-down analýzy.
 
 \chapter{Implementace}
 
