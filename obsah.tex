@@ -5,21 +5,19 @@
 \newcommand\note[1]{{\Large \textcolor{red}{#1}}}
 
 \chapter{Úvod}
-Počítačové sítě, zejména Internet, v~dnešním světě zaujímají jednu z~nejvýznamnějších rolí. Počínaje výzkumem a vědeckými experimenty, konče běžným životem většiny lidí. Jen za posledních deset let se počet uživatelů Internetu více než ztrojnásobil z~přibližně jedné miliardy na tři miliardy uživatelů. Počítačové sítě propujují celý svět a jsou neustále rozšiřovány, vylepšovány a modernizovány. To vede k~větším nárokům na použité technologie a zdroje. 
+Počítačové sítě, zejména Internet, v~dnešním světě zaujímají jednu z~nejvýznamnějších rolí. Počínaje výzkumem a vědeckými experimenty, konče běžným životem většiny lidí. Jen za posledních deset let se počet uživatelů Internetu více než ztrojnásobil. Počítačové sítě propujují celý svět a jsou neustále rozšiřovány, vylepšovány a modernizovány.
 
-Avšak se zvyšujícím počtem uživatelů roste i počet útoků na různé počítačové sítě, kterými se útočníci snaží získat informace či poškodit oběť. Síťový útok je podle~\cite{rfc:attack} definován jako záměrný akt, kde se entita snaží překonat bezpečnostní služby a porušit bezpečnost systému. Současně s~tím vznikají systémy na detekci takovýchto útoků, aby správcí sítí dokázali včas a efektivně reagovat na vzniklou situaci.
+Avšak se zvyšujícím počtem uživatelů roste i počet útoků na počítačové sítě. Útočníci se snaží získat citlivé informace či finančně poškodit oběť. Síťový útok je podle~\cite{rfc:attack} definován jako záměrný akt, kde se entita snaží překonat bezpečnostní služby a porušit bezpečnost systému. 
 
-Jeden z~těchto systémů vznikl ve sdružení CESNET s~názvem NEMEA (Network Measurements Analysis). Tento systém mj. slouží pro analýzu síťového provozu a detekci neobvyklých událostí na síti. Podezřelé toky jako agregované události pak může systém zaznamenávat  do databáze. Na větší síti (stovky až tisíce připojených zařízení) je takovýchto událostí vytvořeno až několik tisíc denně. S~tím nastává problém jak dané události jednoduše analyzovat a rozpoznat důležité události, na které se zaměřit a na které nebrát zřetel.
+Proto vznikají systémy na detekci síťových útoků, aby správcí sítí dokázali včas a efektivně reagovat na vzniklou situaci. Jeden z~těchto systémů vznikl ve sdružení CESNET s~názvem NEMEA (Network Measurements Analysis). Tento systém mj. slouží pro analýzu síťového provozu a detekci neobvyklých událostí na síti. Podezřelé toky jako agregované události, které pak může systém zaznamenávat do databáze. Takováto událost je uložena ve formátu IDEA. Tento formát je specifikován sdružením CESNET a slouží jako prostředek pro sdílení jednotlivých bezpečnostních událostí mezi různými systémy a bezpečnostními tými.
 
-Pro manuální analýzu velkého množství dat je prospěšná vizualizace dle vhodných metrik, které vyplývají z~dostupných dat. Cílem této bakalářské práce je vytvořit aplikaci pro vizuální analýzu bezpečnostních událostí na síti primárně monitorované systémem NEMEA, nicméně díky IDEA formátu dat bude aplikace přenositelná na další systémy. 
+Na větší síti (stovky až tisíce připojených zařízení) je takovýchto událostí vytvořeno až několik desítek tisíc denně. S~tím nastává problém jak dané události jednoduše a rychle analyzovat a rozpoznat důležité události, na které se zaměřit a na které nebrát zřetel. Pro manuální analýzu velkého množství dat je vhodná vizualizace dle správně zvolených metrik, které vyplývají z~dostupných dat.
 
-Důležitým aspektem vytvořené aplikace je důraz na použití moderních nástrojů podporující tvorbu dynamických webových aplikací. Společně s~tím je kladen důraz na uživatelskou přívětivost a jednoduchost prostředí, ve kterém bude probíhat vizuální analýza událostí.
+Cílem této bakalářské práce je vytvořit aplikaci pro vizuální analýzu bezpečnostních událostí na síti primárně monitorované systémem NEMEA. Nicméně díky formátu dat IDEA, se kterým bude aplikace pracovat, bude možná přenositelnost na další systémy. Důležitým aspektem vytvořené aplikace je důraz na použití moderních nástrojů podporující tvorbu dynamických webových aplikací. Společně s~tím je kladen důraz na uživatelskou přívětivost a jednoduchost prostředí, ve kterém bude probíhat vizuální analýza událostí.
 
 Celou aplikaci navíc bude možno přizpůsobit potřebám daného správce sítě. V~aplikaci bude zavedena technika {\it drill-down}, která napomáhá rychlé a přehledné analýze velkého množství dat bez ztráty informací o~analyzované události. Drill-down spočívá v~postupném zvyšování rozlišení dat, která analyzujeme a postupujeme směřem shora dolů.
 
-Aplikace bude pracovat s~formátem dat nazvaný IDEA. Tento formát je specifikován sdružením CESNET a slouží jako prostředek pro sdílení dat bezpečnostních událostí mezi různými systémy. Díky tomu lze aplikaci kdykoliv přenést na jiný zdroj databáze než je systém NEMEA, např. v~rámci sdružení CESNET na systém Warden nebo Mentat.
-
-Aplikace bude integrována do současného NEMEA systému pod názvem NEMEA Dashboard a bude s~ním společně distribuována jako front~end celého systému.
+Aplikace bude pracovat s~formátem dat nazvaný IDEA. Díky tomu lze aplikaci kdykoliv přenést na jiný zdroj databáze než je systém NEMEA, např. v~rámci sdružení CESNET na systém Warden nebo Mentat. Aplikace bude integrována do systému NEMEA pod názvem NEMEA Dashboard a bude s~ním společně distribuována jako front~end celého systému.
 
 \chapter{Monitorování sítě}
 
@@ -820,15 +818,15 @@ Během testování uživatelské části byla obdržena kvalitní zpětná vazba
 
 \chapter{Závěr}
 
-Cílem této práce bylo vytvořit aplikaci pro vizualizaci síťových bezpečnostních dat na moderní webové platformě. Aplikace vizualizuje síťové události uložené ve formátu IDEA. Tento formát je využíván několika službami sdružení CESNET a jmenovitě systémem NEMEA. Aplikace byla vyvinuta primárně pro tento systém, jenž díky této práci získal výstupní rozhraní systému, které dokáže vizualizovat velké množství dat za pomocí agregace a interaktivních grafů schopných drill-down analýzy.
+Cílem této práce bylo vytvořit aplikaci pro vizualizaci síťových bezpečnostních dat na moderní webové platformě, která vizualizuje síťové bezpečnostní události uložené ve formátu IDEA. Tento formát je využíván několika službami sdružení CESNET a jmenovitě, v rámci této práce, systémem NEMEA. 
 
-Díky vizuální analýze dat je uživatel schopen velmi rychle detekovat jakoukoliv anomálii na síti a zcela ji analyzovat v~rámci aplikace. Uživatel má navíc možnost pohodlně pracovat s databází událostí bez znalosti MongoDB a při hledání není zahlcen přebytečnými informacemi o vyhledaných událostech.  
+Aplikace byla navržena jako SPA, což je moderní přístup k architektuře webových aplikací. Před samotným návrhem aplikace byly nastudovány vybrané knihovny podporující tvorbu SPA. Pro realizaci uživatelské části byla vybrána JavaScriptová knihovna AngularJS společně s CSS knihovnou Angular Material pro vytvoření grafického vzhledu. Serverová část byla vytvořena v jazyku Python s pomocí mikroframeworku Flask.
 
-Dalším krokem při vývoji aplikace bude zejména správa systému NEMEA. Cílem integrace systému do aplikace je zjednodušení práce se systémem NEMEA.
+Systém NEMEA díky této práci získal výstupní grafické rozhraní, které dokáže vizualizovat velké množství dat za pomoci jejich agregace a interaktivních grafů schopných drill-down analýzy. Díky vizuální analýze dat je uživatel schopen velmi rychle detekovat jakoukoliv anomálii na síti a zcela ji analyzovat v~rámci aplikace. Uživatel může pohodlně pracovat s databází událostí bez znalosti MongoDB skrze vytvořenou aplikaci a při vyhledávání událostí není zahlcen přebytečnými informacemi o vyhledaných událostech.
 
-Prostor pro rozšíření NEMEA Dashboard je široký. Konkrétními příklady z~mnoha mohou být rozšíření možností filtrování v~jednotlivých typech boxů (negativní filtry, logické spojky, vícenásobné filtry), přehlednější dotazování v~událostech, možnost rychlé a přesné geolokace IP adres, dotazování nad IP rozsahy.
+Dalším krokem při vývoji aplikace bude zejména správa systému NEMEA přes grafické uživatelské rozhraní. Cílem integrace aplikace do systému je zjednodušení práce se systémem NEMEA. Cílem je přenést většinu konfigurovatelných nastavení z příkazové řádky do NEMEA Dashboard.
 
-Neméně důležitým rozšířením je vytvoření instalačního průvodce pro instalaci NEMEA Dashboard jak na existujících instancích NEMEA systému, tak i na nových instancích.
+Další prostor pro rozšíření funkcionality NEMEA Dashboard je široký. Konkrétními příklady z~mnoha mohou být rozšíření možností filtrování v~jednotlivých typech boxů (negativní filtry, logické spojky, vícenásobné filtry), přehlednější dotazování v~událostech, možnost rychlé a přesné geolokace IP adres nebo dotazování nad IP rozsahy. Neméně důležitým rozšířením je vytvoření instalačního průvodce pro instalaci NEMEA Dashboard jak na existujících instancích NEMEA systému, tak i na nových instancích.
 
-Díky vizualizaci dat a modernímu webovému rozhraní je NEMEA Dashboard také učinným marketingovým nástrojem, který může působit i na méně odborné publikum a tím může systém NEMEA získat popularitu v komunitě síťových správců po celém světě.
+Díky vizualizaci dat a modernímu webovému rozhraní je NEMEA Dashboard učinným marketingovým nástrojem, který může působit i na méně odborné publikum a tím může systém NEMEA získat popularitu v komunitě síťových správců po celém světě.
 %=========================================================================
