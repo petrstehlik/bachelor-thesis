@@ -16,8 +16,11 @@
 % * Je-li prace psana v anglickem jazyce, je zapotrebi u tridy pouzit 
 %   parametr english nasledovne:
 %      \documentclass[english]{fitthesis}
+% * Je-li prace psana ve slovenskem jazyce, je zapotrebi u tridy pouzit 
+%   parametr slovak nasledovne:
+%      \documentclass[slovak]{fitthesis}
 
-\usepackage[czech]{babel}
+\usepackage[czech,slovak,english]{babel}
 \usepackage[utf8]{inputenc} %kodovani
 \usepackage[T1]{fontenc}
 \usepackage{cmap}
@@ -33,6 +36,12 @@
   \usepackage{ae}
 \fi
 
+\input{pisma.tex}
+
+% vypne funkci nové šablony, která automaticky nahrazuje uvozovky,
+% aby nebyly prováděny nevhodné náhrady v popisech API apod.
+\csdoublequotesoff
+
 \DeclareCaptionFormat{myformat}{#1#2#3}
 \captionsetup[lstlisting]{format=myformat}
 \captionsetup[lstlisting]{position=bottom,format=myformat}
@@ -46,19 +55,6 @@
 }
 \renewcommand\lstlistingname{Výpis}
 \usepackage{tablefootnote}
-
-
-
-%---rm---------------
-\renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm
-%---sf---------------
-\renewcommand{\sfdefault}{qhv}%zavede TeX Gyre Heros jako sf
-%---tt------------
-\renewcommand{\ttdefault}{lmtt}% zavede Latin Modern tt jako tt
-
-% vypne funkci nové šablony, která automaticky nahrazuje uvozovky,
-% aby nebyly prováděny nevhodné náhrady v popisech API apod.
-\csdoublequotesoff
 
 % =======================================================================
 % balíček "hyperref" vytváří klikací odkazy v pdf, pokud tedy použijeme pdflatex
@@ -98,26 +94,30 @@
   year=2016,             %rok
   date=\today,           %datum odevzdani
   %Nazev prace
-  title.cs={Vizualizace síťových bezpečnostních událostí},  %nazev prace v cestine
+  title.cs={Vizualizace síťových bezpečnostních událostí},  %nazev prace v cestine ci slovenstine
   title.en={Visualization of Network Security Events}, %nazev prace v anglictine
   %Autor
-  author={Petr Stehlík},   %jmeno prijmeni autora
+  author={Petr Stehlík},   %cele jmeno a prijmeni autora
+  author.name={Petr},   %jmeno autora (pro citaci)
+  author.surname={Stehlík},   %prijmeni autora (pro citaci)
   %author.title.p=Bc., %titul pred jmenem (nepovinne)
   %author.title.a=PhD, %titul za jmenem (nepovinne)
   %Ustav
-  department=UPSY, % doplnte prislusnou zkratku: UPSY/UIFS/UITS/UPGM
+  department=UPSY, % doplnte prislusnou zkratku dle ustavu na zadani: UPSY/UIFS/UITS/UPGM
   %Skolitel
-  supervisor=Pavel Krobot, %jmeno prijmeni skolitele
+  supervisor=Pavel Krobot, %cele jmeno a prijmeni skolitele
+  supervisor.name={Pavel},   %jmeno skolitele (pro citaci)
+  supervisor.surname={Krobot},   %prijmeni skolitele (pro citaci)
   supervisor.title.p=Ing.,   %titul pred jmenem (nepovinne)
-  %supervisor.title.a=,    %titul za jmenem (nepovinne)
+  %supervisor.title.a={Ph.D.},    %titul za jmenem (nepovinne)
   %Klicova slova, abstrakty, prohlaseni a podekovani je mozne definovat 
   %bud pomoci nasledujicich parametru nebo pomoci vyhrazenych maker (viz dale)
   %===========================================================================
   %Klicova slova
-  %keywords.cs={Klíčová slova v českém jazyce.}, %klicova slova v ceskem jazyce
-  %keywords.en={Klíčová slova v anglickém jazyce.}, %klicova slova v anglickem jazyce
+  keywords.cs={Klíčová slova v českém jazyce.}, %klicova slova v ceskem ci slovenskem jazyce
+  keywords.en={Klíčová slova v anglickém jazyce.}, %klicova slova v anglickem jazyce
   %Abstract
-  %abstract.cs={Výtah (abstrakt) práce v českém jazyce.}, % abstrakt v ceskem jazyce
+  %abstract.cs={Výtah (abstrakt) práce v českém jazyce.}, % abstrakt v ceskem ci slovenskem jazyce
   %abstract.en={Výtah (abstrakt) práce v anglickém jazyce.}, % abstrakt v anglickem jazyce
   %Prohlaseni
   %declaration={Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně pod vedením pana ...},
@@ -125,19 +125,19 @@
   %acknowledgment={Zde je možné uvést poděkování vedoucímu práce a těm, kteří poskytli odbornou pomoc.} % nepovinne
 }
 
-%Abstrakt (cesky, anglicky)
+%Abstrakt (cesky, slovensky ci anglicky)
 \abstract[cs]{Tato práce se zabývá vizualizací síťových bezpečnostních dat pomocí moderních webových technologií. Byly studovány různé technologie pro tvorbu moderní webové aplikace podporující vizualizaci velkého množství bezpečnostních událostí. Aplikace byla navržena pro systém NEMEA, který touto prací získal grafické uživatelské rozhraní umožňující vizuální analýzu velkého množství bezpečnostních událostí s možností analýzy shora dolů, tzv. drill-down. Aplikace pracuje s daty uloženými v IDEA formátu, který je využíván dalšími službami z oblasti síťové bezpečnosti a aplikace je tím pádem přenositelná i na ně. Další vývoj aplikace ale bude směřovat k hlubší integraci s NEMEA systémem a jeho službami.}
-    
-    \abstract[en]{This thesis focuses on visualization of network security events via modern web technologies. Multiple technologies for creating modern web application supporting visualising large volume of security events were studied. The application was designed for NEMEA system which thanks to this thesis acquired graphical user interface allowing big data visual analysis with drill-down capabilities. The application operates on data stored in IDEA format which is used among other network security services and the application is therefore transferrable to them. Further development of the application heads toward deeper integration with NEMEA system and its services.}
 
-%Klicova slova (cesky, anglicky)
+\abstract[en]{This thesis focuses on visualization of network security events via modern web technologies. Multiple technologies for creating modern web application supporting visualising large volume of security events were studied. The application was designed for NEMEA system which thanks to this thesis acquired graphical user interface allowing big data visual analysis with drill-down capabilities. The application operates on data stored in IDEA format which is used among other network security services and the application is therefore transferrable to them. Further development of the application heads toward deeper integration with NEMEA system and its services.}
+
+%Klicova slova (cesky, slovensky ci anglicky)
 \keywords[cs]{JavaScript, Python, MongoDB, vizualizace, NEMEA, IDEA, síťová bezpečnost, SPA}
 \keywords[en]{JavaScript, Python, MongoDB, visualization, NEMEA, IDEA, network security, SPA}
 
-%Prohlaseni
+%Prohlaseni (u anglicky psane prace anglicky, u slovensky psane prace slovensky)
 \declaration{Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně pod vedením pana Ing. Pavla Krobota. Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.}
 
-%Podekovani (nepovinne)
+%Podekovani (nepovinne, nejlepe v jazyce prace)
 \acknowledgment{Rád bych poděkoval Ing. Tomáši Čejkovi a Ing. Václavu Bartoši za odbornou pomoc, Ing. Pavlovi Krobotovi za věcné připomínky a vedení během psaní této práce a své rodině a přátelům za podporu.}
 
 \begin{document}
@@ -152,10 +152,18 @@
 \ifczech
   \renewcommand\listfigurename{Seznam obrázků}
 \fi
+\ifslovak
+  \renewcommand\listfigurename{Zoznam obrázkov}
+\fi
+
   % \listoffigures
 \ifczech
   \renewcommand\listtablename{Seznam tabulek}
 \fi
+\ifslovak
+  \renewcommand\listtablename{Zoznam tabuliek}
+\fi
+
   % \listoftables 
 
   % Text prace
@@ -164,17 +172,24 @@
 
   % Pouzita literatura
   % ----------------------------------------------
-\ifczech
+\ifslovak
   \makeatletter
-  \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatura}}
+  \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatúra}}
   \makeatother
   \bibliographystyle{czechiso}
-\else 
-  \makeatletter
-  \def\@openbib@code{\addcontentsline{toc}{chapter}{Literature}}
-  \makeatother
-  \bibliographystyle{plain}
-%  \bibliographystyle{alpha}
+\else
+  \ifczech
+    \makeatletter
+    \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatura}}
+    \makeatother
+    \bibliographystyle{czechiso}
+  \else 
+    \makeatletter
+    \def\@openbib@code{\addcontentsline{toc}{chapter}{Bibliography}}
+    \makeatother
+    \bibliographystyle{plain}
+  %  \bibliographystyle{alpha}
+  \fi
 \fi
   \begin{flushleft}
   \bibliography{literatura} % viz. literatura.bib
@@ -188,13 +203,24 @@
   \renewcommand{\appendixtocname}{Přílohy}
   \renewcommand{\appendixname}{Příloha}
 \fi
+\ifslovak
+  \renewcommand{\appendixpagename}{Prílohy}
+  \renewcommand{\appendixtocname}{Prílohy}
+  \renewcommand{\appendixname}{Príloha}
+\fi
   \appendixpage
-\ifczech
-  \section*{Seznam příloh}
-  \addcontentsline{toc}{section}{Seznam příloh}
+
+\ifslovak
+  \section*{Zoznam príloh}
+  \addcontentsline{toc}{section}{Zoznam príloh}
 \else
-  \section*{List of Appendices}
-  \addcontentsline{toc}{section}{List of Appendices}
+  \ifczech
+    \section*{Seznam příloh}
+    \addcontentsline{toc}{section}{Seznam příloh}
+  \else
+    \section*{List of Appendices}
+    \addcontentsline{toc}{section}{List of Appendices}
+  \fi
 \fi
   \startcontents[chapters]
   \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
