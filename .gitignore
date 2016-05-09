@@ -82,3 +82,6 @@ target/
 .blg
 .ptc
 *.swp
+
+.DS_Store
+old/
