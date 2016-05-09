@@ -34,45 +34,7 @@ Pro potřebu sdílení informací o~síťových událostech mezi různými skupi
 
 IDEA\footnote{\url{https://idea.cesnet.cz}}, neboli Intrusion Detection Extensible Alert, je formát záznamu síťové události specifikovaný sdružením CESNET. IDEA si klade za cíl specifikovat takový formát záznamu, který je univerzální, přenositelný, ale zároveň dost konkrétní a snadno pochopitelný bez potřeby rozsáhlé dokumentace k~jednotlivým polím.
 
-Vzorový záznam generovaný systémem NEMEA je vyobrazený ve výpisu \ref{code:idea}. Jak je vidět, formát je specifikovaný jako JSON dokument, aby byl přehledný, čitelný v~běžné podobě (narozdíl od binárních formátů), lehce přenositelný a efektivní (např. oproti XML~\cite{xmlvsjson}).
-
-%\vspace{5mm}
-\begin{figure}[ht]
-\lstset{basicstyle=\small,style=JSON}
-\begin{lstlisting}
-{
-    "Format" :      "IDEA0",
-    "ID" :          "73e0b136-aeb8-4aae-bb80-9bfb4f258847",
-    "Category" :    ["Availibility.DDoS"],
-    "Description" : "DNS amplification",
-    "EventTime" :   "2016-04-07T22:19:25Z",
-    "CreateTime" :  "2016-04-07T22:34:52Z",
-    "CeaseTime" :   "2016-04-07T22:34:38Z",
-    "DetectTime" :  "2016-04-07T22:34:38Z"
-    "PacketCount" : 393,
-    "Source" : [{
-        "IP4" : ["192.1.0.201"],
-        "Proto" : ["udp","dns"],
-        "OutPacketCount" : 393,
-        "InPacketCount" : 767
-    }],
-    "Target" : [{
-        "Proto" : ["udp","dns"],
-        "IP4" : ["10.0.0.135"],
-        "InPacketCount" : 393
-    }],
-    "Node" : [{
-        "SW" : ["NEMEA","amplification_detection"],
-        "Name" : "cz.cesnet.nemea.amplification_detection"
-    }],
-    "Type" : ["Flow","Statistical"],
-}
-\end{lstlisting}
-\captionof{lstlisting}{Vzorový IDEA záznam ze systému NEMEA. Některé části byly vynechány nebo zkráceny a IP adresy anonymizovány.}
-\label{code:idea}
-\end{figure}
-
-\newpage
+Vzorový záznam generovaný systémem NEMEA je vyobrazený v příloze \ref{code:idea}. Jak je vidět, formát je specifikovaný jako JSON dokument, aby byl přehledný, čitelný v~běžné podobě (narozdíl od binárních formátů), lehce přenositelný a efektivní (např. oproti XML~\cite{xmlvsjson}).
 
 \section{NEMEA}
 
@@ -684,11 +646,9 @@ Posledním společným prvkem je menu, které nabízí dvě položky. Editaci a 
 
 Při konfiguraci boxu se dynamicky mění obsah formuláře, kterým je vše nastavováno. Ten je realizován jako vyskakovací okno v~rámci stránky\footnote{angl. lightbox}. Těchto kombinací je větší množství a proto je zde uveden pouze ukázkový příklad.
 
-Při přidání nového boxu je v~dashboardu pouze obálka pro uživatelem definovaný obsah. Uživatel tedy klikne na kontextové menu boxu a zvolí položku \uv{Edit}. Zde je pouze předem definovaný titulek \uv{New Box}, u~kterého lze změnu vidět v~reálném čase. Následně zvolí typ boxu, v~případě typu \uv{top} má na výběr pouze časový interval, ve kterém se mají události hledat. V~ostatních případech vybírá metriku (buď předdefinovanou, nebo vlastní), dle které se výsledky agregují. Uživatel zvolí typ \uv{piechart}, ten nabízí možnost filtrování vyhledaných událostí. Jelikož se záznamem události v~MongoDB pracuje téměř totožně jako s~formátem JSON, může uživatel použít tečkovou notaci pro přístup k~jednotlivým hodnotám. Ve filtru volíme klíč a hodnotu, dle které se výsledek filtruje. V~tomto případě, který je znázorněný na obrázku \ref{fig:box_edit}, jsou filtrovány události pouze z modulu systému NEMEA s názvem HostStats.
+Při přidání nového boxu je v~dashboardu pouze obálka pro uživatelem definovaný obsah. Uživatel tedy klikne na kontextové menu boxu a zvolí položku \uv{Edit}. Zde je pouze předem definovaný titulek \uv{New Box}, u~kterého lze změnu vidět v~reálném čase. Následně zvolí typ boxu, v~případě typu \uv{top} má na výběr pouze časový interval, ve kterém se mají události hledat. V~ostatních případech vybírá metriku (buď předdefinovanou, nebo vlastní), dle které se výsledky agregují. Uživatel zvolí typ \uv{piechart}, ten nabízí možnost filtrování vyhledaných událostí. Jelikož se se záznamem události v~MongoDB pracuje téměř totožně jako s~formátem JSON, může uživatel použít tečkovou notaci pro přístup k~jednotlivým hodnotám. Ve filtru volíme klíč a hodnotu, dle které se výsledek filtruje. V~tomto případě, který je znázorněný na obrázku \ref{fig:box_edit}, jsou filtrovány události pouze z modulu systému NEMEA s názvem HostStats.
 
-Posledními možnostmi je nastavení časového okna, ve kterém se události vyhledávají a textový popisek daného grafu. Poté uživatel klikne na tlačítko \uv{Save} a nastavení se uloží. To spustí rutinu v~kontroléru, která pomocí modelu zašle dotaz na API s~danými parametry a načte data do nově nakonfigurovaného boxu a vykreslí graf jakmile budou data přítomna u~uživatele. Mezitím se v~boxu zobrazí nápisek \uv{loading\ldots}.
-
-Pokud uživatel klikne na \uv{Cancel}, box se navrátí do původní konfigurace.
+Posledními možnostmi je nastavení časového okna, ve kterém se události vyhledávají a textový popisek daného grafu. Poté uživatel klikne na tlačítko \uv{Save} a nastavení se uloží. To spustí rutinu v~kontroléru, která pomocí modelu zašle dotaz na API s~danými parametry, načte data do nově nakonfigurovaného boxu a vykreslí graf jakmile budou data přítomna u~uživatele. Mezitím se v~boxu zobrazí nápisek \uv{Fetching data}. Pokud uživatel klikne na \uv{Cancel}, box se navrátí do původní konfigurace.
 
 \begin{figure}[ht]
     \centering
@@ -705,7 +665,7 @@ Dashboard je realizován jako jednotlivé pohledy na data, které si uživatel s
         Tato možnost přidá do současného pohledu nový box, který si uživatel dále přizpůsobí.
 
     \item Clear cache \\
-        Během vývoje dashboardu jsem implementoval dočasnou paměť pro načtená data z~REST API, aby se s~dashboardem mohlo pracovat offline nebo na nestabilním internetovém připojení. Tato funkcionalita je realizována pomocí lokálního uložiště v~prohlížeči (local storage). Pokud si uživatel přeje aktualizovat data, použije toto tlačítko. 
+        Během vývoje dashboardu byla implementována dočasná paměť pro načtená data z~API, aby se s~dashboardem mohlo pracovat offline nebo na nestabilním internetovém připojení. Tato funkcionalita je realizována pomocí lokálního uložiště v~prohlížeči (local storage). Pokud si uživatel přeje aktualizovat data, použije toto tlačítko. 
 
     \item Enable autorefresh \\
         Další funkcionalita, která byla přidána během vývoje jako reakce na požadavek kontinuálního obnovování dat v~současném pohledu. Interval obnovení dat je nastavitelný pro každý pohled.
@@ -723,33 +683,29 @@ Dashboard je realizován jako jednotlivé pohledy na data, které si uživatel s
     \caption{Kontextové menu pohledu.} \label{fig:dashboard_menu}
 \end{figure}
 
-Drill-down analýza je realizována jako odkaz v~jednotlivých sloupcích/oddílech grafu nebo jako tlačítko (v~případě boxu typu \uv{top}), které odkazuje přímo na danou událost. Při kliknutí na danou část grafu nebo tlačíko je uživatel přesunut do druhé části NEMEA Dashboard nazvanou \uv{Events}. Zde jsou automaticky nastaveny parametry hledání, které jsou následně poslány v~požadavku na API. Odpovědí jsou data splňující zadané parametry. API vrací standardně prvních sto výsledků, které najde, aby nedošlo k~zahlcení připojení a pokud si uživatel přeje více událostí, má dvě možnosti. První možností je změnit parametr hledání a provést hledání znova.  Druhou je tlačítko pod tabulkou výsledků, které načte dalších sto událostí a informuje o~počtu zbývajících událostí, které zadané podmínky splňují.
+Drill-down analýza je realizována jako odkaz v~jednotlivých sloupcích/oddílech grafu nebo jako tlačítko (v~případě boxu typu \uv{top}), které odkazuje přímo na danou událost. Při kliknutí na danou část grafu nebo tlačíko je uživatel přesunut do druhé části NEMEA Dashboard nazvanou \uv{Events}. Zde jsou automaticky nastaveny parametry hledání, které jsou následně poslány v~požadavku na API. Odpovědí jsou data splňující zadané parametry. API vrací standardně prvních sto výsledků, které najde, aby nedošlo k~zahlcení připojení a pokud si uživatel přeje více událostí, má dvě možnosti. První možností je změnit parametr hledání a provést hledání znova.  Druhou je tlačítko pod tabulkou výsledků, které načte dalších sto událostí a informuje o~počtu zbývajících událostí splňující zadané podmínky.
 
-Každá událost v~tabulce je rozkliknutelná. Po kliknutí jsou zobrazeny důležité detaily o~dané události. Uživatel má následně dostupné tři akce, které může provést. První a druhou akcí je vyhledání událostí se stejnou IP adresou (buď zdrojová nebo cílová IP adresa, pokud je záznam obsahuje).
-
-Poslední možností je zobrazení detailů o~dané události. Tato možnost uživatele přesune na novou stránku, kde vidí celý záznam události tak, jak je uložený v~databázi s~jediným rozdílem. JSON je formátován a přehledně zobrazen jako HTML elementy, aby byl jednoduše čitelný.
+Každá událost v~tabulce je rozkliknutelná. Po kliknutí jsou zobrazeny důležité detaily o~dané události. Uživatel má následně dostupné tři akce, které může provést. První a druhou akcí je vyhledání událostí se stejnou IP adresou (buď zdrojová nebo cílová IP adresa, pokud je záznam obsahuje). Třetí možností je zobrazení detailů o~dané události. Tato možnost uživatele přesune na novou stránku, kde vidí celý záznam události tak, jak je uložený v~databázi s~jediným rozdílem. JSON je formátován a přehledně zobrazen jako HTML elementy, aby byl jednoduše čitelný.
 
 Další experimentální funkcionalitou na této stránce je geolokace IP adres v~události a jejich zobrazení na mapě. S~touto funkcionalitou se teprve experimentuje a není v~době psaní této práce jisté, zda zůstane zachována.
 
 Poslední částí je běžná správa uživatelů a svého uživatelského účtu. Tato část dovoluje spravovat vlastní účet (např. změna emailové adresy) a přidávát, měnit a mazat uživatele.
 
-Všechny stránky uživatelské části jsou zachyceny v~příloze \ref{screens}.
+Všechny stránky uživatelské části jsou zachyceny v~příloze \ref{screens:before}.
 %\note{data na frontendu jsou trojího typu: data událostí, konfigurační a autentikační data.}
 
 \section{Zabezpečení}
 \label{zabezpeceni}
 
-Jelikož NEMEA Dashboard pracuje s~citlivými daty je nutné tato data dobře zabezpečit. To zejména znamená zabezpečení API. Existuje několik doporučených postupů jak takové API zabezpečit. Nejčastější řešení je pomocí SAML 2.0 dle RFC7522~\cite{rfc:saml}, které je definováno v XML, čímž se stává nevhodným pro NEMEA Dashboard. Druhým nejčastějším řešením je JSON Web Token (zkáceně JWT), který je realizován v JSON.
+Jelikož NEMEA Dashboard pracuje s~citlivými daty je nutné tato data dobře zabezpečit. To zejména znamená zabezpečení API. Existuje několik doporučených postupů jak takové API zabezpečit. Nejčastější řešení je pomocí SAML 2.0 dle RFC 7522~\cite{rfc:saml}, které je definováno v XML, čímž se stává nevhodným pro NEMEA Dashboard. Druhým nejčastějším řešením je JSON Web Token (zkáceně JWT), který je realizován v JSON.
 
-JWT je otevřený standard definový RFC 7519~\cite{rfc:jwt}. Ten jej popisuje jako kompaktní, bezpečný pro URL způsob reprezentace prostředků, které se sdílejí mezi dvěma zdroji.
+JWT je otevřený standard definovaný RFC 7519~\cite{rfc:jwt}. Ten jej popisuje jako kompaktní, bezpečný pro URL způsob reprezentace prostředků, které se sdílejí mezi dvěma zdroji.
 
 Z~hlediska programátora je důležité, že je datově úsporný. V základu využívá totiž efektivní metodu hashování HS256 (HMAC + SHA-256), která poskytuje dobrou bezpečnost (JWT podporuje i další typy hashování).
 
-JWT je řetezec znaků skládající se ze tří částí, oddělené tečkou. První částí je hlavička, která obsahuje informace o~použitém hashovacím algoritmu a typu tokenu. Druhou částí je samotný payload (uživatelem definovaný obsah) a třetí částí je signatura. Ta vezme hlavičku, obsah (ty jsou zakódovány base64 algoritmem), tajný klíč (secret key) a algoritmus specifikovaný v~hlavičce a výsledný token podepíše.
+JWT je řetezec znaků skládající se ze tří částí oddělené tečkou. První částí je hlavička, která obsahuje informace o~použitém hashovacím algoritmu a typu tokenu. Druhou částí je samotný payload (uživatelem definovaný obsah) a třetí částí je signatura. Ta vezme hlavičku, obsah (ty jsou zakódovány base64 algoritmem), tajný klíč (secret key) a algoritmus specifikovaný v~hlavičce a výsledný token podepíše. Takto zabalený JWT je v~NEMEA Dashboard plně v~režii serverové části. Ta jej tvoří i upravuje. JWT je přenášen při každé žádosti na API jako součást HTTP hlavičky. Uživatelská část si JWT udržuje v~lokálním uložišti a může pouze dekódovat .
 
-Takto zabalený JWT je v~NEMEA Dashboard plně v~režii serverové části. Ta jej tvoří i upravuje. JWT je přenášen při každé žádosti na API jako součást HTTP hlavičky. Uživatelská část si JWT udržuje v~lokálním uložišti a může pouze dekódovat .
-
-Celý autentikační proces je znázorněn v~obrázku~\ref{fig:auth}. Uživatelská část obsahuje tzv. interceptor, který hledá odpovědi od serveru s~HTTP statusem 401 Not Authorized. V~případě zaznamenání tohoto statusu je uživatel okamžitě přesměrován na stránku pro přihlášení. Po odeslání autentizačních údajů je uživatel nalezen v databázi a ověřen hash hesla. Uživatelské části je navrácen buď chybový kód, nebo JWT a je přesměrován na úvodní stránku. Všechny následující dotazy do API obsahují dodaný JWT, který je na serverové části vždy dekódován a ověřena jeho existence v tabulce sezení. Každý token expiruje po 30 dnech bez aktivity, kdy se dané sezení vymaže ze serverové části.
+Celý autentikační proces je znázorněn v~obrázku~\ref{fig:auth}. Uživatelská část obsahuje tzv. interceptor, který hledá odpovědi od serveru s~HTTP statusem 401 Not Authorized. V~případě zaznamenání tohoto statusu je uživatel okamžitě přesměrován na stránku pro přihlášení. Po odeslání autentizačních údajů je uživatel nalezen v databázi a ověřen hash poskytnutého hesla. Uživatelské části je navrácen buď chybový kód, nebo nový validní JWT a je přesměrován na úvodní stránku. Všechny následující dotazy do API obsahují dodaný JWT, který je na serverové části vždy dekódován a ověřena jeho existence v tabulce sezení. Každý token expiruje po 30 dnech bez aktivity, kdy se dané sezení vymaže ze serverové části.
 
 \begin{figure}[ht]
     \centering
@@ -779,7 +735,7 @@ Testování probíhalo v několika úrovních během implementace API. Jednotliv
 
 \section{Testování uživatelské části}
 
-V uživatelské části byly provedeny akceptační testy~\cite{acp:tests}, ty lze definovat jako splnění požadavků klienta na funkcionalitu aplikace. V rámci této práce byly provedeny základní testy na cílové skupině uživatelů, tj. uživatelé zabývající se monitorováním sítí (viz \ref{sec:aud}). Testy byly realizovány formou hromadného testování a následných rozhovorů s účastníky.
+V uživatelské části byly provedeny akceptační testy~\cite{acp:tests}. Ty lze definovat jako splnění požadavků klienta na funkcionalitu aplikace. V rámci této práce byly provedeny základní testy na cílové skupině uživatelů, tj. uživatelé zabývající se monitorováním sítí (viz \ref{sec:aud}). Testy byly realizovány formou hromadného testování a následných rozhovorů s účastníky.
 
 Akceptační testy byly provedeny celkově dvakrát. V příloze \ref{screens:before} jsou zachyceny jednotlivé obrazovky aplikace před prvním kolem akceptačních testů. Během rozhovorů s účastníky byly otázky zaměřeny zejména na uživatelské rozhraní a UX. Z nich vyplynulo několik závěrů:
 

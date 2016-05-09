@@ -1,3 +1,41 @@
+\chapter{Vzorový IDEA záznam}
+\label{code:idea}
+
+\begin{figure}[ht]
+\lstset{basicstyle=\small,style=JSON}
+\begin{lstlisting}
+{
+    "Format" :      "IDEA0",
+    "ID" :          "73e0b136-aeb8-4aae-bb80-9bfb4f258847",
+    "Category" :    ["Availibility.DDoS"],
+    "Description" : "DNS amplification",
+    "EventTime" :   "2016-04-07T22:19:25Z",
+    "CreateTime" :  "2016-04-07T22:34:52Z",
+    "CeaseTime" :   "2016-04-07T22:34:38Z",
+    "DetectTime" :  "2016-04-07T22:34:38Z"
+    "PacketCount" : 393,
+    "Source" : [{
+        "IP4" : ["192.1.0.201"],
+        "Proto" : ["udp","dns"],
+        "OutPacketCount" : 393,
+        "InPacketCount" : 767
+    }],
+    "Target" : [{
+        "Proto" : ["udp","dns"],
+        "IP4" : ["10.0.0.135"],
+        "InPacketCount" : 393
+    }],
+    "Node" : [{
+        "SW" : ["NEMEA","amplification_detection"],
+        "Name" : "cz.cesnet.nemea.amplification_detection"
+    }],
+    "Type" : ["Flow","Statistical"],
+}
+\end{lstlisting}
+\captionof{lstlisting}{Vzorový IDEA záznam ze systému NEMEA. Některé části byly vynechány nebo zkráceny a IP adresy anonymizovány.}
+\end{figure}
+
+
 \chapter{Drátěné modely aplikace}
 
 \begin{figure}[ht]
@@ -63,11 +101,30 @@ Werkzeug==0.11.3
 
 
 
-\chapter{Snímky uživatelské strany}
+\chapter{Snímky uživatelské strany po prvním kole testů}
 \label{screens:after}
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{fig/screen_after_1.png}
+    \caption{Úvodní obrazovka s přednastavenými boxy.} \label{screen:after:1}
+\end{figure}
 
-\chapter{Obsah CD}
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{fig/screen_after_2.png}
+    \caption{Výpis nalezených událostí.} \label{screen:after:2}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{fig/screen_after_3.png}
+    \caption{Detail události.} \label{screen:after:3}
+\end{figure}
+
+
+
+\chapter{Obsah DVD}
 %\chapter{Manual}
 %\chapter{Konfigrační soubor}
 %\chapter{RelaxNG Schéma konfiguračního soboru}
