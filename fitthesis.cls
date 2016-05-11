@@ -546,7 +546,8 @@ The thesis is protected by copyright law and its use without author's explicit c
 
 \vfill
 
-\mkuctxtt{18}{\ifslovak\@title@CS\else\ifczech\@title@CS\else\@title@EN\fi\fi}
+%\mkuctxtt{18}{\ifslovak\@title@CS\else\ifczech\@title@CS\else\@title@EN\fi\fi}
+\mkuctxtt{18}{Vizualizace síťových bezpečnostních \\událostí}
 \iftoggle{gray_used}{
   \mkuctxtt{10}{\textcolor{VUTGRAY}{\ifslovak\@title@EN\else\ifczech\@title@EN\else\@title@CS\fi\fi}}
 }{
