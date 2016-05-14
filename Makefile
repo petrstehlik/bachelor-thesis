@@ -17,7 +17,6 @@ $(CO).pdf: clean
 	bibtex $(CO)
 	pdflatex $(CO)
 	pdflatex $(CO)
-	rm -f *.dvi *.log $(CO).blg $(CO).bbl $(CO).toc *.aux $(CO).out $(CO).lof $(CO).ptc
 
 $(CO).dvi: $(CO).tex $(CO).bib
 	latex $(CO)
@@ -32,3 +31,12 @@ clean:
 
 pack:
 	tar czvf bp-xjmeno.tar.gz *.tex *.bib *.bst ./fig/* ./cls/* zadani.pdf $(CO).pdf Makefile Changelog
+
+# Pozor, vlna neresi vse (viz popis.txt)
+vlna:
+	vlna -l obsah.tex
+	vlna -l prilohy.tex
+
+normostrany:
+	echo "scale=2; `detex -n obsah | wc -c`/1800;" | bc
+
