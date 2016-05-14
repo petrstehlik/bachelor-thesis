@@ -1,0 +1,159 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{Dostupné z: \textless}
+\providecommand{\urlsuffix}{\textgreater}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\selectlanguage}[1]{\relax}
+\providecommand{\tg}[1]{\textgreater .}
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem{rfc:saml}
+Campbell, B. : Security Assertion Markup Language (SAML) 2.0 Profile for OAuth
+  2.0 Client Authentication and Authorization Grants. RFC 7522, RFC Editor,
+  Květen 2015.
+\urlprefix\url{https://tools.ietf.org/html/rfc7522}\urlsuffix
+
+\bibitem{cisco:ids}
+Carter, E.; Foreword By-Stiffler, R. \emph{Cisco secure intrusion detection
+  systems}. Cisco Press, 2001.
+
+\bibitem{flowmon:report}
+{\v{C}}eleda, P.; Kov{\'a}{\v{c}}ik, M.; Kon{\'\i}{\v{r}}, T.; aj. : FlowMon
+  Probe. \emph{Networking Studies}, 2006: str.~67.
+
+\bibitem{snort:cisco}
+Cisco~Systems, I. : Cisco Announces Agreement to Acquire Sourcefire. 2013.
+\urlprefix\url{http://www.cisco.com/c/en/us/about/corporate-strategy-office/acquisitions/sourcefire.html}\urlsuffix
+
+\bibitem{snort:modes}
+Cisco~Systems, I. : Snort Users Manual. 2016.
+\urlprefix\url{http://manual.snort.org/node2.html}\urlsuffix
+
+\bibitem{vermont:history}
+Dressler, F.; Carle, G. History-high speed network monitoring and analysis.
+  2005.
+
+\bibitem{htmlbars}
+Ember.js : HTMLBars. 2015.
+\urlprefix\url{http://emberjs.com/blog/2015/02/07/ember-1-10-0-released.html}\urlsuffix
+
+\bibitem{ux:iso}
+FDIs, I. : 9241-210 (2009). Ergonomics of human system interaction-Part 210:
+  Human-centered design for interactive systems (formerly known as 13407).
+  \emph{International Organization for Standardization (ISO). Switzerland},
+  2009.
+
+\bibitem{rfc:http}
+Fielding, R. : Hypertext Transfer Protocol -- HTTP/1.1. RFC 2616, RFC Editor,
+  Srpen 1999.
+\urlprefix\url{https://tools.ietf.org/html/rfc2616}\urlsuffix
+
+\bibitem{rest}
+Fielding, R.~T. : \emph{Architectural styles and the design of network-based
+  software architectures}. Dizertační práce, 2000.
+
+\bibitem{flowmon:ads}
+Flowmon~Networks, a. : Flowmon Anomaly Detection System. 2016.
+\urlprefix\url{https://www.flowmon.com/cs/products/flowmon/anomaly-detection-system}\urlsuffix
+
+\bibitem{jspromises}
+Foundation, M. : JavaScript Promise. 2016.
+\urlprefix\url{https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise}\urlsuffix
+
+\bibitem{react}
+Gackenheimer, C. : What Is React? In \emph{Introduction to React}, Springer,
+  2015, s 1--20.
+
+\bibitem{google:v8}
+Google : Chrome V8. 2016.
+\urlprefix\url{https://developers.google.com/v8/}\urlsuffix
+
+\bibitem{rfc:jwt}
+Jones, M. : JSON Web Token (JWT). RFC 7519, RFC Editor, Květen 2015.
+\urlprefix\url{https://tools.ietf.org/html/rfc7519}\urlsuffix
+
+\bibitem{mvc}
+Krasner, G.~E.; Pope, S.~T.; aj. : A description of the model-view-controller
+  user interface paradigm in the smalltalk-80 system. \emph{Journal of object
+  oriented programming}, roč.~1, č.~3, 1988: s 26--49.
+
+\bibitem{vermont}
+Lampert, R.~T.; Sommer, C.; M{\"u}nz, G.; aj. Vermont-a versatile monitoring
+  toolkit for IPFIX and PSAMP. 2006, 6.
+
+\bibitem{css:preproc}
+Mazinanian, D.; Tsantalis, N. : An empirical study on the use of CSS
+  preprocessors.
+
+\bibitem{spa}
+Mikowski, M.~S.; Powell, J.~C. : Single Page Web Applications. \emph{B and W},
+  2013.
+
+\bibitem{acp:tests}
+Miller, R.; Collins, C.~T. : Acceptance testing. \emph{Proc. XPUniverse}, roč.
+  238, 2001.
+
+\bibitem{vermont:diadem}
+Munz, G.; Fessi, A.; Carle, G.; aj. : DIADEM firewall: Web server overload
+  attack detection and response. \emph{Broadband Europe (BBEurope)}, 2005.
+
+\bibitem{xmlvsjson}
+Nurseitov, N.; Paulson, M.; Reynolds, R.; aj. : Comparison of JSON and XML Data
+  Interchange Formats: A Case Study. \emph{Caine}, roč. 2009, 2009: s
+  157--162.
+
+\bibitem{idsips}
+Patil, S.; Rane, P.; Meshram, D.~B. : IDS vs IPS. \emph{IRACST--International
+  Journal of Computer Networks and Wireless Communications (IJCNWC), ISSN},
+  2012.
+
+\bibitem{bro}
+Paxson, V. : Bro: a system for detecting network intruders in real-time.
+  \emph{Computer networks}, roč.~31, č.~23, 1999: s 2435--2463.
+
+\bibitem{restful}
+Richardson, L.; Ruby, S. \emph{RESTful web services}. " O'Reilly Media, Inc.",
+  2008.
+
+\bibitem{snort}
+Roesch, M.; aj. Snort: Lightweight Intrusion Detection for Networks. 1999, 99,
+  1.
+
+\bibitem{rfc:attack}
+Shirey, R. : Internet Security Glossary, Version 2. RFC 4949, RFC Editor, Srpen
+  2007.
+\urlprefix\url{https://tools.ietf.org/html/rfc4949}\urlsuffix
+
+\bibitem{mvvm}
+Smith, J. : PATTERNS-WPF Apps With The Model-View-ViewModel Design Pattern.
+  \emph{MSDN magazine}, 2009: str.~72.
+
+\bibitem{nodejs}
+Teixeira, P. \emph{Professional Node. js: Building Javascript based scalable
+  software}. John Wiley \& Sons, 2012. ISBN~9781118240564.
+
+\bibitem{js:rjson}
+Tencent : RapidJSON. 2016.
+\urlprefix\url{https://github.com/miloyip/rapidjson/}\urlsuffix
+
+\bibitem{ipfix}
+Velan~Petr, K.~R. : Flow Information Storage Assessment Using IPFIXcol. In
+  \emph{Lecture Notes in Computer Science 7279}, Springer, 2012,
+  ISBN~978-3-642-30632-7.
+
+\bibitem{shadowdom}
+W3C : Shadow DOM. Working Draft. 2015.
+\urlprefix\url{http://www.w3.org/TR/shadow-dom/}\urlsuffix
+
+\bibitem{flexbox}
+W3C : Flexible Box Layout Module Level 1. Candidate Recommendation. 2016.
+\urlprefix\url{http://www.w3.org/TR/css-flexbox-1/}\urlsuffix
+
+\bibitem{webcomponents}
+WebComponents : Web Components. 2016.
+\urlprefix\url{http://webcomponents.org/}\urlsuffix
+
+\end{thebibliography}

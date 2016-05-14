@@ -1,0 +1,75 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: projekt.aux
+The style file: czechiso.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: literatura.bib
+Warning--entry type for "flowmon:ads" isn't style-file defined
+--line 46 of file literatura.bib
+Warning--entry type for "snort:cisco" isn't style-file defined
+--line 94 of file literatura.bib
+Warning--entry type for "snort:modes" isn't style-file defined
+--line 102 of file literatura.bib
+Warning--entry type for "shadowdom" isn't style-file defined
+--line 145 of file literatura.bib
+Warning--entry type for "jspromises" isn't style-file defined
+--line 161 of file literatura.bib
+Warning--entry type for "webcomponents" isn't style-file defined
+--line 169 of file literatura.bib
+Warning--entry type for "htmlbars" isn't style-file defined
+--line 177 of file literatura.bib
+Warning--entry type for "flexbox" isn't style-file defined
+--line 215 of file literatura.bib
+Warning--entry type for "google:v8" isn't style-file defined
+--line 231 of file literatura.bib
+Warning--entry type for "js:rjson" isn't style-file defined
+--line 247 of file literatura.bib
+Warning--empty journal in css:preproc
+Warning--empty year in css:preproc
+Warning--empty pages in ipfix
+You've used 34 entries,
+            3572 wiz_defined-function locations,
+            873 strings with 10364 characters,
+and the built_in function-call counts, 13741 in all, are:
+= -- 954
+> -- 399
+< -- 16
++ -- 196
+- -- 114
+* -- 653
+:= -- 1616
+add.period$ -- 74
+call.type$ -- 34
+change.case$ -- 123
+chr.to.int$ -- 0
+cite$ -- 37
+duplicate$ -- 1447
+empty$ -- 1328
+format.name$ -- 127
+if$ -- 2939
+int.to.chr$ -- 0
+int.to.str$ -- 34
+missing$ -- 368
+newline$ -- 128
+num.names$ -- 68
+pop$ -- 877
+preamble$ -- 1
+purify$ -- 119
+quote$ -- 0
+skip$ -- 539
+stack$ -- 0
+substring$ -- 307
+swap$ -- 676
+text.length$ -- 16
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 130
+warning$ -- 3
+while$ -- 84
+width$ -- 36
+write$ -- 298
+(There were 13 warnings)
