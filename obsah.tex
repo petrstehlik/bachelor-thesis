@@ -38,7 +38,7 @@ Vzorový záznam generovaný systémem NEMEA je vyobrazený v~příloze~\ref{cod
 
 \section{NEMEA}
 
-Network Measurements Analysis (zkráceně NEMEA), je systém, který umožňuje vytvořit komplexní nástroj pro automatizovanou analýzu toků získaných monitorováním sítě v~reálném čase. Systém NEMEA je zejména monitorovacím nástrojem, ale slouží také jako IDS.
+Network Measurements Analysis (zkráceně NEMEA) je systém, který umožňuje vytvořit komplexní nástroj pro automatizovanou analýzu toků získaných monitorováním sítě v~reálném čase. Systém NEMEA je zejména monitorovacím nástrojem, ale slouží také jako IDS.
 
 Systém se skládá z~oddělených stavebních bloků nazývaných moduly. Tyto jednotlivé moduly jsou následně propojeny pomocí rozhraní TRAP. Moduly jsou nezávislé pracovní jednotky, které přijímají proud dat na svých vstupech, zpracují přijatá data a následně je odesílají ze svých výstupních rozhraní jako proud dat pro další moduly. 
 
@@ -64,7 +64,7 @@ Open source projekty jako NEMEA jsou dostupné mnoho let, ale pouze několik z~n
 Jediný projekt, který obsahuje vizualizaci dat je systém Snort. Jeho rozhraní je ale velmi nepřehledné a složité na používání. Ostatní systémy uživatelské rozhraní postrádají nebo existují jako neoficiální rozšíření daných systémů.
 
 \subsection*{Snort}
-Tento open-source projekt, od roku 2013 vlastněn firmou Cisco~\cite{snort:cisco}, je možno konfigurovat ve 3 hlavních režimech~\cite{snort:modes}: sniffer, paket logger a jako IDS. V~režimu IDS Snort pracuje principiálně velmi podobně jako systém NEMEA. Zachytává síťový provoz, ukládá si důležité informace o~něm a analyzuje jej. Ve výsledku ukládá záznamy o~síťových událostech. Nicméně Snort není modulárním systémem a tudíž není tak flexibilní a není stavěný na rozsáhlé vysokorychlostní sítě jako systém NEMEA.
+Tento open-source projekt, od roku 2013 vlastněn firmou Cisco~\cite{snort:cisco}, je možno konfigurovat ve 3 hlavních režimech~\cite{snort:modes}: sniffer, paket logger a jako IDS. V~režimu IDS Snort pracuje principiálně velmi podobně jako systém NEMEA. Zachytává síťový provoz, ukládá si důležité informace o~něm a analyzuje jej. Ve výsledku ukládá záznamy o~síťových událostech. Nicméně Snort není modulárním systémem, tudíž není tak flexibilní a není stavěný na rozsáhlé vysokorychlostní sítě jako systém NEMEA.
 
 \subsection*{VERMONT}
 
@@ -90,11 +90,11 @@ V~této kapitole byl prezentován systém NEMEA a jeho architektura. Byly popsá
 
 Vizualizace síťových bezpečnostních událostí může být vytvořena několika postupy. Pokud máme IDS, který je dostupný pouze z~jednoho stroje, nejčastěji zvolíme tvorbu desktopové aplikace, protože máme jistotu provozního prostředí jako je např. operační systém, dostupné balíčky a jejich verze. 
 
-V~případě vzdálené správy IDS (častější případ) jsme nejčastěji odkázání na vzdálený přístup pomocí příkazové řádky. Tento přístup je bohužel velmi limitovaný z~pohledu vizualizace. V~současné době je pro vzdálenou správu nejvhodnější vytvořit webovou aplikaci, která je dostupná z~Internetu a použitelná na většině dnes používaných zařízeních\footnote{Jedná se zejména o~stolní počítače, notebooky, tablety a chytré mobilní telefony.}.
+V~případě vzdálené správy IDS (častější případ) jsme většinou odkázáni na vzdálený přístup pomocí příkazové řádky. Tento přístup je bohužel velmi limitovaný z~pohledu vizualizace. V~současné době je pro vzdálenou správu nejvhodnější vytvořit webovou aplikaci, která je dostupná z~Internetu a použitelná na většině dnes používaných zařízeních\footnote{Jedná se zejména o~stolní počítače, notebooky, tablety a chytré mobilní telefony.}.
 
-Pro tvorbu moderní webové aplikace je na Internetu dostupná celá řada knihoven, frameworků a systémů. Nicméně první otázkou zůstává co taková moderní webová aplikace~je?
+Pro tvorbu moderní webové aplikace je na Internetu dostupná celá řada knihoven, frameworků a systémů. Nicméně základní otázkou zůstává co taková moderní webová aplikace~je?
 
-Ustáleným pojmem pro moderní webovou aplikaci je z~anglického single page application~\cite{spa} (zkratka SPA). Specifikem SPA je její vysoká interaktivita s~uživatelem, vysoká dostupnost služby, kterou poskytuje a rozdělení na dva logické celky. Uživatelskou a serverovou část, často chybně nazývané frontend a backend aplikace. Více o~architektuře aplikace bude uvedeno v~kapitole \ref{architektura}.
+Ustáleným pojmem pro moderní webovou aplikaci je anglický výraz single page application~\cite{spa} (zkratka SPA). Specifikem SPA je její vysoká interaktivita s~uživatelem a vysoká dostupnost služby, kterou poskytuje. Je rozdělena na dva logické celky -- uživatelskou a serverovou část (často chybně nazývané frontend a backend aplikace). Více o~architektuře aplikace bude uvedeno v~kapitole \ref{architektura}.
 
 Většinu z~těchto kvalit získává SPA díky způsobu jakým je doručována uživateli. SPA je při prvním načtení stránky v~prohlížeči celá uložena v~rámci vyrovnávací paměti prohlížeče a během celé doby používání SPA není nutné stránku znova načítat. SPA můžeme chápat jako univerzálního klienta pro obsluhu dané aplikace. 
 
@@ -104,11 +104,11 @@ S~přesunem logiky na uživatelskou část SPA jsou ale spojeny nemalé problém
 
 \section{Uživatelská část}
 
-K~vytvoření SPA a zejména uživatelské části existuje několik významných systémů. V~této části tyto technologie budou představeny a porovnány mezi sebou. Nejdůležitější částí je JavaScriptový framework, se kterým bude interagovat uživatel. Další nedílnou součástí je knihovna pro HTML/CSS definující vzhled aplikace.
+K~vytvoření SPA a zejména uživatelské části existuje několik významných systémů. V~této části tyto technologie budou představeny a porovnány mezi sebou. Nejdůležitější částí je JavaScript framework, se kterým bude interagovat uživatel. Další nedílnou součástí je knihovna pro HTML/CSS definující vzhled aplikace.
 
-\subsection{JavaScriptové frameworky}
+\subsection{JavaScript frameworky}
 
-V~rámci této práce bylo vybráno 5 JavaScript frameworků, které napomáhají k~tvorbě SPA. Kritéria užšího výběru frameworků byla zejména následující:
+V~rámci této práce bylo vybráno pět JavaScript frameworků, které napomáhají k~tvorbě SPA. Kritéria užšího výběru frameworků byla zejména následující:
 
 \begin{itemize}  
 \item open-source projekt s~licencí pro volné použití,
@@ -119,7 +119,7 @@ V~rámci této práce bylo vybráno 5 JavaScript frameworků, které napomáhaj�
 \end{itemize}
 
 \subsubsection*{React~\cite{react}}
-Knihovna React je vyvíjena pod hlavičkou společnosti Facebook\footnote{\url{https://facebook.com}}. Původním cílem návrhářů Reactu bylo vyřešit problémy během vývoje komplexních uživatelských rozhraní s~rychle měnícími se daty. Dalším cílem bylo vytvořit platformu, kterou lze distribuovat v~takovém měřítku jako je sociální síť Facebook.
+Knihovna React je vyvíjena pod hlavičkou společnosti Facebook\footnote{\url{https://facebook.com}}. Původním cílem návrhářů Reactu bylo vyřešit problémy během vývoje komplexních uživatelských rozhraní s~rychle se měnícími daty. Dalším cílem bylo vytvořit platformu, kterou lze distribuovat v~takovém měřítku jako je sociální síť Facebook.
 
 React je knihovna pro uživatelskou část SPA používající tradiční MVC architekturu~\cite{mvc}. Taková architektura je nejvíce znatelná v~případě použití obousměrného vázání dat (angl. two-way data binding), více o~architektuře MVC v~sekci \ref{sec:mvc}.
 
@@ -159,7 +159,7 @@ Manipulace s~DOM je zajišťována v~pohledové části architektury. Aplikačn�
 
 Rozdělením klientské a serverové strany aplikace získává AngularJS celkovou kontrolu nad klientskou stranou a dokáže tak abstrahovat jednotlivé vrstvy aplikace. To integruje MVC architekturu do klientské části. Toto rozdělení dovoluje AngularJS implementovat takové možnosti jako je např. vkládání závislostí (pozdní instanciace daných závislostí) nebo pohledově závislé kontroléry (daný kód je spouštěn pouze při daném pohledu).
 
-To vše spěje ke snížení zátěže serveru, na kterém je SPA uložena. Většina, ne-li všechna, aplikační logika totiž probíhá na klientské straně a server pro svou práci vůbec nepotřebuje. Ten je potřeba až v~momentě kdy chceme získat nebo uložit data pro dlouhodobé užití.
+To vše spěje ke snížení zátěže serveru, na kterém je SPA uložena. Většina, ne-li všechna aplikační logika totiž probíhá na klientské straně a server pro svou práci vůbec nepotřebuje. Ten je potřeba až v~momentě, kdy chceme získat nebo uložit data pro dlouhodobé užití.
 
 \subsubsection*{Backbone.js}
 
@@ -220,7 +220,7 @@ Angular Material není běžnou CSS knihovnou, nýbrž je velmi úzce spjat s~An
 
 Také obsahuje mnoho HTML a CSS komponent, ale ty jsou vždy velmi úzce spjaty s~AngularJS funkcionalitou jako je např. two-way data binding a již zmíněné direktivy. 
 
-Společnost Google vytvořila vlastní vizuální jazyk pro všechny své produkty nazvaný Material Design\footnote{\url{https://www.google.com/design/spec/material-design/introduction.html}}. Ten je založený na tzv. \uv{kartách}, které lze skládat na sebe, řadit, organizovat a upravovat. Jak již název napovídá, je tento vizuální jazyk použit skrz všechny dostupné komponenty.
+Společnost Google vytvořila vlastní vizuální jazyk pro všechny své produkty nazvaný Material Design\footnote{\url{https://www.google.com/design/spec/material-design/introduction.html}}. Ten je založený na tzv. \uv{kartách}, které lze skládat na sebe, řadit, organizovat a upravovat. Jak již název napovídá, je tento vizuální jazyk použit pro všechny dostupné komponenty.
 
 Z~technického hlediska je Angular Material nejpokročilejší knihovnou. Pro mřížkový systém (angl. grid system) používá flexbox~\cite{flexbox}, který je dostupný pouze v~nejnovější specifikaci CSS 3 a moderních webových prohlížečích. To může působit mírné problémy, pokud je SPA cílena na široké publikum s~různými verzemi prohlížečů.
 
@@ -265,7 +265,7 @@ S~ohledem na MongoDB existuje konektor PyMongo vytvořený autory MongoDB. Ten s
 
 \subsubsection*{NodeJS (JavaScript)}
 
-JavaScript je původně určen do prostředí webových prohlížečů a jejich jader. Společnost Google ale vytvořila V8~\cite{google:v8} JavaScriptové jádro, na kterém je postaven i nástroj NodeJS. V8 umožňuje spouštět kód napsaný v~JavaScriptu na straně serveru.
+JavaScript je původně určen do prostředí webových prohlížečů a jejich jader. Společnost Google ale vytvořila V8~\cite{google:v8} JavaScript jádro, na kterém je postaven i nástroj NodeJS. V8 umožňuje spouštět kód napsaný v~JavaScript na straně serveru.
 
 Architektura NodeJS je založena na principu asynchronních událostí dovolující vytvářet vysoce škálovatelné síťové aplikace, jako je např. webový server s~vysokou dostupností.
 
@@ -291,7 +291,7 @@ Prvními aspekty při výběru knihovny pro vývoj SPA v~uživatelské části b
 
 Licence BSD a MIT jsou velmi podobné z~pohledu vývojáře a jejich možnostmi použití v~rámci vývoje otevřeného projektu jakým je NEMEA.
 
-Z~hlediska velikosti jasně vyčnívá EmberJS, který je násobně menší než ostatní frameworky, avšak z~ostatních faktorů pozbývá funkcionalitu, kterou např. dokáže nabídnout AngularJS.
+Z~hlediska velikosti jasně vyčnívá EmberJS, který je několikanásobně menší než ostatní frameworky, avšak z~ostatních faktorů pozbývá funkcionalitu, kterou např. dokáže nabídnout AngularJS.
 
 Všechny frameworky jsou v~současné době aktivně vyvíjeny a pravidelně aktualizovány. Navíc kolem každého frameworku, je vytvořena aktivní komunita vývojářů, kteří přispívají do daného frameworku.
 
@@ -341,7 +341,7 @@ Testy byly spouštěny celkem třikrát pro každý framework, aby se zmírnil d
 \label{tab:server}
 \end{table}
 
-C++ obálka frameworku Mongoose a NodeJS jsou několikanásobně rychlejší než framework Flask. V~případě C++ obálky je tomu díky použitému jazyku a NodeJS je koncipovaný pro vícevláknovou síťovou komunikaci. Ten jediný v~základu podporuje takové zpracování požadavků. 
+C++ obálka frameworku Mongoose a NodeJS jsou několikanásobně rychlejší než framework Flask. V~případě C++ obálky je tomu díky použitému jazyku. NodeJS je koncipovaný pro vícevláknovou síťovou komunikaci. Ten jediný v~základu podporuje takové zpracování požadavků. 
 
 Ačkoliv se může zdát, že NodeJS je jasnou volbou z~naměřených výsledků\footnote{Mongoose není uvažovaný kvůli absenci kvalitního MongoDB konektoru.}, není tomu tak. NodeJS totiž během testu spotřeboval téměř všechny zdroje daného stroje (zejména CPU). Díky tomu je natolik výkonný. Tohoto výkonu lze dosáhnout i u~frameworku Flask, ale ten by musel být doplněn dalšími nástroji pro efektivní vícevláknové zpracování požadavků.
 
@@ -372,7 +372,7 @@ Celá SPA byla již při výběru technologií rozdělena na dva logické celky.
 
 Díky použitým technologiím lze části rozdělit aplikačně i fyzicky na dva stroje. Serverová část je spuštěna na jednom počítači -- serveru, jenž je určen pouze pro databázi a REST API. Server tedy zajišťuje funkčnost REST API a při iniciální návštěvě klienta také poskytuje kód uživatelské části, který je spuštěn u~klienta.
 
-Tím se distribuuje uživatelská část aplikace na samotná zařízení, která aplikaci zobrazují. Následkem je snížení nároků na serverovou část obstarávající pouze datovou a autentiační část SPA (vše uvnitř REST API).
+Tím se distribuuje uživatelská část aplikace na samotná zařízení, která aplikaci zobrazují. Následkem je snížení nároků na serverovou část obstarávající pouze datovou a autentizační část SPA (vše uvnitř REST API).
 
 Největší využití bude mít v~aplikaci dashboard\footnote{Český ekvivalent toho slova -- informační nástěnka -- není běžně používaný a proto v~rámci této práce bude používán anglický název dashboard.} (odtud i název aplikace), který bude obsahovat konfigurovatelné položky, aby si uživatel mohl dashboard připravit přesně pro své potřeby. Dashboard je také vstupním bodem pro drill-down analýzu.
 
@@ -453,7 +453,7 @@ Representational state transfer, zkráceně REST, byl definován v~roce 2000 v~d
 
 \begin{description}
     \item \textit{Klient--server} \\
-        Tento návrh architektury je základním stylem pro síťové aplikace. Server, nabízející sadu služeb, čeká na žádosti od klienta, které následně obslouží. Klient, který se snaží vykonat určitou činnost, posílá žádosti na server skrze předem definovanou cestu. Pokud server žádosti nerozumí (např. nevalidní formát), ji odmítne, v~kladném případě provede žádost a odešle odpověď zpět klientovi.
+        Tento návrh architektury je základním stylem pro síťové aplikace. Server, nabízející sadu služeb, čeká na žádosti od klienta, které následně obslouží. Klient, který se snaží vykonat určitou činnost, posílá žádosti na server skrze předem definovanou cestu. Pokud server žádosti nerozumí (např. nevalidní formát), odmítne ji, v~kladném případě provede požadavek a odešle odpověď zpět klientovi.
 
         Tímto oddělením uživatelské části od serverové získává aplikace vyšší přenositelnost, škálovatelnost a nezávislost komponent. To dovoluje částečně separátní vývoj.
        
@@ -464,7 +464,7 @@ Representational state transfer, zkráceně REST, byl definován v~roce 2000 v~d
         Pro zlepšení výkonu je do rozhraní vhodné implementovat vyrovnávací paměť. To však s~sebou nese riziko neaktuálnosti dat, což v~případě systému NEMEA\footnote{NEMEA Dashboard staví na co nejaktuálnějších datech.} je velmi nebezpečná vlastnost.
        
     \item \textit{Uniformní rozhraní} \\
-        Uniformnost rozhraní je důležitou vlastností REST architektury, která jej odlišuje od ostatních architektonických stylů návrhu jakým je například RPC~\cite{restful}. Generalizací rozhraní vývojář získá velmi rychlý přehled o~dostupných operací s~API a jaké služby poskytují.
+        Uniformnost rozhraní je důležitou vlastností REST architektury, která jej odlišuje od ostatních architektonických stylů návrhu jakým je například RPC~\cite{restful}. Generalizací rozhraní vývojář získá velmi rychlý přehled o~dostupných operacích s~API a jaké služby poskytují.
         
         Aby rozhraní bylo uniformním, musí splňovat několik vlastností: jednoznačná identifikovatelnost zdrojů (jedna URL pro jeden zdroj), samopopisné zprávy (pojmenovávat přesně a srozumitelně) a média jako jádro aplikačního stavu.
 
@@ -526,7 +526,7 @@ Instalace potřebných Python knihoven proběhla pomocí nástroje \texttt{pip}.
 \label{code:api}
 \end{figure}
 
-Ve výpisu \ref{code:api} je naznačena struktura finálního REST API, která je lehce rozšiřitelná a upravitelná. Během vývoje API se několikrát měnila struktura koncových bodů\footnote{Koncovým bodem je myšlena adresa dostupná z~REST API.}, proto jsem zvolil verzování API pomocí URL, aby v~budoucích případech mohlo API fungovat pro více verzí současně. V~době psaní této práce je API ve druhé verzi, která se od první verze liší zejména architektuálním typem, kterým je hybridní REST. V~první verzi se API architekturou podobalo více RPC pouze s~několika rysy REST.
+Ve výpisu \ref{code:api} je naznačena struktura finálního REST API, která je lehce rozšiřitelná a upravitelná. Během vývoje API se několikrát měnila struktura koncových bodů\footnote{Koncovým bodem je myšlena adresa dostupná z~REST API.}, proto jsem zvolil verzování API pomocí URL, aby v~budoucích případech mohlo API fungovat pro více verzí současně. V~době psaní této práce je API ve druhé verzi, která se od první verze liší zejména architekturálním typem, kterým je hybridní REST. V~první verzi se API architekturou podobalo více RPC pouze s~několika rysy REST.
 
 Za označením verze následuje sémantické rozdělení. To v~současném návrhu rozděluje API na dvě základní části. První část obsluhuje data událostí a je nazvána \texttt{/events}. Za URL \texttt{/v2/events} se nacházejí již jednotlivé koncové body API, ty jsou charakteristické zejména tím, že dovolují pouze jednu HTTP metodu, konkrétně \texttt{GET}.
 
@@ -661,7 +661,7 @@ Dashboard je realizován jako jednotlivé pohledy na data, jenž si uživatel s�
     \caption{Kontextové menu pohledu.} \label{fig:dashboard_menu}
 \end{figure}
 
-Drill-down analýza je realizována jako odkaz v~jednotlivých sloupcích/oddílech grafu nebo jako tlačítko (v~případě boxu typu \uv{top} odkazující přímo na danou událost. Při kliknutí na danou část grafu nebo tlačítko je uživatel přesunut do druhé části NEMEA Dashboard nazvanou \uv{Events}. Zde jsou automaticky nastaveny parametry hledání, které jsou následně poslány v~požadavku na API. Odpovědí jsou data splňující zadané parametry. API vrací standardně prvních sto výsledků, které najde, aby nedošlo k~zahlcení připojení a~pokud si uživatel přeje více událostí, má dvě možnosti. První možností je změnit parametr hledání a provést hledání znova. Druhou je tlačítko pod tabulkou výsledků, které načte dalších sto událostí a informuje o~počtu zbývajících událostí splňující zadané podmínky.
+Drill-down analýza je realizována jako odkaz v~jednotlivých sloupcích/oddílech grafu nebo jako tlačítko (v~případě boxu typu \uv{top} odkazující přímo na danou událost). Při kliknutí na danou část grafu nebo tlačítko je uživatel přesunut do druhé části NEMEA Dashboard nazvanou \uv{Events}. Zde jsou automaticky nastaveny parametry hledání, které jsou následně poslány v~požadavku na API. Odpovědí jsou data splňující zadané parametry. API vrací standardně prvních sto výsledků, které najde, aby nedošlo k~zahlcení připojení a~pokud si uživatel přeje více událostí, má dvě možnosti. První možností je změnit parametr hledání a provést hledání znova. Druhou je tlačítko pod tabulkou výsledků, které načte dalších sto událostí a informuje o~počtu zbývajících událostí splňující zadané podmínky.
 
 Každá událost v~tabulce je rozkliknutelná. Po kliknutí jsou zobrazeny důležité detaily o~dané události. Uživatel má následně dostupné tři akce, které může provést. První a druhou akcí je vyhledání událostí se stejnou IP adresou (buď zdrojová nebo cílová IP adresa, pokud je záznam obsahuje). Třetí možností je zobrazení detailů o~dané události. Tato možnost uživatele přesune na novou stránku, kde vidí celý záznam události tak, jak je uložený v~databázi s~jediným rozdílem. JSON je formátován a přehledně zobrazen jako HTML elementy, aby byl jednoduše čitelný.
 
@@ -705,13 +705,13 @@ Testování probíhalo v~několika úrovních během implementace API. Jednotliv
         Po úspěšném otestování dotazů byly implementovány jednotlivé koncové body API. Testování probíhalo pomocí systémového nástroje \textit{curl}\footnote{\url{https://curl.haxx.se}}. Zde se vytvořila žádost, která byla zaslána na API a byl ověřen formát odpovědi. Takto byly otestovány všechny koncové body a jejich dostupné HTTP metody. Po implementaci autentizace zde byly testovány i chybové odpovědi.
 
     \item Integrační testování\\
-        Testy byly provedeny po implementaci modelů v~uživatelské části aplikace. Ty ověřily komunikaci mezi serverem a klientem, včetně zabezpečení pomocí JWT. Ověřovány byly stejné skutečnosti jako v~případě testování koncového bodu
+        Testy byly provedeny po implementaci modelů v~uživatelské části aplikace. Ty ověřily komunikaci mezi serverem a klientem, včetně zabezpečení pomocí JWT. Ověřovány byly stejné skutečnosti jako v~případě testování koncového bodu.
 
 \end{description}
 
 \section{Testování uživatelské části}
 
-V~uživatelské části byly provedeny akceptační testy~\cite{acp:tests}. Ty lze definovat jako splnění požadavků klienta na funkcionalitu aplikace. V~rámci této práce byly provedeny základní testy na cílové skupině uživatelů, tj. uživatelé zabývající se monitorováním sítí (viz \ref{sec:aud}). Testy byly realizovány formou hromadného testování a následných rozhovorů s~účastníky.
+V~uživatelské části byly provedeny akceptační testy~\cite{acp:tests}. Ty lze definovat jako splnění požadavků klienta na funkcionalitu aplikace. V~rámci této práce byly provedeny základní testy na cílové skupině uživatelů, tj. uživatelů zabývajících se monitorováním sítí (viz \ref{sec:aud}). Testy byly realizovány formou hromadného testování a následných rozhovorů s~účastníky.
 
 Akceptační testy byly provedeny celkově dvakrát. V~příloze \ref{screens:before} jsou zachyceny jednotlivé obrazovky aplikace před prvním kolem akceptačních testů. Během rozhovorů s~účastníky byly otázky zaměřeny zejména na uživatelské rozhraní a UX. Z~nich vyplynulo několik závěrů:
 
@@ -736,13 +736,13 @@ Během testování uživatelské části byla obdržena kvalitní zpětná vazba
 
 Cílem této práce bylo vytvořit aplikaci pro vizualizaci síťových bezpečnostních dat na moderní webové platformě, která vizualizuje síťové bezpečnostní události uložené ve formátu IDEA. Tento formát je využíván několika službami sdružení CESNET a jmenovitě, v~rámci této práce, systémem NEMEA. 
 
-Aplikace byla navržena jako SPA, což je moderní přístup k~architektuře webových aplikací. Před samotným návrhem aplikace byly nastudovány vybrané knihovny podporující tvorbu SPA. Pro realizaci uživatelské části byla vybrána JavaScriptová knihovna AngularJS společně s~CSS knihovnou Angular Material pro vytvoření grafického vzhledu. Serverová část byla vytvořena v~jazyku Python s~pomocí mikroframeworku Flask.
+Aplikace byla navržena jako SPA, což je moderní přístup k~architektuře webových aplikací. Před samotným návrhem aplikace byly nastudovány vybrané knihovny podporující tvorbu SPA. Pro realizaci uživatelské části byla vybrána JavaScript knihovna AngularJS společně s~CSS knihovnou Angular Material pro vytvoření grafického vzhledu. Serverová část byla vytvořena v~jazyku Python s~pomocí mikroframeworku Flask.
 
 Systém NEMEA díky této práci získal výstupní grafické rozhraní, které dokáže vizualizovat velké množství dat za pomoci jejich agregace a interaktivních grafů schopných drill-down analýzy. Díky vizuální analýze dat je uživatel schopen velmi rychle detekovat jakoukoliv anomálii na síti a zcela ji analyzovat v~rámci aplikace. Uživatel může pohodlně pracovat s~databází událostí bez znalosti MongoDB skrze vytvořenou aplikaci a při vyhledávání událostí není zahlcen přebytečnými informacemi o~vyhledaných událostech.
 
-Dalším krokem při vývoji aplikace bude zejména správa systému NEMEA přes grafické uživatelské rozhraní. Cílem integrace aplikace do systému je zjednodušení práce se systémem NEMEA. Cílem je přenést většinu konfigurovatelných nastavení z~příkazové řádky do NEMEA Dashboard.
+Dalším krokem při vývoji aplikace bude zejména správa systému NEMEA přes grafické uživatelské rozhraní. Cílem integrace aplikace do systému je zjednodušení práce se systémem NEMEA a~přenesení většiny konfigurovatelných nastavení z~příkazové řádky do NEMEA Dashboard.
 
 Další prostor pro rozšíření funkcionality NEMEA Dashboard je široký. Konkrétními příklady z~mnoha mohou být rozšíření možností filtrování v~jednotlivých typech boxů (negativní filtry, logické spojky, vícenásobné filtry), přehlednější dotazování v~událostech, možnost rychlé a přesné geolokace IP adres nebo dotazování nad IP rozsahy. Neméně důležitým rozšířením je vytvoření instalačního průvodce pro instalaci NEMEA Dashboard jak na existujících instancích NEMEA systému, tak i na nových instancích.
 
-Díky vizualizaci dat a modernímu webovému rozhraní je NEMEA Dashboard účinným marketingovým nástrojem, který může působit i na méně odborné publikum a tím může systém NEMEA získat popularitu v~komunitě síťových správců po celém světě.
+Díky vizualizaci dat a modernímu webovému rozhraní je NEMEA Dashboard účinným marketingovým nástrojem, který může zapůsobit i na méně odborné publikum a tím může systém NEMEA získat popularitu v~komunitě síťových správců po celém světě.
 %=========================================================================
