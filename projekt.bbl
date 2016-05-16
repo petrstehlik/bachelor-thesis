@@ -10,6 +10,48 @@
 \providecommand{\tg}[1]{\textgreater .}
 \providecommand{\eprint}[2][]{\url{#2}}
 
+\bibitem{snort:cisco}
+\emph{Cisco Announces Agreement to Acquire Sourcefire}  [online]. 2013  [cit.
+  2016-5-16].
+  \urlprefix\url{http://www.cisco.com/c/en/us/about/corporate-strategy-office/acquisitions/sourcefire.html}\urlsuffix.
+
+\bibitem{htmlbars}
+\emph{HTMLBars}  [online]. 2015  [cit. 2016-14-04].
+  \urlprefix\url{http://emberjs.com/blog/2015/02/07/ember-1-10-0-released.html}\urlsuffix.
+
+\bibitem{shadowdom}
+\emph{Shadow DOM. Working Draft}  [online]. 2015  [cit. 2016-05-12].
+  \urlprefix\url{http://www.w3.org/TR/shadow-dom/}\urlsuffix.
+
+\bibitem{google:v8}
+\emph{Chrome V8}  [online]. 2016  [cit. 2016-04-11].
+  \urlprefix\url{https://developers.google.com/v8/}\urlsuffix.
+
+\bibitem{flexbox}
+\emph{Flexible Box Layout Module Level 1. Candidate Recommendation}  [online].
+  2016  [cit. 2016-01-03].
+  \urlprefix\url{http://www.w3.org/TR/css-flexbox-1/}\urlsuffix.
+
+\bibitem{flowmon:ads}
+\emph{Flowmon Anomaly Detection System}  [online]. 2016  [cit. 2016-5-16].
+  \urlprefix\url{https://www.flowmon.com/cs/products/flowmon/anomaly-detection-system}\urlsuffix.
+
+\bibitem{jspromises}
+\emph{JavaScript Promise}  [online]. 2016  [cit. 2016-14-03].
+  \urlprefix\url{https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise}\urlsuffix.
+
+\bibitem{js:rjson}
+\emph{RapidJSON}  [online]. 2016  [cit. 2016-04-11].
+  \urlprefix\url{https://github.com/miloyip/rapidjson/}\urlsuffix.
+
+\bibitem{snort:modes}
+\emph{Snort Users Manual}  [online]. 2016  [cit. 2016-04-11].
+  \urlprefix\url{http://manual.snort.org/node2.html}\urlsuffix.
+
+\bibitem{webcomponents}
+\emph{Web Components}  [online]. 2016  [cit. 2016-05-16].
+  \urlprefix\url{http://webcomponents.org/}\urlsuffix.
+
 \bibitem{rfc:saml}
 Campbell, B. : Security Assertion Markup Language (SAML) 2.0 Profile for OAuth
   2.0 Client Authentication and Authorization Grants. RFC 7522, RFC Editor,
@@ -24,21 +66,9 @@ Carter, E.; Foreword By-Stiffler, R. \emph{Cisco secure intrusion detection
 {\v{C}}eleda, P.; Kov{\'a}{\v{c}}ik, M.; Kon{\'\i}{\v{r}}, T.; aj. : FlowMon
   Probe. \emph{Networking Studies}, 2006: str.~67.
 
-\bibitem{snort:cisco}
-Cisco~Systems, I. : Cisco Announces Agreement to Acquire Sourcefire. 2013.
-\urlprefix\url{http://www.cisco.com/c/en/us/about/corporate-strategy-office/acquisitions/sourcefire.html}\urlsuffix
-
-\bibitem{snort:modes}
-Cisco~Systems, I. : Snort Users Manual. 2016.
-\urlprefix\url{http://manual.snort.org/node2.html}\urlsuffix
-
 \bibitem{vermont:history}
 Dressler, F.; Carle, G. History-high speed network monitoring and analysis.
   2005.
-
-\bibitem{htmlbars}
-Ember.js : HTMLBars. 2015.
-\urlprefix\url{http://emberjs.com/blog/2015/02/07/ember-1-10-0-released.html}\urlsuffix
 
 \bibitem{ux:iso}
 FDIs, I. : 9241-210 (2009). Ergonomics of human system interaction-Part 210:
@@ -55,21 +85,9 @@ Fielding, R. : Hypertext Transfer Protocol -- HTTP/1.1. RFC 2616, RFC Editor,
 Fielding, R.~T. : \emph{Architectural styles and the design of network-based
   software architectures}. Dizertační práce, 2000.
 
-\bibitem{flowmon:ads}
-Flowmon~Networks, a. : Flowmon Anomaly Detection System. 2016.
-\urlprefix\url{https://www.flowmon.com/cs/products/flowmon/anomaly-detection-system}\urlsuffix
-
-\bibitem{jspromises}
-Foundation, M. : JavaScript Promise. 2016.
-\urlprefix\url{https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise}\urlsuffix
-
 \bibitem{react}
 Gackenheimer, C. : What Is React? In \emph{Introduction to React}, Springer,
   2015, s 1--20.
-
-\bibitem{google:v8}
-Google : Chrome V8. 2016.
-\urlprefix\url{https://developers.google.com/v8/}\urlsuffix
 
 \bibitem{rfc:jwt}
 Jones, M. : JSON Web Token (JWT). RFC 7519, RFC Editor, Květen 2015.
@@ -135,25 +153,9 @@ Smith, J. : PATTERNS-WPF Apps With The Model-View-ViewModel Design Pattern.
 Teixeira, P. \emph{Professional Node. js: Building Javascript based scalable
   software}. John Wiley \& Sons, 2012. ISBN~9781118240564.
 
-\bibitem{js:rjson}
-Tencent : RapidJSON. 2016.
-\urlprefix\url{https://github.com/miloyip/rapidjson/}\urlsuffix
-
 \bibitem{ipfix}
 Velan~Petr, K.~R. : Flow Information Storage Assessment Using IPFIXcol. In
   \emph{Lecture Notes in Computer Science 7279}, Springer, 2012,
   ISBN~978-3-642-30632-7.
-
-\bibitem{shadowdom}
-W3C : Shadow DOM. Working Draft. 2015.
-\urlprefix\url{http://www.w3.org/TR/shadow-dom/}\urlsuffix
-
-\bibitem{flexbox}
-W3C : Flexible Box Layout Module Level 1. Candidate Recommendation. 2016.
-\urlprefix\url{http://www.w3.org/TR/css-flexbox-1/}\urlsuffix
-
-\bibitem{webcomponents}
-WebComponents : Web Components. 2016.
-\urlprefix\url{http://webcomponents.org/}\urlsuffix
 
 \end{thebibliography}

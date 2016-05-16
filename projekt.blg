@@ -8,68 +8,68 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Database file #1: literatura.bib
-Warning--entry type for "flowmon:ads" isn't style-file defined
---line 46 of file literatura.bib
-Warning--entry type for "snort:cisco" isn't style-file defined
---line 94 of file literatura.bib
-Warning--entry type for "snort:modes" isn't style-file defined
---line 102 of file literatura.bib
-Warning--entry type for "shadowdom" isn't style-file defined
---line 145 of file literatura.bib
-Warning--entry type for "jspromises" isn't style-file defined
---line 161 of file literatura.bib
-Warning--entry type for "webcomponents" isn't style-file defined
---line 169 of file literatura.bib
-Warning--entry type for "htmlbars" isn't style-file defined
---line 177 of file literatura.bib
-Warning--entry type for "flexbox" isn't style-file defined
---line 215 of file literatura.bib
-Warning--entry type for "google:v8" isn't style-file defined
---line 231 of file literatura.bib
-Warning--entry type for "js:rjson" isn't style-file defined
---line 247 of file literatura.bib
+Warning--to sort, need author or key in flowmon:ads
+Warning--to sort, need author or key in snort:cisco
+Warning--to sort, need author or key in snort:modes
+Warning--to sort, need author or key in shadowdom
+Warning--to sort, need author or key in jspromises
+Warning--to sort, need author or key in webcomponents
+Warning--to sort, need author or key in htmlbars
+Warning--to sort, need author or key in flexbox
+Warning--to sort, need author or key in google:v8
+Warning--to sort, need author or key in js:rjson
+Warning--missing publisher in snort:cisco
+Warning--missing publisher in htmlbars
+Warning--missing publisher in shadowdom
+Warning--missing publisher in google:v8
+Warning--missing publisher in flexbox
+Warning--missing publisher in flowmon:ads
+Warning--missing publisher in jspromises
+Warning--missing publisher in js:rjson
+Warning--missing publisher in snort:modes
+Warning--missing publisher in webcomponents
 Warning--empty journal in css:preproc
 Warning--empty year in css:preproc
 Warning--empty pages in ipfix
 You've used 34 entries,
             3572 wiz_defined-function locations,
-            873 strings with 10364 characters,
-and the built_in function-call counts, 13741 in all, are:
-= -- 954
-> -- 399
+            873 strings with 10343 characters,
+and the built_in function-call counts, 16221 in all, are:
+= -- 1174
+> -- 339
 < -- 16
-+ -- 196
-- -- 114
-* -- 653
-:= -- 1616
-add.period$ -- 74
++ -- 176
+- -- 94
+* -- 723
+:= -- 1606
+add.period$ -- 84
 call.type$ -- 34
-change.case$ -- 123
+change.case$ -- 113
 chr.to.int$ -- 0
-cite$ -- 37
-duplicate$ -- 1447
-empty$ -- 1328
-format.name$ -- 127
-if$ -- 2939
+cite$ -- 57
+duplicate$ -- 1927
+empty$ -- 1648
+format.name$ -- 107
+if$ -- 3599
 int.to.chr$ -- 0
 int.to.str$ -- 34
-missing$ -- 368
-newline$ -- 128
-num.names$ -- 68
-pop$ -- 877
+missing$ -- 518
+newline$ -- 118
+num.names$ -- 48
+pop$ -- 1247
 preamble$ -- 1
-purify$ -- 119
+purify$ -- 109
 quote$ -- 0
-skip$ -- 539
+skip$ -- 689
 stack$ -- 0
 substring$ -- 307
-swap$ -- 676
+swap$ -- 876
 text.length$ -- 16
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 130
-warning$ -- 3
-while$ -- 84
+warning$ -- 23
+while$ -- 64
 width$ -- 36
-write$ -- 298
-(There were 13 warnings)
+write$ -- 308
+(There were 23 warnings)
