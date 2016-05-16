@@ -3,7 +3,7 @@
 # E-mail: bidlom AT fit vutbr cz
 #===========================================
 # asi budete chtit prejmenovat:
-CO=bp-stehlik
+CO=bp-xstehl14
 
 all: $(CO).pdf
 
