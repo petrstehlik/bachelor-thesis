@@ -1,6 +1,6 @@
 This is BibTeX, Version 0.99d (TeX Live 2015)
 Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
-The top-level auxiliary file: projekt.aux
+The top-level auxiliary file: bp-stehlik.aux
 The style file: czechiso.bst
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
@@ -33,7 +33,7 @@ Warning--empty year in css:preproc
 Warning--empty pages in ipfix
 You've used 34 entries,
             3572 wiz_defined-function locations,
-            873 strings with 10343 characters,
+            873 strings with 10349 characters,
 and the built_in function-call counts, 16221 in all, are:
 = -- 1174
 > -- 339
